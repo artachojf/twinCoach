@@ -13,7 +13,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
+import com.example.healthconnect.codelab.dittoManager.DittoThing
+import com.google.gson.Gson
 import io.github.cdimascio.dotenv.dotenv
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,9 +52,9 @@ class MainActivity : AppCompatActivity() {
         dotenv.entries().forEach { System.setProperty(it.key, it.value) }
 
         //PeriodicDittoService launching: once per hour
-        val jobScheduler = applicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        /*val jobScheduler = applicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         val jobBuilder = JobInfo.Builder(1, ComponentName(this, PeriodicDittoService::class.java))
         val sched = jobScheduler.schedule(jobBuilder.setPeriodic(1000*60*60).build())
-        Log.i("scheduling", "${sched == JobScheduler.RESULT_SUCCESS}")
+        Log.i("scheduling", "${sched == JobScheduler.RESULT_SUCCESS}")*/
     }
 }

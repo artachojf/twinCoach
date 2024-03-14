@@ -15,9 +15,9 @@ import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Length
+import com.example.healthconnect.codelab.dittoManager.DittoTrainingSessionProperties
 import java.io.IOException
 import java.time.Instant
-import java.util.Dictionary
 import kotlin.reflect.KClass
 
 /**
@@ -205,8 +205,8 @@ class HealthConnectManager(private val context: Context) {
         return laps
     }
 
-    fun rateTrainingSession(laps: List<ExerciseLap>): Map<String, Double> {
-        val result = HashMap<String, Double>()
+    fun rateTrainingSession(laps: List<ExerciseLap>): DittoTrainingSessionProperties {
+        val result = DittoTrainingSessionProperties(0.0, 0.0, 0.0, 0.0)
         return result
     }
 }
