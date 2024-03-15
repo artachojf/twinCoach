@@ -13,10 +13,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <queries>
-        <package android:name="com.google.android.apps.healthdata" />
-    </queries>
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,7 +24,7 @@
         android:theme="@style/Theme.TwinCoach"
         tools:targetApi="31">
         <service
-            android:name=".PeriodicDittoService"
+            android:name=".dittoManager.PeriodicDittoService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE">
@@ -46,7 +42,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category
+                    android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
         </activity>
     </application>
+
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab
+package com.example.healthconnect.codelab.healthConnect
 
 import android.content.Context
 import android.util.Log
@@ -6,16 +6,19 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.changes.Change
+import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ExerciseLap
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.Record
+import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.SpeedRecord
+import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Length
-import com.example.healthconnect.codelab.dittoManager.DittoTrainingSessionProperties
+import com.example.healthconnect.codelab.dittoManager.DittoCurrentState
 import java.io.IOException
 import java.time.Instant
 import kotlin.reflect.KClass
@@ -26,16 +29,19 @@ import kotlin.reflect.KClass
 class HealthConnectManager(private val context: Context) {
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
     private val MONTH_LENGTH_SECONDS: Long = 30*24*60*60
-
-    /*private val permissions = setOf(
+    private val THRESHOLD_RESTING_PACE = 1.25
+    val permissions = setOf(
         HealthPermission.getReadPermission(ExerciseSessionRecord::class),
-        HealthPermission.getReadPermission(HeartRateRecord::class)
-    )*/
+        HealthPermission.getReadPermission(HeartRateRecord::class),
+        HealthPermission.getReadPermission(SpeedRecord::class),
+        HealthPermission.getReadPermission(StepsRecord::class),
+        HealthPermission.getReadPermission(SleepSessionRecord::class)
+    )
 
     /**
      * This function checks if the application has been granted all the permissions requested
      */
-    suspend fun hasAllPermissions(permissions: Set<String>): Boolean {
+    suspend fun hasAllPermissions(): Boolean {
         return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
     }
 
@@ -172,24 +178,31 @@ class HealthConnectManager(private val context: Context) {
         return changesList
     }
 
-    suspend fun processData(session: ExerciseSessionRecord): List<ExerciseLap> {
+    /**
+     * Takes an ExerciseSessionRecord a extracts the laps made during the session
+     * @param session
+     * @return The list of laps/intervals done during the session
+     */
+    suspend fun getLaps(session: ExerciseSessionRecord): List<ExerciseLap> {
         val speedRecord = this.readSpeedRecords(session)[0].samples
-        Log.i("processData speedRecord", speedRecord.size.toString())
         return getLaps(speedRecord)
     }
 
-    fun getLaps(speedRecord: List<SpeedRecord.Sample>): List<ExerciseLap> {
+    /**
+     * Takes a list of speeds during the time and calculates the laps/intervals done
+     * during the exercise session
+     * @param speedRecord List of speeds during time
+     * @return The list of laps/intervals done during the session
+     */
+    private fun getLaps(speedRecord: List<SpeedRecord.Sample>): List<ExerciseLap> {
         val laps = ArrayList<ExerciseLap>()
         var lapLength = 0.0
         var startTime = speedRecord[0].time
         for(i in 1..speedRecord.size-1) {
             val timeOffset = speedRecord[i].time.epochSecond - speedRecord[i-1].time.epochSecond
-            Log.i("seconds offset", timeOffset.toString())
             lapLength += speedRecord[i-1].speed.inMetersPerSecond*timeOffset
 
-            if (speedRecord[i-1].speed.inMetersPerSecond.compareTo(speedRecord[i].speed.inMetersPerSecond*2) > 0
-                || speedRecord[i-1].speed.inMetersPerSecond.compareTo(speedRecord[i].speed.inMetersPerSecond*0.5) < 0) {
-                //Stopped || started
+            if (hasStopped(speedRecord[i-1], speedRecord[i]) || hasStopped(speedRecord[i-1], speedRecord[i])) {
                 val lap = ExerciseLap(startTime, speedRecord[i].time, Length.meters(lapLength))
                 laps.add(lap)
                 lapLength = 0.0
@@ -205,8 +218,33 @@ class HealthConnectManager(private val context: Context) {
         return laps
     }
 
-    fun rateTrainingSession(laps: List<ExerciseLap>): DittoTrainingSessionProperties {
-        val result = DittoTrainingSessionProperties(0.0, 0.0, 0.0, 0.0)
+    /**
+     * We will say the athlete has stopped a lap if it had a relatively high
+     * speed and drops down the pace consistently
+     */
+    private fun hasStopped(prev: SpeedRecord.Sample, current: SpeedRecord.Sample): Boolean {
+        return prev.speed.inMetersPerSecond.compareTo(THRESHOLD_RESTING_PACE) > 1 &&
+                prev.speed.inMetersPerSecond.compareTo(current.speed.inMetersPerSecond*2) > 0
+    }
+
+    /**
+     * We will say the athlete has started a new lap if it now has a relatively high
+     * speed and increases the pace consistently
+     */
+    private fun hasStarted(prev: SpeedRecord.Sample, current: SpeedRecord.Sample): Boolean {
+        return current.speed.inMetersPerSecond.compareTo(THRESHOLD_RESTING_PACE) > 1 &&
+                prev.speed.inMetersPerSecond.compareTo(current.speed.inMetersPerSecond*0.5) < 0
+    }
+
+    /**
+     * It takes a list of laps/intervals and rates the session in four different categories:
+     * strength, aerobic endurance, anaerobic endurance and fatigue.
+     * @param laps The list of laps/intervals of the exercise session
+     * @return A TrainingSessionProperties object with the result
+     */
+    fun rateTrainingSession(laps: List<ExerciseLap>): DittoCurrentState.TrainingSessionProperties {
+        val result = DittoCurrentState.TrainingSessionProperties(0.0, 0.0, 0.0, 0.0)
+        //TODO: Rate training sessions
         return result
     }
 }

@@ -11,16 +11,12 @@ import java.time.ZoneOffset
 import java.util.Base64
 
 class DittoConnectionManager {
-    fun generateDittoThingId(instant: Instant): String {
-        return System.getProperty("DITTO_THING_PREFIX") + ":" + System.getProperty("GOOGLE_ID") + "-" +
-                instant.atZone(ZoneOffset.systemDefault()).toLocalDate().toString()
-    }
-
-    fun generateDittoThingId(localDate: LocalDate): String {
-        return System.getProperty("DITTO_THING_PREFIX") + ":" + System.getProperty("GOOGLE_ID") + "-" +
-                localDate.toString()
-    }
-
+    /**
+     * It takes the thingId and body and sends a PUT HTTP request to the Ditto server.
+     * @param thingId A string corresponding to the Ditto Thing Id
+     * @param body A string corresponding to the Ditto Thing Body
+     * @return Response code of the HTTP PUT request
+     */
     fun putDittoThing(thingId: String, body: String): Int {
         val auth = "${System.getProperty("DITTO_USER")}:${System.getProperty("DITTO_PWD")}"
         val base64auth = Base64.getEncoder().encodeToString(auth.toByteArray())
@@ -41,15 +37,27 @@ class DittoConnectionManager {
         return connection.responseCode
     }
 
+    /**
+     * @param thingId A string corresponding to the Ditto Thing Id
+     * @return A string with the response to the HTTP request
+     */
     fun getDittoThing(thingId: String): String {
         return getHttpResponse(dittoThingConnection(thingId))
     }
 
+    /**
+     * @param thingId A string corresponding to the Ditto Thing Id
+     * @return The response code of the HTTP request
+     */
     fun existsDittoThing(thingId: String): Boolean {
         val responseCode = dittoThingConnection(thingId).responseCode
         return responseCode >= 100 && responseCode < 400
     }
 
+    /**
+     * @param thingId A string corresponding to the Ditto Thing Id
+     * @return An HttpURLConnection object which contains all the connection information
+     */
     private fun dittoThingConnection(thingId: String): HttpURLConnection {
         val auth = "${System.getProperty("DITTO_USER")}:${System.getProperty("DITTO_PWD")}"
         val base64auth = Base64.getEncoder().encodeToString(auth.toByteArray())
@@ -64,6 +72,10 @@ class DittoConnectionManager {
         return connection
     }
 
+    /**
+     * @param connection An HttpURLConnection with all the necessary information
+     * @return A string with the response to that connection
+     */
     private fun getHttpResponse(connection: HttpURLConnection): String {
         val stringBuffer = StringBuffer()
         val br: BufferedReader = if (100 <= connection.getResponseCode() && connection.getResponseCode() <= 399) {
@@ -81,6 +93,10 @@ class DittoConnectionManager {
         return stringBuffer.toString()
     }
 
+    /**
+     * @param thingId A string corresponding to the Ditto Thing Id
+     * @return Response code of the HTTP DELETE request
+     */
     fun deleteDittoThing(thingId: String): Int {
         val auth = "${System.getProperty("DITTO_USER")}:${System.getProperty("DITTO_PWD")}"
         val base64auth = Base64.getEncoder().encodeToString(auth.toByteArray())
