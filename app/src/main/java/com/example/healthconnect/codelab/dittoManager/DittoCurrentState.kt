@@ -10,7 +10,14 @@ import java.time.ZoneOffset
  */
 class DittoCurrentState {
     data class TrainingSessionProperties(var strength: Double, var aerobic_endurance: Double,
-                                                          var anaerobic_endurance: Double, var fatigue: Double) {}
+                                                          var anaerobic_endurance: Double, var fatigue: Double) {
+        fun combine(prop: TrainingSessionProperties) {
+            this.strength += prop.strength
+            this.aerobic_endurance += prop.aerobic_endurance
+            this.anaerobic_endurance += prop.anaerobic_endurance
+            this.fatigue += prop.fatigue
+        }
+    }
 
     data class TrainingSession(var properties: TrainingSessionProperties)
 

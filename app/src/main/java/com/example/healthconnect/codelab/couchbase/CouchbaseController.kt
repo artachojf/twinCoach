@@ -37,7 +37,12 @@ class CouchbaseController {
 
     fun findFirstDoc(): MutableDocument? {
         val query = QueryBuilder.select(SelectResult.expression(Meta.id)).from(DataSource.collection(collection))
-        val id = query.execute().allResults()[0].getString("id")
+        val results = query.execute().allResults()
+        if (results.size == 0) {
+            return null
+        }
+
+        val id = results[0].getString("id")
         return id?.let { collection.getDocument(it)?.toMutable() }
     }
 }

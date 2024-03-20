@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 
 class PeriodicDittoService : JobService() {
@@ -39,7 +41,7 @@ class PeriodicDittoService : JobService() {
             try {
                 withContext(Dispatchers.IO) {
                     val couchbaseController = CouchbaseController(applicationContext, "twinCoach", "tokens")
-                    val hcManager = HealthConnectManager(applicationContext)
+                    hcManager = HealthConnectManager(applicationContext)
                     var doc = couchbaseController.findFirstDoc()
 
                     if (doc != null) {
@@ -56,10 +58,6 @@ class PeriodicDittoService : JobService() {
                         }
                         doc = MutableDocument()
                     }
-                    doc.setString("exerciseToken", hcManager.getChangesToken(ExerciseSessionRecord::class))
-                    doc.setString("sleepToken", hcManager.getChangesToken(SleepSessionRecord::class))
-                    doc.setString("stepsToken", hcManager.getChangesToken(StepsRecord::class))
-                    couchbaseController.saveDoc(doc)
 
                     if (!dcm.existsDittoThing(DittoCurrentState().generateThingId(Instant.now()))) {
                         val thing = DittoCurrentState().createRestThing()
@@ -67,9 +65,14 @@ class PeriodicDittoService : JobService() {
                     }
 
                     dcm.deleteDittoThing(DittoCurrentState().generateThingId(LocalDate.now().minusDays(System.getProperty("DITTO_THING_PERSISTENCE").toLong())))
+
+                    doc.setString("exerciseToken", hcManager.getChangesToken(ExerciseSessionRecord::class))
+                    doc.setString("sleepToken", hcManager.getChangesToken(SleepSessionRecord::class))
+                    doc.setString("stepsToken", hcManager.getChangesToken(StepsRecord::class))
+                    couchbaseController.saveDoc(doc)
                 }
             } catch (e: Exception) {
-                Log.i("onStartJob", e.toString())
+                Log.i("onStartJob", e.stackTraceToString())
             }
         }
         return false
@@ -82,22 +85,17 @@ class PeriodicDittoService : JobService() {
     /**
      * The exercise record is read and rated in each aspect.
      * After that, the Thing associated with the session's day is read.
-     * In case it exists, the values are overwritten. In other case a new Thing is created
+     * In case it exists, it is taken into account. In other case a new Thing is created
      * with the ratings calculated before.
      * @param record The exercise record to be uploaded
      */
     private suspend fun uploadToDitto(record: ExerciseSessionRecord) {
-        val laps = hcManager.getLaps(record)
-        val trainingSessionProperties = hcManager.rateTrainingSession(laps)
-
+        val trainingSessionProperties = hcManager.rateTrainingSession(record) ?: return
+        Log.i("trainingSessionRating", Gson().toJson(trainingSessionProperties))
         var dittoThing: DittoCurrentState.Thing
-        /**
-         * We try to get the Ditto Thing associated to the training session in case it exists.
-         * In the other case, we create a new thing with the ratings we just calculated
-         */
         try {
             dittoThing = Gson().fromJson(dcm.getDittoThing(DittoCurrentState().generateThingId(record.startTime)), DittoCurrentState.Thing::class.java)
-            dittoThing.features.trainingSession.properties = trainingSessionProperties
+            dittoThing.features.trainingSession.properties.combine(trainingSessionProperties)
         } catch (e: Exception) {
             dittoThing = DittoCurrentState().createRestThing()
             dittoThing.features.trainingSession.properties = trainingSessionProperties
@@ -129,7 +127,7 @@ class PeriodicDittoService : JobService() {
             when (it) {
                 is UpsertionChange -> {
                     val record = it.record as SleepSessionRecord
-                    //TODO
+                    //TODO: Rate sleeping sessions
                 }
             }
         }
@@ -140,7 +138,7 @@ class PeriodicDittoService : JobService() {
             when (it) {
                 is UpsertionChange -> {
                     val record = it.record as StepsRecord
-                    //TODO
+                    //TODO: Add fatigue depending on step records
                 }
             }
         }

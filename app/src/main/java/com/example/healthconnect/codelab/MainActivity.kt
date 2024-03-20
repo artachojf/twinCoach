@@ -1,8 +1,13 @@
 package com.example.healthconnect.codelab
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.app.job.JobService
+import android.content.ComponentName
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -11,9 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
-import com.example.healthconnect.codelab.dittoManager.DittoGeneralInfo
+import com.example.healthconnect.codelab.dittoManager.PeriodicDittoService
 import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
-import com.google.gson.Gson
 import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.launch
 
@@ -48,21 +52,38 @@ class MainActivity : AppCompatActivity() {
         }
         dotenv.entries().forEach { System.setProperty(it.key, it.value) }
 
-        //TODO: Deal with permissions
         lifecycleScope.launch {
             hcManager = HealthConnectManager(applicationContext)
             if (!hcManager.hasAllPermissions()) {
-                val requestPermissions = registerForActivityResult(hcManager.requestPermissionActivityContract()) {}
+                val requestPermissions = registerForActivityResult(hcManager.requestPermissionActivityContract()) {
+                    if (it.containsAll(hcManager.permissions)) launchService()
+                    else {
+                        showWarningDialog()
+                    }
+                }
                 requestPermissions.launch(hcManager.permissions)
-            }
-
-            if(hcManager.hasAllPermissions()) {
-                //PeriodicDittoService launching: once per hour
-                /*val jobScheduler = applicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-                val jobBuilder = JobInfo.Builder(1, ComponentName(this, PeriodicDittoService::class.java))
-                val sched = jobScheduler.schedule(jobBuilder.setPeriodic(1000*60*60).build())
-                Log.i("scheduling", "${sched == JobScheduler.RESULT_SUCCESS}")*/
+            } else {
+                launchService()
             }
         }
+    }
+
+    private fun launchService() {
+        val jobScheduler = applicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val jobBuilder = JobInfo.Builder(1, ComponentName(applicationContext, PeriodicDittoService::class.java))
+            .setPeriodic(1000*60*60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+        jobScheduler.schedule(jobBuilder.build())
+    }
+
+    private fun showWarningDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(R.string.permissions_alert_dialog)
+        builder.setPositiveButton("OK") { dialog, id ->
+            //open application settings to grant permissions
+        }
+        builder.setNegativeButton("Cancel") { dialog, id ->
+            finish()
+        }
+        builder.show()
     }
 }

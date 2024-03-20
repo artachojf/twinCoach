@@ -5,9 +5,6 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
 import java.util.Base64
 
 class DittoConnectionManager {
@@ -27,6 +24,7 @@ class DittoConnectionManager {
         connection.requestMethod = "PUT"
         connection.setRequestProperty("Content-Type", "application/json")
         connection.setRequestProperty("Authorization", "Basic ${base64auth}")
+        connection.setRequestProperty("ngrok-skip-browser-warning", "")
         connection.doOutput = true
 
         OutputStreamWriter(connection.outputStream, "UTF-8").use {
@@ -68,6 +66,7 @@ class DittoConnectionManager {
         connection.requestMethod = "GET"
         connection.setRequestProperty("Content-Type", "application/json")
         connection.setRequestProperty("Authorization", "Basic ${base64auth}")
+        connection.setRequestProperty("ngrok-skip-browser-warning", "")
         connection.doOutput = true
         return connection
     }
@@ -107,6 +106,7 @@ class DittoConnectionManager {
         connection.requestMethod = "DELETE"
         connection.setRequestProperty("Content-Type", "application/json")
         connection.setRequestProperty("Authorization", "Basic ${base64auth}")
+        connection.setRequestProperty("ngrok-skip-browser-warning", "")
         connection.doOutput = true
         return connection.responseCode
     }
