@@ -3,5 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="permissions_alert_dialog">If the application hasn\'t got the required permissions granted it won\'t be able to read data and generate the training plan. Do you want to grant those permissions?</string>
+    <string name="permissions_alert_dialog_text">If the application hasn\'t got the required permissions granted it won\'t be able to read data and generate the training plan. Do you want to grant those permissions?</string>
+    <string name="permissions_alert_dialog_positive_button">OK</string>
+    <string name="permissions_alert_dialog_negative_button">Cancel</string>
 </resources>

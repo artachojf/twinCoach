@@ -77,13 +77,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showWarningDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(R.string.permissions_alert_dialog)
-        builder.setPositiveButton("OK") { dialog, id ->
+        builder.setMessage(R.string.permissions_alert_dialog_text)
+        builder.setPositiveButton(R.string.permissions_alert_dialog_positive_button) { dialog, id ->
             //open application settings to grant permissions
         }
-        builder.setNegativeButton("Cancel") { dialog, id ->
-            finish()
-        }
+        builder.setNegativeButton(R.string.permissions_alert_dialog_negative_button) { dialog, id -> finish() }
         builder.show()
     }
 }

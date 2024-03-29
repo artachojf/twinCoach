@@ -5,17 +5,29 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 /**
- * This class contains a Kotlin object representation of Ditto Things that contain the current
- * state of the athlete and methods to create them easily
+ * This class contains a Kotlin object representation of Ditto Things that contain the daily
+ * workouts of the athlete and methods to create them easily
  */
 class DittoCurrentState {
-    data class TrainingSessionProperties(var strength: Double, var aerobic_endurance: Double,
-                                                          var anaerobic_endurance: Double, var fatigue: Double) {
+    data class TrainingSessionZone(var avgHr: Double, var time: Double, var distance: Double) {
+        fun combine(s: TrainingSessionZone) {
+            this.combine(s.avgHr, s.time, s.distance)
+        }
+
+        fun combine(hr: Double, time: Double, distance: Double) {
+            this.avgHr = ((this.avgHr*this.time) + (hr*time)) / (this.time + time)
+            this.time += time
+            this.distance += distance
+        }
+    }
+
+    data class TrainingSessionProperties(val zone1: TrainingSessionZone, val zone2: TrainingSessionZone,
+                                        val zone3: TrainingSessionZone, val rest: TrainingSessionZone) {
         fun combine(prop: TrainingSessionProperties) {
-            this.strength += prop.strength
-            this.aerobic_endurance += prop.aerobic_endurance
-            this.anaerobic_endurance += prop.anaerobic_endurance
-            this.fatigue += prop.fatigue
+            this.zone1.combine(prop.zone1)
+            this.zone2.combine(prop.zone2)
+            this.zone3.combine(prop.zone3)
+            this.rest.combine(prop.rest)
         }
     }
 
@@ -31,9 +43,9 @@ class DittoCurrentState {
 
     data class Thing(val attributes: Attributes, val features: Features){}
 
-    fun createThing(strength: Double, aerobic_endurance: Double, anaerobic_endurance: Double,
-                    fatigue: Double, sleepRating: Double): Thing {
-        val tsp = TrainingSessionProperties(strength, aerobic_endurance, anaerobic_endurance, fatigue)
+    fun createThing(z1: TrainingSessionZone, z2: TrainingSessionZone, z3: TrainingSessionZone,
+                    rest: TrainingSessionZone, sleepRating: Double): Thing {
+        val tsp = TrainingSessionProperties(z1, z2, z3, rest)
         val ts = TrainingSession(tsp)
 
         val srp = SleepRatingProperties(sleepRating)
@@ -42,22 +54,20 @@ class DittoCurrentState {
         return createThing(ts, sr)
     }
 
-    fun createThing(strength: Double, aerobic_endurance: Double, anaerobic_endurance: Double, fatigue: Double): Thing {
-        return createThing(strength, aerobic_endurance, anaerobic_endurance, fatigue, 0.0)
-    }
-
-    fun createRestThing(): Thing {
-        return createThing(0.0, 0.0, 0.0, 0.0)
-    }
-
-    fun createRestThing(sleepRating: Double): Thing {
-        return createThing(0.0, 0.0, 0.0, 0.0, sleepRating)
+    fun createThing(z1: TrainingSessionZone, z2: TrainingSessionZone,
+                    z3: TrainingSessionZone, rest: TrainingSessionZone): Thing {
+        return createThing(z1, z2, z3, rest, 0.0)
     }
 
     private fun createThing(trainingSession: TrainingSession, sleepRating: SleepRating): Thing {
         val features = Features(trainingSession, sleepRating)
         val attributes = Attributes(System.getProperty("GOOGLE_ID"))
         return Thing(attributes, features)
+    }
+
+    fun createRestThing(): Thing {
+        return createThing(TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0),
+            TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0))
     }
 
     fun generateThingId(instant: Instant): String {

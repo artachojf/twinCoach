@@ -28,11 +28,13 @@ class DittoGeneralInfo {
 
     data class Thing(var features: Features){}
 
-    fun generateThingId(): String {
-        return System.getProperty("DITTO_THING_PREFIX") + ":" + System.getProperty("GOOGLE_ID")
-    }
+    companion object {
+        fun generateThingId(): String {
+            return System.getProperty("DITTO_THING_PREFIX") + ":" + System.getProperty("GOOGLE_ID")
+        }
 
-    fun generateThingId(googleId: String): String {
-        return System.getProperty("DITTO_THING_PREFIX") + ":" + googleId
+        fun generateThingId(googleId: String): String {
+            return System.getProperty("DITTO_THING_PREFIX") + ":" + googleId
+        }
     }
 }
