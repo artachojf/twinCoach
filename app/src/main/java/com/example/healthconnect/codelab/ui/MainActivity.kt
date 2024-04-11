@@ -5,6 +5,7 @@ import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +77,10 @@ class MainActivity : AppCompatActivity() {
             val visibleArrow = !viewModel.noArrowFragments.contains(destination.id)
             supportActionBar?.setDisplayHomeAsUpEnabled(visibleArrow)
             showNavbar(visibleArrow || (destination.id == R.id.homeFragment))
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            if ((navController.currentDestination?.id ?: "") != R.id.homeFragment) navController.popBackStack()
         }
     }
 
