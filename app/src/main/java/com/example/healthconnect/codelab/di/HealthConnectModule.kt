@@ -1,8 +1,7 @@
 package com.example.healthconnect.codelab.di
 
 import android.content.Context
-import androidx.health.connect.client.HealthConnectClient
-import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
+import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

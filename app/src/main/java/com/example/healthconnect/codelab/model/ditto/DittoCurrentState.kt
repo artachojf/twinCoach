@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.dittoManager
+package com.example.healthconnect.codelab.model.ditto
 
 import java.time.Instant
 import java.time.LocalDate
@@ -22,7 +22,8 @@ class DittoCurrentState {
     }
 
     data class TrainingSessionProperties(val zone1: TrainingSessionZone, val zone2: TrainingSessionZone,
-                                        val zone3: TrainingSessionZone, val rest: TrainingSessionZone) {
+                                         val zone3: TrainingSessionZone, val rest: TrainingSessionZone
+    ) {
         fun combine(prop: TrainingSessionProperties) {
             this.zone1.combine(prop.zone1)
             this.zone2.combine(prop.zone2)
@@ -55,7 +56,8 @@ class DittoCurrentState {
     }
 
     fun createThing(z1: TrainingSessionZone, z2: TrainingSessionZone,
-                    z3: TrainingSessionZone, rest: TrainingSessionZone): Thing {
+                    z3: TrainingSessionZone, rest: TrainingSessionZone
+    ): Thing {
         return createThing(z1, z2, z3, rest, 0.0)
     }
 
@@ -66,8 +68,10 @@ class DittoCurrentState {
     }
 
     fun createRestThing(): Thing {
-        return createThing(TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0),
-            TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0))
+        return createThing(
+            TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0),
+            TrainingSessionZone(0.0, 0.0, 0.0), TrainingSessionZone(0.0, 0.0, 0.0)
+        )
     }
 
     fun generateThingId(instant: Instant): String {

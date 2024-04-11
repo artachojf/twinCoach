@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.dittoManager
+package com.example.healthconnect.codelab.services
 
 import android.app.job.JobParameters
 import android.app.job.JobService
@@ -8,8 +8,10 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import com.couchbase.lite.MutableDocument
-import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
-import com.example.healthconnect.codelab.couchbase.CouchbaseController
+import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
+import com.example.healthconnect.codelab.utils.couchbase.CouchbaseController
+import com.example.healthconnect.codelab.model.ditto.DittoConnectionManager
+import com.example.healthconnect.codelab.model.ditto.DittoCurrentState
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +20,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZoneOffset
 import javax.inject.Inject
 
 @AndroidEntryPoint

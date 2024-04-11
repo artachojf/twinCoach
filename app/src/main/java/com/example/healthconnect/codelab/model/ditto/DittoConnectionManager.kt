@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.dittoManager
+package com.example.healthconnect.codelab.model.ditto
 
 import java.io.BufferedReader
 import java.io.InputStreamReader

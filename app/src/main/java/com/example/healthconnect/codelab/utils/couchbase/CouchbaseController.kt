@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.couchbase
+package com.example.healthconnect.codelab.utils.couchbase
 
 import android.content.Context
 import android.util.Log

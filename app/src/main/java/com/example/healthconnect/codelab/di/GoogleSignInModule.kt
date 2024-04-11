@@ -1,7 +1,6 @@
 package com.example.healthconnect.codelab.di
 
 import android.content.Context
-import androidx.health.connect.client.HealthConnectClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object GoogleSignInModule {
 
     @Singleton
     @Provides

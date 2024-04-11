@@ -1,7 +1,7 @@
 package com.example.healthconnect.codelab.ui.home
 
 import androidx.lifecycle.ViewModel
-import com.example.healthconnect.codelab.utils.DataStoreManager
+import com.example.healthconnect.codelab.utils.dataStore.DataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

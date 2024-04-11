@@ -1,9 +1,6 @@
-package com.example.healthconnect.codelab.dittoManager
+package com.example.healthconnect.codelab.model.ditto
 
-import java.time.Instant
-import java.time.LocalDate
 import java.time.Year
-import java.time.ZoneOffset
 
 /**
  * This class contains a Kotlin object representation of Ditto Things that contains the general
@@ -30,7 +27,8 @@ class DittoGeneralInfo {
     data class Preferences(var properties: PreferencesProperties) {}
 
     data class Features(var goal: Goal, val trainingPlan: TrainingPlan,
-                        var suggestions: Suggestions, var preferences: Preferences){}
+                        var suggestions: Suggestions, var preferences: Preferences
+    ){}
 
     data class Attributes(var gender: Int, var height: Int, var weight: Double,
                           var birthYear: Year, var runningYear: Year) {}

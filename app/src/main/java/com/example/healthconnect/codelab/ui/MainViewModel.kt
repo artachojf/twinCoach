@@ -1,13 +1,9 @@
-package com.example.healthconnect.codelab
+package com.example.healthconnect.codelab.ui
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.healthconnect.codelab.utils.DataStoreManager
+import com.example.healthconnect.codelab.R
+import com.example.healthconnect.codelab.utils.dataStore.DataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

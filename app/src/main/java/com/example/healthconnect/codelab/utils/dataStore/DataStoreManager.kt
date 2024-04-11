@@ -1,10 +1,10 @@
-package com.example.healthconnect.codelab.utils
+package com.example.healthconnect.codelab.utils.dataStore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.healthconnect.codelab.model.UserInformation
+import com.example.healthconnect.codelab.model.userInformation.UserInformation
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

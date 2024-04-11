@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.healthConnect
+package com.example.healthconnect.codelab.utils.healthConnect
 
 import android.content.Context
 import android.util.Log
@@ -16,7 +16,7 @@ import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import com.example.healthconnect.codelab.dittoManager.DittoCurrentState
+import com.example.healthconnect.codelab.model.ditto.DittoCurrentState
 import java.io.IOException
 import java.time.Instant
 import javax.inject.Inject

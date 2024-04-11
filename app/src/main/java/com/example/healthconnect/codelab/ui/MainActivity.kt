@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab
+package com.example.healthconnect.codelab.ui
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
@@ -12,9 +12,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
-import com.example.healthconnect.codelab.dittoManager.PeriodicDittoService
-import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
+import com.example.healthconnect.codelab.services.PeriodicDittoService
+import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.cdimascio.dotenv.dotenv

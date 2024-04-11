@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.model
+package com.example.healthconnect.codelab.model.userInformation
 
 data class UserInformation(
     val googleId: String,

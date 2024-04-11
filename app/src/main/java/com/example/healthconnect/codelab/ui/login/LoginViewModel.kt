@@ -2,7 +2,7 @@ package com.example.healthconnect.codelab.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthconnect.codelab.utils.DataStoreManager
+import com.example.healthconnect.codelab.utils.dataStore.DataStoreManager
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
