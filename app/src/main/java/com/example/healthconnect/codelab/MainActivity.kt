@@ -2,15 +2,12 @@ package com.example.healthconnect.codelab
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
-import android.app.job.JobService
 import android.content.ComponentName
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,13 +15,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
 import com.example.healthconnect.codelab.dittoManager.PeriodicDittoService
 import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.cdimascio.dotenv.dotenv
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var hcManager: HealthConnectManager
+
+    //TODO: Move to viewModel when we know where to use it
+    @Inject lateinit var hcManager: HealthConnectManager
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.homeFragment, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -52,8 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
         dotenv.entries().forEach { System.setProperty(it.key, it.value) }
 
-        lifecycleScope.launch {
-            hcManager = HealthConnectManager(applicationContext)
+        /*lifecycleScope.launch {
             if (!hcManager.hasAllPermissions()) {
                 val requestPermissions = registerForActivityResult(hcManager.requestPermissionActivityContract()) {
                     if (it.containsAll(hcManager.permissions)) launchService()
@@ -65,11 +69,22 @@ class MainActivity : AppCompatActivity() {
             } else {
                 launchService()
             }
+        }*/
+
+        navController.addOnDestinationChangedListener { _,destination,_ ->
+            val visibleArrow = !viewModel.noArrowFragments.contains(destination.id)
+            supportActionBar?.setDisplayHomeAsUpEnabled(visibleArrow)
+            showNavbar(visibleArrow || (destination.id == R.id.homeFragment))
         }
     }
 
+    private fun showNavbar(bool: Boolean) {
+        val visibility = if (bool) View.VISIBLE else View.GONE
+        binding.navView.visibility = visibility
+    }
+
     private fun launchService() {
-        val jobScheduler = applicationContext.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val jobScheduler = applicationContext.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
         val jobBuilder = JobInfo.Builder(1, ComponentName(applicationContext, PeriodicDittoService::class.java))
             .setPeriodic(1000*60*60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
         jobScheduler.schedule(jobBuilder.build())

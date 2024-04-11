@@ -11,6 +11,7 @@ import com.couchbase.lite.MutableDocument
 import com.example.healthconnect.codelab.healthConnect.HealthConnectManager
 import com.example.healthconnect.codelab.couchbase.CouchbaseController
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,11 +20,13 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
+import javax.inject.Inject
 
+@AndroidEntryPoint
+class PeriodicDittoService @Inject constructor(
+    private var hcManager: HealthConnectManager
+) : JobService() {
 
-class PeriodicDittoService : JobService() {
-
-    private lateinit var hcManager: HealthConnectManager
     private val dcm = DittoConnectionManager()
 
     /**
@@ -41,7 +44,6 @@ class PeriodicDittoService : JobService() {
             try {
                 withContext(Dispatchers.IO) {
                     val couchbaseController = CouchbaseController(applicationContext, "twinCoach", "tokens")
-                    hcManager = HealthConnectManager(applicationContext)
                     var doc = couchbaseController.findFirstDoc()
 
                     if (doc != null) {

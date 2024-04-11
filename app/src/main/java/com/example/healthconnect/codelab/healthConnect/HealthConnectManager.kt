@@ -19,14 +19,19 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import com.example.healthconnect.codelab.dittoManager.DittoCurrentState
 import java.io.IOException
 import java.time.Instant
+import javax.inject.Inject
 import kotlin.reflect.KClass
 
 /**
  * Class in charge of the communication with Health Connect records
  */
-class HealthConnectManager(private val context: Context) {
+class HealthConnectManager @Inject constructor(
+    val context: Context
+) {
+
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
-    private val MONTH_LENGTH_SECONDS: Long = 30*24*60*60
+
+    private val MONTH_LENGTH_SECONDS: Long = 30 * 24 * 60 * 60
     private val THRESHOLD_WALKING_PACE_MS = 1.25
     private val ZONE1 = 50
     private val ZONE2 = 75
@@ -43,7 +48,8 @@ class HealthConnectManager(private val context: Context) {
      * This function checks if the application has been granted all the permissions requested
      */
     suspend fun hasAllPermissions(): Boolean {
-        return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
+        return healthConnectClient.permissionController.getGrantedPermissions()
+            .containsAll(permissions)
     }
 
     fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>> {
@@ -57,7 +63,10 @@ class HealthConnectManager(private val context: Context) {
      * @return returns all the exercise sessions between those two timestamps. In case no session
      * is found returns an empty list
      */
-    suspend fun readExerciseSessionRecords(start: Instant, end: Instant): List<ExerciseSessionRecord> {
+    suspend fun readExerciseSessionRecords(
+        start: Instant,
+        end: Instant
+    ): List<ExerciseSessionRecord> {
         try {
             val request = ReadRecordsRequest(
                 recordType = ExerciseSessionRecord::class,
@@ -75,7 +84,10 @@ class HealthConnectManager(private val context: Context) {
      * Retrieves all the exercise sessions existing
      */
     suspend fun readExerciseSessionRecords(): List<ExerciseSessionRecord> {
-        return readExerciseSessionRecords(Instant.now().minusSeconds(MONTH_LENGTH_SECONDS), Instant.now())
+        return readExerciseSessionRecords(
+            Instant.now().minusSeconds(MONTH_LENGTH_SECONDS),
+            Instant.now()
+        )
     }
 
     /**
@@ -147,7 +159,10 @@ class HealthConnectManager(private val context: Context) {
      * @param session
      */
     suspend fun readSpeedRecords(session: ExerciseSessionRecord): List<SpeedRecord> {
-        return readSpeedRecords(session.startTime.minusSeconds(120), session.endTime.plusSeconds(120))
+        return readSpeedRecords(
+            session.startTime.minusSeconds(120),
+            session.endTime.plusSeconds(120)
+        )
     }
 
     /**
@@ -208,9 +223,11 @@ class HealthConnectManager(private val context: Context) {
      * @param heartRates A list of heart rate samples during the session
      * @return A TrainingSessionProperties object with the result
      */
-    private fun rateTrainingSession(speeds: List<SpeedRecord.Sample>,
-                                    heartRates: List<HeartRateRecord.Sample>)
-    : DittoCurrentState.TrainingSessionProperties {
+    private fun rateTrainingSession(
+        speeds: List<SpeedRecord.Sample>,
+        heartRates: List<HeartRateRecord.Sample>
+    )
+            : DittoCurrentState.TrainingSessionProperties {
         val z1 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z2 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z3 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
@@ -218,9 +235,9 @@ class HealthConnectManager(private val context: Context) {
         //TODO: Retrieve max heart rate from Couchbase
         val maxHeartRate = 200
 
-        for(i in speeds.indices) {
+        for (i in speeds.indices) {
             val s = speeds[i]
-            val offset = (speeds[i+1].time.epochSecond - s.time.epochSecond)*100.0
+            val offset = (speeds[i + 1].time.epochSecond - s.time.epochSecond) * 100.0
             val h = heartRates.findLast {
                 it.time <= s.time
             } ?: continue
@@ -229,14 +246,30 @@ class HealthConnectManager(private val context: Context) {
                 val maxHrPercentage = h.beatsPerMinute.toDouble() / maxHeartRate.toLong()
 
                 if (maxHrPercentage >= ZONE1 && maxHrPercentage < ZONE2) {
-                    z1.combine(h.beatsPerMinute.toDouble(), offset, s.speed.inMetersPerSecond*offset)
+                    z1.combine(
+                        h.beatsPerMinute.toDouble(),
+                        offset,
+                        s.speed.inMetersPerSecond * offset
+                    )
                 } else if (maxHrPercentage >= ZONE2 && maxHrPercentage < ZONE3) {
-                    z2.combine(h.beatsPerMinute.toDouble(), offset, s.speed.inMetersPerSecond*offset)
+                    z2.combine(
+                        h.beatsPerMinute.toDouble(),
+                        offset,
+                        s.speed.inMetersPerSecond * offset
+                    )
                 } else if (maxHrPercentage >= ZONE3) {
-                    z3.combine(h.beatsPerMinute.toDouble(), offset, s.speed.inMetersPerSecond*offset)
+                    z3.combine(
+                        h.beatsPerMinute.toDouble(),
+                        offset,
+                        s.speed.inMetersPerSecond * offset
+                    )
                 }
             } else {
-                rest.combine(h.beatsPerMinute.toDouble(), offset, s.speed.inMetersPerSecond*offset)
+                rest.combine(
+                    h.beatsPerMinute.toDouble(),
+                    offset,
+                    s.speed.inMetersPerSecond * offset
+                )
             }
         }
 

@@ -2,6 +2,7 @@ package com.example.healthconnect.codelab.dittoManager
 
 import java.time.Instant
 import java.time.LocalDate
+import java.time.Year
 import java.time.ZoneOffset
 
 /**
@@ -24,9 +25,17 @@ class DittoGeneralInfo {
 
     data class Suggestions(val properties: SuggestionsProperties){}
 
-    data class Features(var goal: Goal, val trainingPlan: TrainingPlan, var suggestions: Suggestions){}
+    data class PreferencesProperties(var trainingDays: List<Int>)
 
-    data class Thing(var features: Features){}
+    data class Preferences(var properties: PreferencesProperties) {}
+
+    data class Features(var goal: Goal, val trainingPlan: TrainingPlan,
+                        var suggestions: Suggestions, var preferences: Preferences){}
+
+    data class Attributes(var gender: Int, var height: Int, var weight: Double,
+                          var birthYear: Year, var runningYear: Year) {}
+
+    data class Thing(var attributes: Attributes, var features: Features){}
 
     companion object {
         fun generateThingId(): String {
