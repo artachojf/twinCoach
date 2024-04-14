@@ -16,7 +16,7 @@ import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import com.example.healthconnect.codelab.model.ditto.DittoCurrentState
+import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
 import java.io.IOException
 import java.time.Instant
 import javax.inject.Inject
@@ -201,7 +201,7 @@ class HealthConnectManager @Inject constructor(
      * @return A TrainingSessionProperties object with the result. Returns null if
      * no speedRecord or heartRateRecord is associated to the session
      */
-    suspend fun rateTrainingSession(session: ExerciseSessionRecord): DittoCurrentState.TrainingSessionProperties? {
+    suspend fun rateTrainingSession(session: ExerciseSessionRecord): DittoCurrentState.TrainingSession? {
         val speedSamples = ArrayList<SpeedRecord.Sample>()
         readSpeedRecords(session).forEach {
             speedSamples.addAll(it.samples)
@@ -226,8 +226,8 @@ class HealthConnectManager @Inject constructor(
     private fun rateTrainingSession(
         speeds: List<SpeedRecord.Sample>,
         heartRates: List<HeartRateRecord.Sample>
-    )
-            : DittoCurrentState.TrainingSessionProperties {
+    ): DittoCurrentState.TrainingSession {
+
         val z1 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z2 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z3 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
@@ -273,6 +273,6 @@ class HealthConnectManager @Inject constructor(
             }
         }
 
-        return DittoCurrentState.TrainingSessionProperties(z1, z2, z3, rest)
+        return DittoCurrentState.TrainingSession(z1, z2, z3, rest)
     }
 }

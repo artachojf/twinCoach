@@ -1,4 +1,4 @@
-package com.example.healthconnect.codelab.model.ditto
+package com.example.healthconnect.codelab.data.model.ditto
 
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -7,6 +7,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Base64
 
+//TODO: Delete file when not needed anymore
 class DittoConnectionManager {
     /**
      * It takes the thingId and body and sends a PUT HTTP request to the Ditto server.

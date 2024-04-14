@@ -1,26 +1,32 @@
 package com.example.healthconnect.codelab.ui.login
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthconnect.codelab.utils.dataStore.DataStoreManager
+import com.example.healthconnect.codelab.domain.model.userInformation.UserInformation
+import com.example.healthconnect.codelab.domain.usecase.userInformation.WriteUserInformation
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val dataStoreManager: DataStoreManager
+    private val writeUserInformation: WriteUserInformation
 ) : ViewModel() {
 
-    fun onLogin(account: GoogleSignInAccount) {
-        viewModelScope.launch {
-            dataStoreManager.writeUserInformation(account)
-        }
-    }
+    private val _userInformation = MutableLiveData<UserInformation>()
+    val userInformation get() = _userInformation
 
-    fun readGoogleId(): Flow<String> {
-        return dataStoreManager.readString("googleId")
+    fun onLogin(account: GoogleSignInAccount) {
+        val user = UserInformation(
+            account.id.orEmpty(),
+            account.displayName.orEmpty(),
+            account.email.orEmpty(),
+            account.photoUrl
+        )
+        viewModelScope.launch {
+            writeUserInformation(user) {}
+        }
     }
 }

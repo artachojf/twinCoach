@@ -2,24 +2,13 @@ package com.example.healthconnect.codelab.services
 
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.util.Log
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
-import com.couchbase.lite.MutableDocument
 import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
-import com.example.healthconnect.codelab.utils.couchbase.CouchbaseController
-import com.example.healthconnect.codelab.model.ditto.DittoConnectionManager
-import com.example.healthconnect.codelab.model.ditto.DittoCurrentState
-import com.google.gson.Gson
+import com.example.healthconnect.codelab.data.model.ditto.DittoConnectionManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.Instant
-import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,7 +29,7 @@ class PeriodicDittoService @Inject constructor(
      * days before is deleted.
      */
     override fun onStartJob(params: JobParameters?): Boolean {
-        CoroutineScope(Dispatchers.Main).launch {
+        /*CoroutineScope(Dispatchers.Main).launch {
             try {
                 withContext(Dispatchers.IO) {
                     val couchbaseController = CouchbaseController(applicationContext, "twinCoach", "tokens")
@@ -76,7 +65,7 @@ class PeriodicDittoService @Inject constructor(
             } catch (e: Exception) {
                 Log.i("onStartJob", e.stackTraceToString())
             }
-        }
+        }*/
         return false
     }
 
@@ -92,7 +81,7 @@ class PeriodicDittoService @Inject constructor(
      * @param record The exercise record to be uploaded
      */
     private suspend fun uploadToDitto(record: ExerciseSessionRecord) {
-        val trainingSessionProperties = hcManager.rateTrainingSession(record) ?: return
+        /*val trainingSessionProperties = hcManager.rateTrainingSession(record) ?: return
         Log.i("trainingSessionRating", Gson().toJson(trainingSessionProperties))
         var dittoThing: DittoCurrentState.Thing
         try {
@@ -102,7 +91,7 @@ class PeriodicDittoService @Inject constructor(
             dittoThing = DittoCurrentState().createRestThing()
             dittoThing.features.trainingSession.properties = trainingSessionProperties
         }
-        dcm.putDittoThing(DittoCurrentState().generateThingId(record.startTime), Gson().toJson(dittoThing))
+        dcm.putDittoThing(DittoCurrentState().generateThingId(record.startTime), Gson().toJson(dittoThing))*/
     }
 
     private suspend fun processExerciseChanges(token: String) {

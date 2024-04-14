@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.healthconnect.codelab.utils.dataStore.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,14 +28,8 @@ object DataStoreModule {
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
-            migrations = listOf(SharedPreferencesMigration(context,USER_PREFERENCES)),
+            migrations = listOf(SharedPreferencesMigration(context, USER_PREFERENCES)),
             produceFile = { context.preferencesDataStoreFile(USER_PREFERENCES) }
         )
-    }
-
-    @Singleton
-    @Provides
-    fun provideDataStoreManager(dataStore: DataStore<Preferences>): DataStoreManager {
-        return DataStoreManager(dataStore)
     }
 }

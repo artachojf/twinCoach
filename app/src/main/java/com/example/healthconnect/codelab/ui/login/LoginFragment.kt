@@ -9,17 +9,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentLoginBinding
+import com.example.healthconnect.codelab.ui.MainViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +27,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var signInClient: GoogleSignInClient
@@ -54,14 +53,8 @@ class LoginFragment : Fragment() {
             startForResult.launch(signInClient.signInIntent)
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.readGoogleId().collect {
-                if (it.isNotEmpty()) {
-                    withContext(Dispatchers.Main) {
-                        moveToHome()
-                    }
-                }
-            }
+        mainViewModel.userInformation.observe(viewLifecycleOwner) {
+            if (it.googleId.isNotEmpty()) moveToHome()
         }
     }
 

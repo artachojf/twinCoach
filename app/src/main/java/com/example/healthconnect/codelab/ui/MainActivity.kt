@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this) {
             if ((navController.currentDestination?.id ?: "") != R.id.homeFragment) navController.popBackStack()
         }
+
+        viewModel.readUserInformation()
     }
 
     private fun showNavbar(bool: Boolean) {
