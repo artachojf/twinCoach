@@ -16,8 +16,8 @@ class DittoGeneralInfo {
         var gender: Int,
         var height: Int,
         var weight: Double,
-        var birthYear: Year,
-        var runningYear: Year
+        var birthYear: Int,
+        var runningYear: Int
     )
 
     data class Features(

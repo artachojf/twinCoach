@@ -6,16 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/googleIdTv"
         android:layout_width="181dp"
         android:layout_height="23dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="144dp"
         android:gravity="center"
         android:text="home fragment"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/nameTv"

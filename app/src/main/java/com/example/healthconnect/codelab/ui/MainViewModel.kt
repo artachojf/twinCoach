@@ -18,8 +18,6 @@ class MainViewModel @Inject constructor(
     private val writeUserInformation: WriteUserInformation
 ) : ViewModel() {
 
-    val noArrowFragments = listOf(R.id.homeFragment, R.id.loginFragment)
-
     private val _userInformation = MutableLiveData<UserInformation>()
     val userInformation get() = _userInformation
 

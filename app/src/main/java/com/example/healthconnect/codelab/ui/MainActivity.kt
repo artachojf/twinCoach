@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
@@ -46,10 +45,9 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.homeFragment, R.id.settingsFragment
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         //Environment variables
@@ -73,12 +71,6 @@ class MainActivity : AppCompatActivity() {
             }
         }*/
 
-        navController.addOnDestinationChangedListener { _,destination,_ ->
-            val visibleArrow = !viewModel.noArrowFragments.contains(destination.id)
-            supportActionBar?.setDisplayHomeAsUpEnabled(visibleArrow)
-            showNavbar(visibleArrow || (destination.id == R.id.homeFragment))
-        }
-
         onBackPressedDispatcher.addCallback(this) {
             if ((navController.currentDestination?.id ?: "") != R.id.homeFragment) navController.popBackStack()
         }
@@ -86,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.readUserInformation()
     }
 
-    private fun showNavbar(bool: Boolean) {
+    fun showNavbar(bool: Boolean) {
         val visibility = if (bool) View.VISIBLE else View.GONE
         binding.navView.visibility = visibility
     }
@@ -101,10 +93,10 @@ class MainActivity : AppCompatActivity() {
     private fun showWarningDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(R.string.permissions_alert_dialog_text)
-        builder.setPositiveButton(R.string.permissions_alert_dialog_positive_button) { dialog, id ->
+        builder.setPositiveButton(R.string.ok) { dialog, id ->
             //open application settings to grant permissions
         }
-        builder.setNegativeButton(R.string.permissions_alert_dialog_negative_button) { dialog, id -> finish() }
+        builder.setNegativeButton(R.string.cancel) { dialog, id -> finish() }
         builder.show()
     }
 }

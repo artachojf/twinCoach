@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
+import kotlinx.serialization.Serializable
 import java.time.Year
 
 /**
@@ -10,19 +11,22 @@ import java.time.Year
  */
 class DittoGeneralInfoModel {
 
+    @Serializable
     data class Thing(
         var attributes: Attributes,
         var features: Features
     )
 
+    @Serializable
     data class Attributes(
         var gender: Int,
         var height: Int,
         var weight: Double,
-        var birthYear: Year,
-        var runningYear: Year
+        var birthYear: Int,
+        var runningYear: Int
     )
 
+    @Serializable
     data class Features(
         var goal: Goal,
         val trainingPlan: TrainingPlan,
@@ -30,24 +34,29 @@ class DittoGeneralInfoModel {
         var preferences: Preferences
     )
 
+    @Serializable
     data class Goal(
         var properties: GoalProperties
     )
 
+    @Serializable
     data class GoalProperties(
         var distance: Int,
         var seconds: Int,
         var date: String
     )
 
+    @Serializable
     data class TrainingPlan(
         val properties: TrainingPlanProperties
     )
 
+    @Serializable
     data class TrainingPlanProperties(
         val sessions: List<TrainingSession>
     )
 
+    @Serializable
     data class TrainingSession(
         val day: String,
         val distance: Int,
@@ -56,18 +65,22 @@ class DittoGeneralInfoModel {
         val expectedTime: Int
     )
 
+    @Serializable
     data class Suggestions(
         val properties: SuggestionsProperties
     )
 
+    @Serializable
     data class SuggestionsProperties(
         val suggestions: List<GoalProperties>
     )
 
+    @Serializable
     data class Preferences(
         var properties: PreferencesProperties
     )
 
+    @Serializable
     data class PreferencesProperties(
         var trainingDays: List<Int>
     )

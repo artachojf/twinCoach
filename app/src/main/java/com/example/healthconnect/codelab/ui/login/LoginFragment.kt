@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
             viewModel.onLogin(account)
             moveToHome()
         } else {
-            Toast.makeText(requireContext(), R.string.login_error, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), R.string.error_message, Toast.LENGTH_LONG).show()
         }
     }
 

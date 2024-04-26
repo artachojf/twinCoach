@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentHomeBinding
+import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +33,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as MainActivity).showNavbar(true)
+
+        binding.toolbar.let {
+            it.ivBack.visibility = View.GONE
+            it.tvTitle.text = getString(R.string.title_home)
+        }
 
         mainViewModel.userInformation.observe(viewLifecycleOwner) {
             binding.googleIdTv.text = it.googleId

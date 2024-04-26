@@ -32,6 +32,6 @@ interface DittoService {
         @Body thing: DittoGeneralInfoModel.Thing
     )
 
-    @DELETE("/api/2/things{thingId}")
+    @DELETE("/api/2/things/{thingId}")
     suspend fun deleteThing(@Path("thingId") thingId: String)
 }

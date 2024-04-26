@@ -1,30 +1,36 @@
 package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import kotlinx.serialization.Serializable
 
 /**
  * This class contains a Kotlin object representation of Ditto Things that contain the daily
  * workouts of the athlete and methods to create them easily
  */
 class DittoCurrentStateModel {
+    @Serializable
     data class Thing(
         val attributes: Attributes,
         val features: Features
     )
 
+    @Serializable
     data class Attributes(
         val googleId: String
     )
 
+    @Serializable
     data class Features(
         val trainingSession: TrainingSession,
         val sleepRating: SleepRating
     )
 
+    @Serializable
     data class TrainingSession(
         var properties: TrainingSessionProperties
     )
 
+    @Serializable
     data class TrainingSessionProperties(
         val zone1: TrainingSessionZone,
         val zone2: TrainingSessionZone,
@@ -32,16 +38,19 @@ class DittoCurrentStateModel {
         val rest: TrainingSessionZone
     )
 
+    @Serializable
     data class TrainingSessionZone(
         var avgHr: Double,
         var time: Double,
         var distance: Double
     )
 
+    @Serializable
     data class SleepRating(
         val properties: SleepRatingProperties
     )
 
+    @Serializable
     data class SleepRatingProperties(
         var overall: Double
     )
