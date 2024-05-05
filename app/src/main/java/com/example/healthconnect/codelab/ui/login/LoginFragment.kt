@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentLoginBinding
+import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.ui.MainViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -55,6 +56,7 @@ class LoginFragment : Fragment() {
 
         mainViewModel.userInformation.observe(viewLifecycleOwner) {
             if (it.googleId.isNotEmpty()) moveToHome()
+            else dismissLoader()
         }
     }
 
@@ -76,5 +78,12 @@ class LoginFragment : Fragment() {
     private fun moveToHome() {
         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
         findNavController().navigate(action)
+    }
+
+    private fun dismissLoader() {
+        binding.apply {
+            progressBar.visibility = View.GONE
+            loginBtn.visibility = View.VISIBLE
+        }
     }
 }

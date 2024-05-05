@@ -1,34 +1,24 @@
 package com.example.healthconnect.codelab.ui
 
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.ActivityMainBinding
-import com.example.healthconnect.codelab.services.PeriodicDittoService
-import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.cdimascio.dotenv.dotenv
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    //TODO: Move to viewModel when we know where to use it
-    @Inject lateinit var hcManager: HealthConnectManager
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -41,41 +31,17 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment, R.id.settingsFragment
-            )
-        )
         navView.setupWithNavController(navController)
-
-        //Environment variables
-        val dotenv = dotenv {
-            directory = "/assets"
-            filename = "env"
-        }
-        dotenv.entries().forEach { System.setProperty(it.key, it.value) }
-
-        /*lifecycleScope.launch {
-            if (!hcManager.hasAllPermissions()) {
-                val requestPermissions = registerForActivityResult(hcManager.requestPermissionActivityContract()) {
-                    if (it.containsAll(hcManager.permissions)) launchService()
-                    else {
-                        showWarningDialog()
-                    }
-                }
-                requestPermissions.launch(hcManager.permissions)
-            } else {
-                launchService()
-            }
-        }*/
 
         onBackPressedDispatcher.addCallback(this) {
             if ((navController.currentDestination?.id ?: "") != R.id.homeFragment) navController.popBackStack()
         }
 
         viewModel.readUserInformation()
+
+        viewModel.userInformation.observe(this) {
+            setUserImage()
+        }
     }
 
     fun showNavbar(bool: Boolean) {
@@ -83,20 +49,32 @@ class MainActivity : AppCompatActivity() {
         binding.navView.visibility = visibility
     }
 
-    private fun launchService() {
-        val jobScheduler = applicationContext.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-        val jobBuilder = JobInfo.Builder(1, ComponentName(applicationContext, PeriodicDittoService::class.java))
-            .setPeriodic(1000*60*60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-        jobScheduler.schedule(jobBuilder.build())
+    fun showToolbar(
+        titleResId: Int,
+        visibleArrow: Boolean = false
+    ) {
+        binding.toolbar.apply {
+            tvTitle.text = getString(titleResId)
+
+            if (visibleArrow) ivBack.visibility = View.VISIBLE
+            else ivBack.visibility = View.GONE
+            ivBack.setOnClickListener {
+                findNavController(R.id.nav_host_fragment_activity_main).popBackStack()
+            }
+
+            setUserImage()
+
+            root.visibility = View.VISIBLE
+        }
     }
 
-    private fun showWarningDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(R.string.permissions_alert_dialog_text)
-        builder.setPositiveButton(R.string.ok) { dialog, id ->
-            //open application settings to grant permissions
-        }
-        builder.setNegativeButton(R.string.cancel) { dialog, id -> finish() }
-        builder.show()
+    private fun setUserImage() {
+        val userImageUrl = viewModel.userInformation.value?.profilePicture.toString()
+        if (userImageUrl.isNotEmpty())
+            Picasso.get().load(userImageUrl).into(binding.toolbar.ivUser)
+    }
+
+    fun hideToolbar() {
+        binding.toolbar.root.visibility = View.GONE
     }
 }

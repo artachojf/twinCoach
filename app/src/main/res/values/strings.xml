@@ -4,14 +4,23 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error_message">Something went wrong. Please try again</string>
+    <string name="goal">Goal</string>
+    <string name="next_training_session">Next training session</string>
 
     <!-- HOME FRAGMENT-->
     <string name="title_home">Home</string>
-    <string name="permissions_alert_dialog_text">If the application hasn\'t got the required permissions granted it won\'t be able to read data and generate the training plan. Do you want to grant those permissions?</string>
+    <string name="permissions_alert_dialog">If the application hasn\'t got the required permissions granted it won\'t be able to read data and generate the training plan. Do you want to grant those permissions?</string>
 
     <!-- LOGIN FRAGMENT -->
     <string name="login_button">Login with Google</string>
 
     <!-- SETTINGS FRAGMENT-->
     <string name="title_settings">Settings</string>
+    <string name="delete_account">Delete account</string>
+    <string name="logout">Logout</string>
+    <string name="logout_warning_dialog">Are you sure you want to logout?</string>
+    <string name="delete_account_warning_dialog">Are you sure you want to delete your account? This action will be definitive and will delete all the information</string>
+
+    <!-- FATIGUE -->
+    <string name="extreme_fatigue">You look extremely tired!\nRest is recommended</string>
 </resources>

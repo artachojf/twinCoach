@@ -19,6 +19,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
 import java.io.IOException
 import java.time.Instant
+import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -201,7 +202,11 @@ class HealthConnectManager @Inject constructor(
      * @return A TrainingSessionProperties object with the result. Returns null if
      * no speedRecord or heartRateRecord is associated to the session
      */
-    suspend fun rateTrainingSession(session: ExerciseSessionRecord): DittoCurrentState.TrainingSession? {
+    suspend fun rateTrainingSession(
+        session: ExerciseSessionRecord,
+        birthdate: LocalDate
+    ): DittoCurrentState.TrainingSession? {
+
         val speedSamples = ArrayList<SpeedRecord.Sample>()
         readSpeedRecords(session).forEach {
             speedSamples.addAll(it.samples)
@@ -213,7 +218,10 @@ class HealthConnectManager @Inject constructor(
         }
 
         return if (heartRateSamples.isEmpty() || speedSamples.isEmpty()) null
-        else rateTrainingSession(speedSamples, heartRateSamples)
+        else {
+            val maxHeartRate = 220 - (LocalDate.now().year - birthdate.year)
+            rateTrainingSession(speedSamples, heartRateSamples, maxHeartRate)
+        }
     }
 
     /**
@@ -225,15 +233,14 @@ class HealthConnectManager @Inject constructor(
      */
     private fun rateTrainingSession(
         speeds: List<SpeedRecord.Sample>,
-        heartRates: List<HeartRateRecord.Sample>
+        heartRates: List<HeartRateRecord.Sample>,
+        maxHeartRate: Int
     ): DittoCurrentState.TrainingSession {
 
         val z1 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z2 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z3 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val rest = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
-        //TODO: Retrieve max heart rate from Couchbase
-        val maxHeartRate = 200
 
         for (i in speeds.indices) {
             val s = speeds[i]

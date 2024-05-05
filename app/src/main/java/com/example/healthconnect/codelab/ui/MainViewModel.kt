@@ -43,9 +43,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun onLogout() {
-        val emptyUser = UserInformation("", "", "", null)
         viewModelScope.launch {
-            writeUserInformation(emptyUser) {
+            writeUserInformation(EMPTY_USER) {
                 it.fold(::handleLogoutError, ::handleLogoutSuccess)
             }
         }
@@ -56,7 +55,10 @@ class MainViewModel @Inject constructor(
     }
 
     private fun handleLogoutSuccess(unit: Unit) {
-        val emptyUser = UserInformation("", "", "", null)
-        _userInformation.postValue(emptyUser)
+        _userInformation.postValue(EMPTY_USER)
+    }
+
+    private companion object {
+        val EMPTY_USER = UserInformation("", "", "", null)
     }
 }
