@@ -9,13 +9,10 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentLoginBinding
-import com.example.healthconnect.codelab.ui.MainActivity
-import com.example.healthconnect.codelab.ui.MainViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +25,6 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModels()
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var signInClient: GoogleSignInClient
@@ -53,11 +49,6 @@ class LoginFragment : Fragment() {
         binding.loginBtn.setOnClickListener {
             startForResult.launch(signInClient.signInIntent)
         }
-
-        mainViewModel.userInformation.observe(viewLifecycleOwner) {
-            if (it.googleId.isNotEmpty()) moveToHome()
-            else dismissLoader()
-        }
     }
 
     override fun onDestroyView() {
@@ -78,12 +69,5 @@ class LoginFragment : Fragment() {
     private fun moveToHome() {
         val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
         findNavController().navigate(action)
-    }
-
-    private fun dismissLoader() {
-        binding.apply {
-            progressBar.visibility = View.GONE
-            loginBtn.visibility = View.VISIBLE
-        }
     }
 }

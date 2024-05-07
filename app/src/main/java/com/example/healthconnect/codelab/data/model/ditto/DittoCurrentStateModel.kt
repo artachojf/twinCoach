@@ -9,7 +9,14 @@ import kotlinx.serialization.Serializable
  */
 class DittoCurrentStateModel {
     @Serializable
+    data class QueryResponse(
+        val items: List<Thing>
+    )
+
+    @Serializable
     data class Thing(
+        val thingId: String,
+        val policyId: String,
         val attributes: Attributes,
         val features: Features
     )
@@ -57,7 +64,7 @@ class DittoCurrentStateModel {
 }
 
 fun DittoCurrentState.Thing.toData(): DittoCurrentStateModel.Thing =
-    DittoCurrentStateModel.Thing(attributes.toData(), features.toData())
+    DittoCurrentStateModel.Thing(thingId, policyId, attributes.toData(), features.toData())
 
 fun DittoCurrentState.Attributes.toData(): DittoCurrentStateModel.Attributes =
     DittoCurrentStateModel.Attributes(googleId)

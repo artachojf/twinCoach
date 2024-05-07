@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.ui.home.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -29,18 +30,22 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 )
                 is HomeViewEntity.SuggestionsViewEntity -> bindSuggestions(
                     item.suggestions,
+                    item.callback,
                     binding as ItemHomeListSuggestionsBinding
                 )
                 is HomeViewEntity.NextSessionEntity -> bindNextSession(
                     item.session,
+                    item.callback,
                     binding as ItemHomeListTrainingBinding
                 )
                 is HomeViewEntity.GeneralInformationEntity -> bindGeneralInfo(
                     item.info,
+                    item.callback,
                     binding as ItemHomeListInfoBinding
                 )
                 is HomeViewEntity.FatigueViewEntity -> bindFatigue(
                     item.fatigue,
+                    item.callback,
                     binding as ItemHomeListFatigueBinding
                 )
             }
@@ -56,33 +61,102 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 root.setOnClickListener {
                     callback.invoke()
                 }
+
+                if (goal != null) {
+                    tvEmptyState.visibility = View.GONE
+
+                    tvTime.text = goal.seconds.toString()
+                    tvDistance.text = goal.distance.toString()
+                    tvEstimation.text
+                    tvDate.text = goal.date.toString()
+
+                    constraint.visibility = View.VISIBLE
+                }
             }
         }
 
         private fun bindSuggestions(
             suggestions: DittoGeneralInfo.Suggestions?,
+            callback: () -> Unit,
             binding: ItemHomeListSuggestionsBinding
         ) {
 
+            binding.apply {
+                root.setOnClickListener {
+                    callback.invoke()
+                }
+
+                if (suggestions != null) {
+                    tvSuggestionsNumber.text = suggestions.suggestions.size.toString()
+                }
+            }
         }
 
         private fun bindNextSession(
             session: DittoGeneralInfo.TrainingSession?,
+            callback: () -> Unit,
             binding: ItemHomeListTrainingBinding
         ) {
 
+            binding.apply {
+                root.setOnClickListener {
+                    callback.invoke()
+                }
+
+                if (session != null) {
+                    tvEmptyState.visibility = View.GONE
+
+                    tvNextSession.text = session.day.toString()
+                    tvDistance.text = (session.times.toString() + " x " + session.distance.toString())
+                    tvTime.text = session.expectedTime.toString()
+                    tvHeart.text
+                    tvRest.text = session.rest.toString()
+
+                    constraint.visibility = View.VISIBLE
+                }
+            }
         }
 
         private fun bindGeneralInfo(
             info: DittoGeneralInfo.Attributes?,
-            binding: ItemHomeListInfoBinding) {
+            callback: () -> Unit,
+            binding: ItemHomeListInfoBinding
+        ) {
 
+            binding.apply {
+                root.setOnClickListener {
+                    callback.invoke()
+                }
+
+                if (info != null) {
+                    tvEmptyState.visibility = View.GONE
+
+                    tvHeight.text = info.height.toString()
+                    tvWeight.text = info.weight.toString()
+                    tvBirthdate.text = info.birthYear.toString()
+                    tvRunningDate.text = info.runningYear.toString()
+
+                    constraint.visibility = View.VISIBLE
+                }
+            }
         }
 
         private fun bindFatigue(
             fatigue: Int?,
-            binding: ItemHomeListFatigueBinding) {
+            callback: () -> Unit,
+            binding: ItemHomeListFatigueBinding
+        ) {
 
+            binding.apply {
+                root.setOnClickListener {
+                    callback.invoke()
+                }
+
+                if (fatigue != null) {
+                    tvEmptyState.visibility = View.GONE
+                    constraint.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

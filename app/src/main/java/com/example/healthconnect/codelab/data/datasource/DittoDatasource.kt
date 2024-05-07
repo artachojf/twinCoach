@@ -3,7 +3,9 @@ package com.example.healthconnect.codelab.data.datasource
 import arrow.core.Either
 import com.example.healthconnect.codelab.data.model.ditto.DittoCurrentStateModel
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
+import com.example.healthconnect.codelab.data.model.failure.ResponseFailure
 import com.example.healthconnect.codelab.data.service.DittoService
+import com.example.healthconnect.codelab.utils.parse.ResponseParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -14,26 +16,48 @@ class DittoDatasource @Inject constructor(
 
     suspend fun retrieveCurrentStateThing(
         thingId: String
-    ): Either<Unit, DittoCurrentStateModel.Thing> {
+    ): Either<ResponseFailure, DittoCurrentStateModel.Thing?> {
         return withContext(Dispatchers.IO) {
             try {
-                val thing = dittoService.retrieveCurrentStateThing(thingId)
-                Either.Right(thing)
-            } catch (_: Exception) {
-                Either.Left(Unit)
+                val response = dittoService.retrieveCurrentStateThing(thingId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
             }
         }
     }
 
     suspend fun retrieveGeneralInfoThing(
         googleId: String
-    ): Either<Unit, DittoGeneralInfoModel.Thing> {
+    ): Either<ResponseFailure, DittoGeneralInfoModel.Thing?> {
         return withContext(Dispatchers.IO) {
             try {
-                val thing = dittoService.retrieveGeneralInfoThing(googleId)
-                Either.Right(thing)
-            } catch (_: Exception) {
-                Either.Left(Unit)
+                val response = dittoService.retrieveGeneralInfoThing(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun queryCurrentStateThings(
+        googleId: String,
+        size: Int = 100
+    ): Either<ResponseFailure, DittoCurrentStateModel.QueryResponse> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val filter = "eq(attributes/googleId,\"$googleId\")"
+                val option = "size($size)"
+                val response = dittoService.queryCurrentStateThings(filter, option)
+                ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
             }
         }
     }
@@ -41,13 +65,13 @@ class DittoDatasource @Inject constructor(
     suspend fun putCurrentStateThing(
         googleId: String,
         thing: DittoCurrentStateModel.Thing
-    ): Either<Unit, Unit> {
+    ): Either<ResponseFailure, Unit> {
         return withContext(Dispatchers.IO) {
             try {
-                dittoService.putCurrentStateThing(googleId, thing)
-                Either.Right(Unit)
-            } catch (_: Exception) {
-                Either.Left(Unit)
+                val response = dittoService.putCurrentStateThing(googleId, thing)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
             }
         }
     }
@@ -55,26 +79,39 @@ class DittoDatasource @Inject constructor(
     suspend fun putGeneralInfoThing(
         thingId: String,
         thing: DittoGeneralInfoModel.Thing
-    ): Either<Unit, Unit> {
+    ): Either<ResponseFailure, Unit> {
         return withContext(Dispatchers.IO) {
             try {
-                dittoService.putGeneralInfoThing(thingId, thing)
-                Either.Right(Unit)
-            } catch (_: Exception) {
-                Either.Left(Unit)
+                val response = dittoService.putGeneralInfoThing(thingId, thing)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
             }
         }
     }
 
     suspend fun deleteThing(
         thingId: String
-    ): Either<Unit, Unit> {
+    ): Either<ResponseFailure, Unit> {
         return withContext(Dispatchers.IO) {
             try {
-                dittoService.deleteThing(thingId)
-                Either.Right(Unit)
-            } catch (_: Exception) {
-                Either.Left(Unit)
+                val response = dittoService.deleteThing(thingId)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun deletePolicy(
+        policyId: String
+    ): Either<ResponseFailure, Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.deletePolicy(policyId)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
             }
         }
     }

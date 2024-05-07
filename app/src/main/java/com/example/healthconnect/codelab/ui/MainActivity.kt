@@ -12,7 +12,6 @@ import com.example.healthconnect.codelab.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.cdimascio.dotenv.dotenv
 
 
 @AndroidEntryPoint
@@ -34,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         onBackPressedDispatcher.addCallback(this) {
-            if ((navController.currentDestination?.id ?: "") != R.id.homeFragment) navController.popBackStack()
+            val list = listOf(R.id.homeFragment, R.id.loginFragment, R.id.splashFragment)
+            if ((navController.currentDestination?.id ?: "") in list) finish()
+            else navController.popBackStack()
         }
 
         viewModel.readUserInformation()

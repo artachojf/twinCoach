@@ -7,9 +7,19 @@
     <string name="goal">Goal</string>
     <string name="next_training_session">Next training session</string>
 
+    <!-- ERROR -->
+    <string name="server_error">Server error. Wait a minute and please try again</string>
+    <string name="bad_request_error">Bad request error. Please try again</string>
+    <string name="unknown_error">Unknown error. Please try again</string>
+    <string name="no_internet_error">No internet connection. Please check your connection and try again</string>
+
     <!-- HOME FRAGMENT-->
     <string name="title_home">Home</string>
     <string name="permissions_alert_dialog">If the application hasn\'t got the required permissions granted it won\'t be able to read data and generate the training plan. Do you want to grant those permissions?</string>
+    <string name="goal_card_empty_state">There is no information related to the goal. Please tap here to set a new goal</string>
+    <string name="training_card_empty_state">There are not any suggested training sessions</string>
+    <string name="info_card_empty_state">There is no information about you. Please tap here to complete your profile</string>
+    <string name="fatigue_card_empty_state">There is no information about fatigue</string>
 
     <!-- LOGIN FRAGMENT -->
     <string name="login_button">Login with Google</string>

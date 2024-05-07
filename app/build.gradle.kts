@@ -92,11 +92,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //We will add here all the dependencies needed for the project
     implementation("androidx.health.connect:connect-client:1.1.0-alpha02")
-    implementation("com.couchbase.lite:couchbase-lite-android-ktx:3.1.1")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -114,10 +111,9 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     implementation("com.squareup.picasso:picasso:2.8")
-
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
 
 kapt {

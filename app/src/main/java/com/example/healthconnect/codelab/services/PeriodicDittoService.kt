@@ -7,7 +7,6 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
-import com.example.healthconnect.codelab.data.model.ditto.DittoConnectionManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -15,9 +14,6 @@ import javax.inject.Inject
 class PeriodicDittoService @Inject constructor(
     private var hcManager: HealthConnectManager
 ) : JobService() {
-
-    private val dcm = DittoConnectionManager()
-
     /**
      * Creates a new job service that reads changes in Health Connect.
      * In case there are changes, they are processed and uploaded to Ditto server.

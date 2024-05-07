@@ -1,13 +1,14 @@
 package com.example.healthconnect.codelab.domain.model.ditto
 
+import com.example.healthconnect.codelab.BuildConfig
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
 import java.time.LocalDate
-import java.time.Year
 
 class DittoGeneralInfo {
 
     data class Thing(
         var thingId: String,
+        var policyId: String,
         var attributes: Attributes,
         var features: Features
     )
@@ -52,10 +53,16 @@ class DittoGeneralInfo {
     data class Preferences(
         var trainingDays: List<Int>
     )
+
+    companion object {
+        fun thingId(googleId: String): String {
+            return BuildConfig.DITTO_THING_PREFIX + ":" + googleId
+        }
+    }
 }
 
-fun DittoGeneralInfoModel.Thing.toDomain(thingId: String): DittoGeneralInfo.Thing =
-    DittoGeneralInfo.Thing(thingId, attributes.toDomain(), features.toDomain())
+fun DittoGeneralInfoModel.Thing.toDomain(): DittoGeneralInfo.Thing =
+    DittoGeneralInfo.Thing(thingId, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoGeneralInfoModel.Attributes.toDomain(): DittoGeneralInfo.Attributes =
     DittoGeneralInfo.Attributes(gender, height, weight, birthYear, runningYear)

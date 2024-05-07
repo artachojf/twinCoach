@@ -2,7 +2,6 @@ package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
 import kotlinx.serialization.Serializable
-import java.time.Year
 
 /**
  * This class contains a Kotlin object representation of Ditto Things that contains the general
@@ -13,6 +12,8 @@ class DittoGeneralInfoModel {
 
     @Serializable
     data class Thing(
+        var thingId: String,
+        var policyId: String,
         var attributes: Attributes,
         var features: Features
     )
@@ -87,7 +88,7 @@ class DittoGeneralInfoModel {
 }
 
 fun DittoGeneralInfo.Thing.toData(): DittoGeneralInfoModel.Thing =
-    DittoGeneralInfoModel.Thing(attributes.toData(), features.toData())
+    DittoGeneralInfoModel.Thing(thingId, policyId, attributes.toData(), features.toData())
 
 fun DittoGeneralInfo.Attributes.toData(): DittoGeneralInfoModel.Attributes =
     DittoGeneralInfoModel.Attributes(gender, height, weight, birthYear, runningYear)

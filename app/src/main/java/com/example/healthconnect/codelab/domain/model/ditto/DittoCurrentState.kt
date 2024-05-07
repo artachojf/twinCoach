@@ -1,6 +1,10 @@
 package com.example.healthconnect.codelab.domain.model.ditto
 
 import com.example.healthconnect.codelab.data.model.ditto.DittoCurrentStateModel
+import com.example.healthconnect.codelab.BuildConfig
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 
 /**
  * This class contains a Kotlin object representation of Ditto Things that contain the daily
@@ -10,6 +14,7 @@ class DittoCurrentState {
 
     data class Thing(
         var thingId: String,
+        val policyId: String,
         val attributes: Attributes,
         val features: Features
     )
@@ -56,10 +61,28 @@ class DittoCurrentState {
     data class SleepRating(
         var overall: Double
     )
+
+    companion object {
+        fun thingId(googleId: String, date: LocalDate): String =
+            BuildConfig.DITTO_THING_PREFIX + ":" + googleId + "-" +
+                    date.toString()
+
+        fun thingId(googleId: String, instant: Instant): String =
+            BuildConfig.DITTO_THING_PREFIX + ":" + googleId + "-" +
+                    instant.atZone(ZoneOffset.systemDefault()).toLocalDate().toString()
+    }
 }
 
-fun DittoCurrentStateModel.Thing.toDomain(thingId: String): DittoCurrentState.Thing =
-    DittoCurrentState.Thing(thingId, attributes.toDomain(), features.toDomain())
+fun DittoCurrentStateModel.QueryResponse.toDomain(): List<DittoCurrentState.Thing> {
+    val list = mutableListOf<DittoCurrentState.Thing>()
+    items.forEach {
+        list.add(it.toDomain())
+    }
+    return list
+}
+
+fun DittoCurrentStateModel.Thing.toDomain(): DittoCurrentState.Thing =
+    DittoCurrentState.Thing(thingId, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoCurrentStateModel.Attributes.toDomain(): DittoCurrentState.Attributes =
     DittoCurrentState.Attributes(googleId)

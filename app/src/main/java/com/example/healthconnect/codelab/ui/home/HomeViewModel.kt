@@ -3,32 +3,28 @@ package com.example.healthconnect.codelab.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import com.example.healthconnect.codelab.domain.model.ditto.DittoError
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
-import com.example.healthconnect.codelab.domain.usecase.ditto.RetrieveCurrentStateThing
-import com.example.healthconnect.codelab.domain.usecase.ditto.RetrieveGeneralInfoThing
+import com.example.healthconnect.codelab.domain.usecase.ditto.get.generalInfo.GetGeneralInfoThing
 import com.example.healthconnect.codelab.domain.usecase.userInformation.ReadGoogleId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val retrieveCurrentState: RetrieveCurrentStateThing,
-    private val retrieveGeneralInfo: RetrieveGeneralInfoThing,
+    private val retrieveGeneralInfo: GetGeneralInfoThing,
     private val readGoogleId: ReadGoogleId
 ) : ViewModel() {
 
-    private var _currentState = MutableLiveData<DittoCurrentState.Thing>()
-    val currentState get() = _currentState
-
-    private var _generalInfo = MutableLiveData<DittoGeneralInfo.Thing>()
+    private var _generalInfo = MutableLiveData<DittoGeneralInfo.Thing?>()
     val generalInfo get() = _generalInfo
 
-    private var _error = MutableLiveData<Unit>()
+    private var _error = MutableLiveData<DittoError>()
     val error get() = _error
+
+
 
     fun init() {
         getGoogleId()
@@ -42,28 +38,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleGeneralInfoError(unit: Unit) {
-        _error.postValue(unit)
+    private fun handleGeneralInfoError(error: DittoError) {
+        _error.postValue(error)
     }
 
-    private fun handleGeneralInfoSuccess(info: DittoGeneralInfo.Thing) {
+    private fun handleGeneralInfoSuccess(info: DittoGeneralInfo.Thing?) {
         _generalInfo.postValue(info)
-    }
-
-    fun getCurrentState(googleId: String) {
-        viewModelScope.launch {
-            retrieveCurrentState(googleId) {
-                it.fold(::handleCurrentStateError, ::handleCurrentStateSuccess)
-            }
-        }
-    }
-
-    private fun handleCurrentStateError(unit: Unit) {
-        _error.postValue(unit)
-    }
-
-    private fun handleCurrentStateSuccess(currentState: DittoCurrentState.Thing) {
-        _currentState.postValue(currentState)
     }
 
     fun getGoogleId() {
@@ -78,7 +58,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             googleId.collect {
                 getGeneralInfo(it)
-                getCurrentState(it)
             }
         }
     }

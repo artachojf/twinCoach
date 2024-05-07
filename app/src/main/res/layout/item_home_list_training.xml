@@ -8,10 +8,20 @@
     android:layout_marginBottom="10dp"
     android:layout_marginHorizontal="10dp">
 
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/training_card_empty_state"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/tvSessionLabel"

@@ -9,7 +9,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -55,10 +54,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.apply {
+            refreshLayout.isRefreshing = true
             refreshLayout.setOnRefreshListener {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    refreshLayout.isRefreshing = false
-                }, 2000)
+                viewModel.init()
             }
 
             rvHome.layoutManager =
@@ -68,16 +66,25 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.apply {
-            currentState.observe(viewLifecycleOwner) {
-                adapter.submitList(getHomeOptions())
-            }
-
             generalInfo.observe(viewLifecycleOwner) {
+                if (it == null) moveToFirstSteps()
                 adapter.submitList(getHomeOptions())
+
+                binding.apply {
+                    rvHome.visibility = View.VISIBLE
+                    tvHomeEmptyState.visibility = View.GONE
+                }
+                dismissLoader()
             }
 
             error.observe(viewLifecycleOwner) {
-                Toast.makeText(requireContext(), "Error ocurred", Toast.LENGTH_LONG).show()
+                binding.apply {
+                    tvHomeEmptyState.text = getString(ViewUtils.getErrorStringId(it.failure))
+
+                    rvHome.visibility = View.GONE
+                    tvHomeEmptyState.visibility = View.VISIBLE
+                }
+                dismissLoader()
             }
 
             init()
@@ -91,18 +98,28 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun getHomeOptions(): List<HomeViewEntity> =
-        listOf(
+    fun dismissLoader() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.refreshLayout.isRefreshing = false
+        }, 1000)
+    }
+
+    private fun getHomeOptions(): List<HomeViewEntity> {
+        val list = mutableListOf(
             HomeViewEntity.GoalViewEntity(viewModel.generalInfo.value?.features?.goal) { moveToGoal() },
-            HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() },
             HomeViewEntity.NextSessionEntity(
-                viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(
-                    0
-                )
+                viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)
             ) { moveToNextSession() },
             HomeViewEntity.GeneralInformationEntity(viewModel.generalInfo.value?.attributes) { moveToGeneralInfo() },
             HomeViewEntity.FatigueViewEntity(3) {}
         )
+
+        if (viewModel.generalInfo.value?.features?.suggestions != null
+            && viewModel.generalInfo.value?.features?.suggestions!!.suggestions.size > 0)
+            list.add(1, HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
+
+        return list
+    }
 
     private fun moveToGoal() {
         //val action = HomeFragmentDirections
@@ -123,6 +140,12 @@ class HomeFragment : Fragment() {
         //val action = HomeFragmentDirections
         //findNavController().navigate(action)
     }
+
+    private fun moveToFirstSteps() {
+
+    }
+
+    //Periodic Service
 
     private fun requestPermission() {
         lifecycleScope.launch {
