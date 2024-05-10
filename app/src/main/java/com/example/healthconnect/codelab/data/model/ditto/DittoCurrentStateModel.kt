@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,14 +17,15 @@ class DittoCurrentStateModel {
     @Serializable
     data class Thing(
         val thingId: String,
-        val policyId: String,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val policyId: String? = null,
         val attributes: Attributes,
         val features: Features
     )
 
     @Serializable
     data class Attributes(
-        val googleId: String
+        val googleId: String,
+        val date: String
     )
 
     @Serializable
@@ -67,7 +69,7 @@ fun DittoCurrentState.Thing.toData(): DittoCurrentStateModel.Thing =
     DittoCurrentStateModel.Thing(thingId, policyId, attributes.toData(), features.toData())
 
 fun DittoCurrentState.Attributes.toData(): DittoCurrentStateModel.Attributes =
-    DittoCurrentStateModel.Attributes(googleId)
+    DittoCurrentStateModel.Attributes(googleId, date.toString())
 
 fun DittoCurrentState.Features.toData(): DittoCurrentStateModel.Features =
     DittoCurrentStateModel.Features(trainingSession.toData(), sleepRating.toData())

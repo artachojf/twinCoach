@@ -13,12 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentHomeBinding
 import com.example.healthconnect.codelab.services.PeriodicDittoService
 import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.ui.home.adapter.HomeAdapter
+import com.example.healthconnect.codelab.ui.sessions.info.SessionInfoViewEntity
 import com.example.healthconnect.codelab.utils.ViewUtils
 import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +36,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private val adapter: HomeAdapter = HomeAdapter()
+
     @Inject
     lateinit var hcManager: HealthConnectManager
 
@@ -53,44 +56,46 @@ class HomeFragment : Fragment() {
             showToolbar(R.string.title_home, false)
         }
 
-        binding.apply {
-            refreshLayout.isRefreshing = true
-            refreshLayout.setOnRefreshListener {
-                viewModel.init()
-            }
-
-            rvHome.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            rvHome.adapter = adapter
-            adapter.submitList(getHomeOptions())
-        }
-
-        viewModel.apply {
-            generalInfo.observe(viewLifecycleOwner) {
-                if (it == null) moveToFirstSteps()
-                adapter.submitList(getHomeOptions())
-
-                binding.apply {
-                    rvHome.visibility = View.VISIBLE
-                    tvHomeEmptyState.visibility = View.GONE
-                }
-                dismissLoader()
-            }
-
-            error.observe(viewLifecycleOwner) {
-                binding.apply {
-                    tvHomeEmptyState.text = getString(ViewUtils.getErrorStringId(it.failure))
-
-                    rvHome.visibility = View.GONE
-                    tvHomeEmptyState.visibility = View.VISIBLE
-                }
-                dismissLoader()
-            }
-
-            init()
-        }
-
+        initViews()
+        initViewModel()
         //requestPermission()
+    }
+
+    private fun initViews() = binding.apply {
+        refreshLayout.isRefreshing = true
+        refreshLayout.setOnRefreshListener {
+            viewModel.init()
+        }
+
+        rvHome.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rvHome.adapter = adapter
+        adapter.submitList(getHomeOptions())
+    }
+
+    private fun initViewModel() = viewModel.apply {
+        generalInfo.observe(viewLifecycleOwner) {
+            if (it == null) moveToFirstSteps()
+            adapter.submitList(getHomeOptions())
+
+            binding.apply {
+                rvHome.visibility = View.VISIBLE
+                tvHomeEmptyState.visibility = View.GONE
+            }
+            dismissLoader()
+        }
+
+        error.observe(viewLifecycleOwner) {
+            binding.apply {
+                tvHomeEmptyState.text = getString(ViewUtils.getErrorStringId(it.failure))
+
+                rvHome.visibility = View.GONE
+                tvHomeEmptyState.visibility = View.VISIBLE
+            }
+            dismissLoader()
+        }
+
+        init()
     }
 
     override fun onDestroyView() {
@@ -98,7 +103,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    fun dismissLoader() {
+    private fun dismissLoader() {
         Handler(Looper.getMainLooper()).postDelayed({
             binding.refreshLayout.isRefreshing = false
         }, 1000)
@@ -115,8 +120,11 @@ class HomeFragment : Fragment() {
         )
 
         if (viewModel.generalInfo.value?.features?.suggestions != null
-            && viewModel.generalInfo.value?.features?.suggestions!!.suggestions.size > 0)
-            list.add(1, HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
+            && viewModel.generalInfo.value?.features?.suggestions!!.suggestions.size > 0
+        )
+            list.add(
+                1,
+                HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
 
         return list
     }
@@ -132,8 +140,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToNextSession() {
-        //val action = HomeFragmentDirections
-        //findNavController().navigate(action)
+        viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)?.let {
+            val action = HomeFragmentDirections.actionHomeFragmentToSessionsInfoFragment(
+                SessionInfoViewEntity.Suggestion(it)
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun moveToGeneralInfo() {
@@ -169,9 +181,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun launchService() {
-        val jobScheduler = requireContext().getSystemService(AppCompatActivity.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val jobBuilder = JobInfo.Builder(1, ComponentName(requireContext(), PeriodicDittoService::class.java))
-            .setPeriodic(1000*60*60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+        val jobScheduler =
+            requireContext().getSystemService(AppCompatActivity.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val jobBuilder =
+            JobInfo.Builder(1, ComponentName(requireContext(), PeriodicDittoService::class.java))
+                .setPeriodic(1000 * 60 * 60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
         jobScheduler.schedule(jobBuilder.build())
     }
 }

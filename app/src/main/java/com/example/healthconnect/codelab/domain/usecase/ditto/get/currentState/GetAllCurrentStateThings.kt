@@ -7,7 +7,7 @@ import com.example.healthconnect.codelab.domain.model.ditto.DittoError
 import com.example.healthconnect.codelab.domain.usecase.SuspendUseCase
 import javax.inject.Inject
 
-class GetAllCurrentStateThing @Inject constructor(
+class GetAllCurrentStateThings @Inject constructor(
     private val repository: DittoRepository
 ) : SuspendUseCase<String, DittoError, List<DittoCurrentState.Thing>>() {
     override suspend fun run(params: String): Either<DittoError, List<DittoCurrentState.Thing>> {

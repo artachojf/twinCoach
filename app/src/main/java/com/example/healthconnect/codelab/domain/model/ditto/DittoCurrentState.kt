@@ -4,6 +4,7 @@ import com.example.healthconnect.codelab.data.model.ditto.DittoCurrentStateModel
 import com.example.healthconnect.codelab.BuildConfig
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 /**
@@ -14,13 +15,14 @@ class DittoCurrentState {
 
     data class Thing(
         var thingId: String,
-        val policyId: String,
+        val policyId: String? = null,
         val attributes: Attributes,
         val features: Features
     )
 
     data class Attributes(
-        val googleId: String
+        val googleId: String,
+        val date: LocalDateTime
     )
 
     data class Features(
@@ -85,7 +87,7 @@ fun DittoCurrentStateModel.Thing.toDomain(): DittoCurrentState.Thing =
     DittoCurrentState.Thing(thingId, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoCurrentStateModel.Attributes.toDomain(): DittoCurrentState.Attributes =
-    DittoCurrentState.Attributes(googleId)
+    DittoCurrentState.Attributes(googleId, LocalDateTime.parse(date))
 
 fun DittoCurrentStateModel.Features.toDomain(): DittoCurrentState.Features =
     DittoCurrentState.Features(trainingSession.toDomain(), sleepRating.toDomain())

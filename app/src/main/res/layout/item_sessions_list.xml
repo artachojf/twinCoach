@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,105 +7,98 @@
     android:layout_marginBottom="@dimen/home_card_margin"
     android:layout_marginHorizontal="@dimen/home_card_margin">
 
-    <TextView
-        android:id="@+id/tvEmptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/info_card_empty_state"
-        android:layout_gravity="center"
-        android:textAlignment="center"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:visibility="invisible">
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/tvNextSession"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:textStyle="bold"
+            android:text="7th December 2024, 10:53"/>
 
         <ImageView
-            android:id="@+id/ivHeight"
+            android:id="@+id/ivDistance"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/height_line_svgrepo_com"
-            app:layout_constraintEnd_toStartOf="@+id/tvHeight"
+            android:src="@drawable/distance_svgrepo_com"
+            app:layout_constraintEnd_toStartOf="@+id/tvDistance"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
 
         <TextView
-            android:id="@+id/tvHeight"
+            android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="170 cm"
+            android:text="10 x 500 m"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
 
         <ImageView
-            android:id="@+id/ivWeight"
+            android:id="@+id/ivRest"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/weight_svgrepo_com"
-            app:layout_constraintEnd_toStartOf="@+id/tvWeight"
+            android:src="@drawable/letter_zz_svgrepo_com"
+            app:layout_constraintEnd_toStartOf="@+id/tvRest"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/ivHeight" />
+            app:layout_constraintTop_toBottomOf="@+id/ivDistance" />
 
         <TextView
-            android:id="@+id/tvWeight"
+            android:id="@+id/tvRest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="70 kg"
+            android:text="1 min"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeight" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
 
         <ImageView
-            android:id="@+id/ivBirthdate"
+            android:id="@+id/ivTime"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/baseline_calendar_today_24"
-            app:layout_constraintStart_toEndOf="@+id/ivRunning"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvBirthdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:text="01/01/1999"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toEndOf="@+id/ivBirthdate"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/ivRunning"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/run_svgrepo_com"
+            android:src="@drawable/timer_svgrepo_com"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/ivBirthdate" />
-
-        <ImageView
-            android:id="@+id/ivRunningDate"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/baseline_calendar_today_24"
-            app:layout_constraintStart_toEndOf="@+id/ivRunning"
-            app:layout_constraintTop_toBottomOf="@+id/ivBirthdate" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
 
         <TextView
-            android:id="@+id/tvRunningDate"
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="01/01/2010"
+            android:text="2:00 min"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toEndOf="@+id/ivRunningDate"
-            app:layout_constraintTop_toBottomOf="@+id/ivBirthdate" />
+            app:layout_constraintStart_toEndOf="@+id/ivTime"
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
+
+        <ImageView
+            android:id="@+id/ivHeart"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baseline_favorite_border_24"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/ivTime" />
+
+        <TextView
+            android:id="@+id/tvHeart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:text="160 bpm"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/ivHeart"
+            app:layout_constraintTop_toBottomOf="@+id/ivTime" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -121,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.57" />
+            app:layout_constraintGuide_percent="0.65" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

@@ -24,6 +24,18 @@
     <!-- LOGIN FRAGMENT -->
     <string name="login_button">Login with Google</string>
 
+    <!-- SESSIONS FRAGMENT -->
+    <string name="title_sessions">Sessions</string>
+    <string name="list_tab">List</string>
+    <string name="calendar_tab">Calendar</string>
+
+    <!-- SESSIONS LIST FRAGMENT -->
+    <string name="sessions_list_empty_state">Sorry. There are no training sessions available</string>
+
+    <!-- SESSIONS CALENDAR FRAGMENT -->
+
+    <!-- SESSIONS INFO FRAGMENT -->
+
     <!-- SETTINGS FRAGMENT-->
     <string name="title_settings">Settings</string>
     <string name="delete_account">Delete account</string>

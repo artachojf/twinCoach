@@ -85,6 +85,9 @@ fun DittoGeneralInfoModel.GoalProperties.toDomain(): DittoGeneralInfo.Goal =
 fun DittoGeneralInfoModel.TrainingPlan.toDomain(): DittoGeneralInfo.TrainingPlan =
     DittoGeneralInfo.TrainingPlan(properties.sessions.map { it.toDomain() })
 
+fun DittoGeneralInfoModel.TrainingPlanProperties.toDomain(): DittoGeneralInfo.TrainingPlan =
+    DittoGeneralInfo.TrainingPlan(sessions.map { it.toDomain() })
+
 fun DittoGeneralInfoModel.TrainingSession.toDomain(): DittoGeneralInfo.TrainingSession =
     DittoGeneralInfo.TrainingSession(
         LocalDate.parse(day), distance, times, rest, expectedTime
