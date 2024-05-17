@@ -32,6 +32,7 @@ class DittoGeneralInfo {
     data class Goal(
         var distance: Int,
         var seconds: Int,
+        var estimation: Int,
         var date: LocalDate
     )
 
@@ -81,6 +82,7 @@ fun DittoGeneralInfoModel.GoalProperties.toDomain(): DittoGeneralInfo.Goal =
     DittoGeneralInfo.Goal(
         distance,
         seconds,
+        estimation,
         LocalDate.parse(date)
     )
 

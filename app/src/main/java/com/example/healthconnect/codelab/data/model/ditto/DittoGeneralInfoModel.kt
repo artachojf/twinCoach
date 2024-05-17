@@ -45,6 +45,7 @@ class DittoGeneralInfoModel {
     data class GoalProperties(
         var distance: Int,
         var seconds: Int,
+        var estimation: Int,
         var date: String
     )
 
@@ -104,7 +105,7 @@ fun DittoGeneralInfo.Features.toData(): DittoGeneralInfoModel.Features =
     )
 
 fun DittoGeneralInfo.Goal.toData(): DittoGeneralInfoModel.GoalProperties =
-    DittoGeneralInfoModel.GoalProperties(distance, seconds, date.toString())
+    DittoGeneralInfoModel.GoalProperties(distance, seconds, estimation, date.toString())
 
 fun DittoGeneralInfo.TrainingPlan.toData(): DittoGeneralInfoModel.TrainingPlan =
     DittoGeneralInfoModel.TrainingPlan(
