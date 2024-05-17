@@ -12,6 +12,10 @@ import com.example.healthconnect.codelab.databinding.ItemHomeListSuggestionsBind
 import com.example.healthconnect.codelab.databinding.ItemHomeListTrainingBinding
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
 import com.example.healthconnect.codelab.ui.home.HomeViewEntity
+import com.example.healthconnect.codelab.utils.toDistanceString
+import com.example.healthconnect.codelab.utils.toHeightString
+import com.example.healthconnect.codelab.utils.toTimeString
+import com.example.healthconnect.codelab.utils.toWeigthString
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -65,9 +69,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 if (goal != null) {
                     tvEmptyState.visibility = View.GONE
 
-                    tvTime.text = goal.seconds.toString()
-                    tvDistance.text = goal.distance.toString()
-                    tvEstimation.text
+                    tvTime.text = goal.seconds.toTimeString()
+                    tvDistance.text = goal.distance.toDistanceString()
+                    tvEstimation.text = goal.estimation.toTimeString()
                     tvDate.text = goal.date.toString()
 
                     constraint.visibility = View.VISIBLE
@@ -107,10 +111,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                     tvEmptyState.visibility = View.GONE
 
                     tvNextSession.text = session.day.toString()
-                    tvDistance.text = (session.times.toString() + " x " + session.distance.toString())
-                    tvTime.text = session.expectedTime.toString()
-                    tvHeart.text
-                    tvRest.text = session.rest.toString()
+                    tvDistance.text = "${session.times} x ${session.distance.toDistanceString()}"
+                    tvTime.text = session.expectedTime.toTimeString()
+                    tvHeart.text = "${session.meanHeartRate} bpm"
+                    tvRest.text = session.rest.toTimeString()
 
                     constraint.visibility = View.VISIBLE
                 }
@@ -131,8 +135,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 if (info != null) {
                     tvEmptyState.visibility = View.GONE
 
-                    tvHeight.text = info.height.toString()
-                    tvWeight.text = info.weight.toString()
+                    tvHeight.text = info.height.toHeightString()
+                    tvWeight.text = info.weight.toWeigthString()
                     tvBirthdate.text = info.birthYear.toString()
                     tvRunningDate.text = info.runningYear.toString()
 
