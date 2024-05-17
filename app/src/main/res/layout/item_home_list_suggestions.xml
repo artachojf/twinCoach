@@ -33,9 +33,9 @@
             android:layout_marginStart="50dp"
             android:text="Suggestions"
             android:textSize="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvSuggestionsNumber"
             app:layout_constraintStart_toEndOf="@+id/tvSuggestionsNumber"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/tvSuggestionsNumber" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

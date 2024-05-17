@@ -20,7 +20,6 @@ import com.example.healthconnect.codelab.databinding.FragmentHomeBinding
 import com.example.healthconnect.codelab.services.PeriodicDittoService
 import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.ui.home.adapter.HomeAdapter
-import com.example.healthconnect.codelab.ui.sessions.info.SessionInfoViewEntity
 import com.example.healthconnect.codelab.utils.ViewUtils
 import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -141,9 +140,7 @@ class HomeFragment : Fragment() {
 
     private fun moveToNextSession() {
         viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)?.let {
-            val action = HomeFragmentDirections.actionHomeFragmentToSessionsInfoFragment(
-                SessionInfoViewEntity.Suggestion(it)
-            )
+            val action = HomeFragmentDirections.actionHomeFragmentToSuggestedSessionInfoFragment(it)
             findNavController().navigate(action)
         }
     }

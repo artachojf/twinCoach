@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.healthconnect.codelab.databinding.FragmentSessionsListBinding
 import com.example.healthconnect.codelab.ui.sessions.SessionsFragmentDirections
 import com.example.healthconnect.codelab.ui.sessions.SessionsViewModel
-import com.example.healthconnect.codelab.ui.sessions.info.SessionInfoViewEntity
 import com.example.healthconnect.codelab.ui.sessions.list.adapter.SessionsListAdapter
 
 class SessionsListFragment : Fragment() {
@@ -87,7 +86,7 @@ class SessionsListFragment : Fragment() {
         if (viewModel.sessions.value?.isNotEmpty() == true) {
             list.add(SessionsListViewEntity.Label("Completed Sessions"))
             viewModel.sessions.value?.map {
-                SessionsListViewEntity.CompletedSession(it.features.trainingSession, it.attributes.date)
+                SessionsListViewEntity.CompletedSession(it)
             }?.let {
                 list.addAll(
                     it
@@ -98,8 +97,18 @@ class SessionsListFragment : Fragment() {
         return list
     }
 
-    private fun onItemClick(session: SessionInfoViewEntity) {
-        val action = SessionsFragmentDirections.actionSessionsFragmentToSessionsInfoFragment(session)
-        findNavController().navigate(action)
+    private fun onItemClick(session: SessionsListViewEntity) {
+        val action = when (session) {
+            is SessionsListViewEntity.CompletedSession ->
+                SessionsFragmentDirections.actionSessionsFragmentToCompletedSessionInfoFragment(session.session)
+            is SessionsListViewEntity.SuggestedSession ->
+                SessionsFragmentDirections.actionSessionsFragmentToSuggestedSessionInfoFragment(session.session)
+            is SessionsListViewEntity.Label ->
+                null
+        }
+
+        if (action != null) {
+            findNavController().navigate(action)
+        }
     }
 }

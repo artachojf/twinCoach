@@ -8,5 +8,5 @@ sealed class SessionsListViewEntity {
 
     data class Label(val label: String) : SessionsListViewEntity()
     data class SuggestedSession(val session: DittoGeneralInfo.TrainingSession) : SessionsListViewEntity()
-    data class CompletedSession(val session: DittoCurrentState.TrainingSession, val date: LocalDateTime) : SessionsListViewEntity()
+    data class CompletedSession(val session: DittoCurrentState.Thing) : SessionsListViewEntity()
 }

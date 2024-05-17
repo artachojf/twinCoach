@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showToolbar(
         title: String,
-        visibleArrow: Boolean
+        visibleArrow: Boolean = false
     ) {
         binding.toolbar.apply {
             tvTitle.text = title

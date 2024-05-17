@@ -48,10 +48,10 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="3:35:00 h"
+            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvGoalLabel" />
+            app:layout_constraintTop_toTopOf="@+id/ivTime" />
 
         <ImageView
             android:id="@+id/ivDistance"
@@ -67,48 +67,48 @@
             android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="42195 m"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+            app:layout_constraintTop_toTopOf="@+id/ivDistance" />
 
         <ImageView
             android:id="@+id/ivEstimation"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
             android:src="@drawable/calculator_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/tvGoalLabel" />
+            app:layout_constraintTop_toTopOf="@+id/ivTime" />
 
         <TextView
             android:id="@+id/tvEstimation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="4:22:12 h"
+            app:layout_constraintBottom_toBottomOf="@+id/ivEstimation"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toEndOf="@+id/ivEstimation"
-            app:layout_constraintTop_toBottomOf="@+id/tvGoalLabel" />
+            app:layout_constraintTop_toTopOf="@+id/ivEstimation" />
 
         <ImageView
             android:id="@+id/ivDate"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
             android:src="@drawable/baseline_calendar_today_24"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/ivEstimation" />
+            app:layout_constraintTop_toTopOf="@+id/ivDistance" />
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="19/04/2024"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDate"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toEndOf="@+id/ivDate"
-            app:layout_constraintTop_toBottomOf="@+id/ivEstimation" />
+            app:layout_constraintTop_toTopOf="@+id/ivDate" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

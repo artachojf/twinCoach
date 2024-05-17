@@ -280,6 +280,6 @@ class HealthConnectManager @Inject constructor(
             }
         }
 
-        return DittoCurrentState.TrainingSession(z1, z2, z3, rest)
+        return DittoCurrentState.TrainingSession(z1, z2, z3, rest, emptyList())
     }
 }

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/home_card_corner_radius"
     android:layout_marginBottom="@dimen/home_card_margin"
-    android:layout_marginHorizontal="@dimen/home_card_margin">
+    android:layout_marginHorizontal="@dimen/default_horizontal_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
@@ -38,10 +38,10 @@
             android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="10 x 500 m"
+            app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
+            app:layout_constraintTop_toTopOf="@+id/ivDistance" />
 
         <ImageView
             android:id="@+id/ivRest"
@@ -51,16 +51,39 @@
             android:src="@drawable/letter_zz_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvRest"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/ivDistance" />
+            app:layout_constraintTop_toBottomOf="@+id/ivDistance"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvRest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="1 min"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRest"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
+            app:layout_constraintTop_toTopOf="@+id/ivRest"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivPace"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/speedometer_svgrepo_com"
+            app:layout_constraintEnd_toStartOf="@+id/tvPace"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/ivDistance"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/tvPace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:40 min/km"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPace"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/ivPace"
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/ivTime"
@@ -75,11 +98,11 @@
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="2:00 min"
+            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toEndOf="@+id/ivTime"
-            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
+            app:layout_constraintTop_toTopOf="@+id/ivTime" />
 
         <ImageView
             android:id="@+id/ivHeart"
@@ -94,26 +117,26 @@
             android:id="@+id/tvHeart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
             android:text="160 bpm"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHeart"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toEndOf="@+id/ivHeart"
-            app:layout_constraintTop_toBottomOf="@+id/ivTime" />
+            app:layout_constraintTop_toTopOf="@+id/ivHeart" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="164dp"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_begin="154dp"
+            app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
+            app:layout_constraintGuide_percent="0.6" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

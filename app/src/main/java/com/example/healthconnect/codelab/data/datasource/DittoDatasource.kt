@@ -52,7 +52,7 @@ class DittoDatasource @Inject constructor(
     ): Either<ResponseFailure, DittoGeneralInfoModel.TrainingPlanProperties?> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = dittoService.retrieveGeneralInfoThing(googleId)
+                val response = dittoService.retrieveSuggestedSessions(googleId)
                 if (response.code() == 404)
                     Either.Right(null)
                 else

@@ -9,9 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.healthconnect.codelab.databinding.FragmentSessionsCalendarBinding
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
 import com.example.healthconnect.codelab.ui.sessions.SessionsFragmentDirections
 import com.example.healthconnect.codelab.ui.sessions.SessionsViewModel
-import com.example.healthconnect.codelab.ui.sessions.info.SessionInfoViewEntity
+import com.example.healthconnect.codelab.utils.toDistanceString
+import com.example.healthconnect.codelab.utils.toHeartRateString
+import com.example.healthconnect.codelab.utils.toSpeedString
+import com.example.healthconnect.codelab.utils.toTimeString
 import java.time.LocalDate
 import java.time.ZoneOffset
 
@@ -62,29 +66,67 @@ class SessionsCalendarFragment : Fragment() {
     }
 
     private fun updateCard(date: LocalDate) {
-        val session = viewModel.sessions.value?.find {
+        val completedSession = viewModel.sessions.value?.find {
             it.attributes.date.toLocalDate().equals(date)
         }
 
+        val suggestedSession = viewModel.suggestedSessions.value?.find {
+            it?.day?.equals(date) == true
+        }
+
         binding.apply {
-            if (session == null) {
-                tvSessionsCalendarEmptyState.visibility = View.VISIBLE
-                calendarSessionCard.root.visibility = View.GONE
-            } else {
+            if (completedSession != null) {
                 tvSessionsCalendarEmptyState.visibility = View.GONE
                 calendarSessionCard.root.visibility = View.VISIBLE
-                bindCard(session)
+                bindCompletedCard(completedSession)
+            } else if (suggestedSession != null) {
+                tvSessionsCalendarEmptyState.visibility = View.GONE
+                calendarSessionCard.root.visibility = View.VISIBLE
+                bindSuggestedCard(suggestedSession)
+            } else {
+                tvSessionsCalendarEmptyState.visibility = View.VISIBLE
+                calendarSessionCard.root.visibility = View.GONE
             }
         }
     }
 
-    private fun bindCard(session: DittoCurrentState.Thing) = binding.calendarSessionCard.apply {
+    private fun bindCompletedCard(session: DittoCurrentState.Thing) = binding.calendarSessionCard.apply {
+        val distance = session.features.trainingSession.getTotalDistance()
+        val time = session.features.trainingSession.getTotalTime()
+
         tvNextSession.text = session.attributes.date.toString()
+        tvDistance.text = distance.toInt().toDistanceString()
+        tvTime.text = time.toInt().toTimeString()
+        tvHeart.text
+        tvPace.text = ((time/60) / (distance / 1000)).toSpeedString()
+
+        ivPace.visibility = View.VISIBLE
+        tvPace.visibility = View.VISIBLE
+        ivRest.visibility = View.GONE
+        tvRest.visibility = View.GONE
 
         root.setOnClickListener {
-            val action = SessionsFragmentDirections.actionSessionsFragmentToSessionsInfoFragment(
-                SessionInfoViewEntity.Session(session.features.trainingSession, session.attributes.date)
-            )
+            val action = SessionsFragmentDirections.actionSessionsFragmentToCompletedSessionInfoFragment(session)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun bindSuggestedCard(session: DittoGeneralInfo.TrainingSession) = binding.calendarSessionCard.apply {
+        tvNextSession.text = session.day.toString()
+        tvDistance.text =
+            if (session.times == 1) "${session.times} X ${session.distance.toDistanceString()}"
+            else session.distance.toDistanceString()
+        tvTime.text = session.expectedTime.toTimeString()
+        tvHeart.text = session.meanHeartRate.toHeartRateString()
+        tvRest.text = session.rest.toTimeString()
+
+        ivRest.visibility = View.VISIBLE
+        tvRest.visibility = View.VISIBLE
+        ivPace.visibility = View.GONE
+        tvPace.visibility = View.GONE
+
+        root.setOnClickListener {
+            val action = SessionsFragmentDirections.actionSessionsFragmentToSuggestedSessionInfoFragment(session)
             findNavController().navigate(action)
         }
     }
