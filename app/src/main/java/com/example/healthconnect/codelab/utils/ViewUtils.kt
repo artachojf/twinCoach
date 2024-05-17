@@ -50,3 +50,11 @@ fun Int.toHeartRateString(): String {
 fun Double.toSpeedString(): String {
     return "${String.format("%02d:%02d", this.toInt(), ((this - this.toInt()) * 60).toInt())} min/km"
 }
+
+fun Int.toHeightString(): String {
+    return "${this.toDouble() / 100} m"
+}
+
+fun Double.toWeigthString(): String {
+    return "$this kg"
+}
