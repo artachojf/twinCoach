@@ -42,6 +42,19 @@ class DittoRepository @Inject constructor(
         return Either.Right(thing?.toDomain())
     }
 
+    suspend fun getSuggestedSessions(
+        googleId: String
+    ): Either<DittoError, DittoGeneralInfo.TrainingPlan?> {
+        val response = dittoDatasource.retrieveSuggestedSessions(googleId)
+        return response.fold(::handleError, ::handleSuggestedSessions)
+    }
+
+    private fun handleSuggestedSessions(
+        plan: DittoGeneralInfoModel.TrainingPlanProperties?
+    ): Either.Right<DittoGeneralInfo.TrainingPlan?> {
+        return Either.Right(plan?.toDomain())
+    }
+
     suspend fun getAllCurrentStateThings(
         googleId: String
     ): Either<DittoError, List<DittoCurrentState.Thing>> {

@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,15 +16,16 @@ class DittoCurrentStateModel {
 
     @Serializable
     data class Thing(
-        val thingId: String,
-        val policyId: String,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val thingId: String? = null,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val policyId: String? = null,
         val attributes: Attributes,
         val features: Features
     )
 
     @Serializable
     data class Attributes(
-        val googleId: String
+        val googleId: String,
+        val date: String
     )
 
     @Serializable
@@ -42,7 +44,8 @@ class DittoCurrentStateModel {
         val zone1: TrainingSessionZone,
         val zone2: TrainingSessionZone,
         val zone3: TrainingSessionZone,
-        val rest: TrainingSessionZone
+        val rest: TrainingSessionZone,
+        val laps: List<TrainingLap>
     )
 
     @Serializable
@@ -50,6 +53,13 @@ class DittoCurrentStateModel {
         var avgHr: Double,
         var time: Double,
         var distance: Double
+    )
+
+    @Serializable
+    data class TrainingLap(
+        var startTime: String,
+        var distance: Double,
+        var time: Double
     )
 
     @Serializable
@@ -64,10 +74,10 @@ class DittoCurrentStateModel {
 }
 
 fun DittoCurrentState.Thing.toData(): DittoCurrentStateModel.Thing =
-    DittoCurrentStateModel.Thing(thingId, policyId, attributes.toData(), features.toData())
+    DittoCurrentStateModel.Thing(attributes = attributes.toData(), features = features.toData())
 
 fun DittoCurrentState.Attributes.toData(): DittoCurrentStateModel.Attributes =
-    DittoCurrentStateModel.Attributes(googleId)
+    DittoCurrentStateModel.Attributes(googleId, date.toString())
 
 fun DittoCurrentState.Features.toData(): DittoCurrentStateModel.Features =
     DittoCurrentStateModel.Features(trainingSession.toData(), sleepRating.toData())
@@ -75,12 +85,15 @@ fun DittoCurrentState.Features.toData(): DittoCurrentStateModel.Features =
 fun DittoCurrentState.TrainingSession.toData(): DittoCurrentStateModel.TrainingSession =
     DittoCurrentStateModel.TrainingSession(
         DittoCurrentStateModel.TrainingSessionProperties(
-            zone1.toData(), zone2.toData(), zone3.toData(), rest.toData()
+            zone1.toData(), zone2.toData(), zone3.toData(), rest.toData(), laps.map { it.toData() }
         )
     )
 
 fun DittoCurrentState.TrainingSessionZone.toData(): DittoCurrentStateModel.TrainingSessionZone =
     DittoCurrentStateModel.TrainingSessionZone(avgHr, time, distance)
+
+fun DittoCurrentState.TrainingLap.toData(): DittoCurrentStateModel.TrainingLap =
+    DittoCurrentStateModel.TrainingLap(startTime.toString(), distance, time)
 
 fun DittoCurrentState.SleepRating.toData(): DittoCurrentStateModel.SleepRating =
     DittoCurrentStateModel.SleepRating(

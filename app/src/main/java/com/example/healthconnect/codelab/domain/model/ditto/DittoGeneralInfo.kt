@@ -2,13 +2,14 @@ package com.example.healthconnect.codelab.domain.model.ditto
 
 import com.example.healthconnect.codelab.BuildConfig
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
+import java.io.Serializable
 import java.time.LocalDate
 
 class DittoGeneralInfo {
 
     data class Thing(
         var thingId: String,
-        var policyId: String,
+        var policyId: String? = null,
         var attributes: Attributes,
         var features: Features
     )
@@ -43,8 +44,9 @@ class DittoGeneralInfo {
         val distance: Int,
         val times: Int,
         val rest: Int,
-        val expectedTime: Int
-    )
+        val expectedTime: Int,
+        val meanHeartRate: Int
+    ) : Serializable
 
     data class Suggestions(
         val suggestions: List<Goal>
@@ -62,7 +64,7 @@ class DittoGeneralInfo {
 }
 
 fun DittoGeneralInfoModel.Thing.toDomain(): DittoGeneralInfo.Thing =
-    DittoGeneralInfo.Thing(thingId, policyId, attributes.toDomain(), features.toDomain())
+    DittoGeneralInfo.Thing(thingId!!, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoGeneralInfoModel.Attributes.toDomain(): DittoGeneralInfo.Attributes =
     DittoGeneralInfo.Attributes(gender, height, weight, birthYear, runningYear)
@@ -85,9 +87,12 @@ fun DittoGeneralInfoModel.GoalProperties.toDomain(): DittoGeneralInfo.Goal =
 fun DittoGeneralInfoModel.TrainingPlan.toDomain(): DittoGeneralInfo.TrainingPlan =
     DittoGeneralInfo.TrainingPlan(properties.sessions.map { it.toDomain() })
 
+fun DittoGeneralInfoModel.TrainingPlanProperties.toDomain(): DittoGeneralInfo.TrainingPlan =
+    DittoGeneralInfo.TrainingPlan(sessions.map { it.toDomain() })
+
 fun DittoGeneralInfoModel.TrainingSession.toDomain(): DittoGeneralInfo.TrainingSession =
     DittoGeneralInfo.TrainingSession(
-        LocalDate.parse(day), distance, times, rest, expectedTime
+        LocalDate.parse(day), distance, times, rest, expectedTime, meanHeartRate
     )
 
 fun DittoGeneralInfoModel.Suggestions.toDomain(): DittoGeneralInfo.Suggestions =

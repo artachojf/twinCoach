@@ -54,8 +54,15 @@ class MainActivity : AppCompatActivity() {
         titleResId: Int,
         visibleArrow: Boolean = false
     ) {
+        showToolbar(getString(titleResId), visibleArrow)
+    }
+
+    fun showToolbar(
+        title: String,
+        visibleArrow: Boolean = false
+    ) {
         binding.toolbar.apply {
-            tvTitle.text = getString(titleResId)
+            tvTitle.text = title
 
             if (visibleArrow) ivBack.visibility = View.VISIBLE
             else ivBack.visibility = View.GONE

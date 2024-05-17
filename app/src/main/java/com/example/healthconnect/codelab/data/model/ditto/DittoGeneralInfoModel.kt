@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.data.model.ditto
 
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
+import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,8 +13,8 @@ class DittoGeneralInfoModel {
 
     @Serializable
     data class Thing(
-        var thingId: String,
-        var policyId: String,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) var thingId: String? = null,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) var policyId: String? = null,
         var attributes: Attributes,
         var features: Features
     )
@@ -63,7 +64,8 @@ class DittoGeneralInfoModel {
         val distance: Int,
         val times: Int,
         val rest: Int,
-        val expectedTime: Int
+        val expectedTime: Int,
+        val meanHeartRate: Int
     )
 
     @Serializable
@@ -88,7 +90,7 @@ class DittoGeneralInfoModel {
 }
 
 fun DittoGeneralInfo.Thing.toData(): DittoGeneralInfoModel.Thing =
-    DittoGeneralInfoModel.Thing(thingId, policyId, attributes.toData(), features.toData())
+    DittoGeneralInfoModel.Thing(attributes = attributes.toData(), features = features.toData())
 
 fun DittoGeneralInfo.Attributes.toData(): DittoGeneralInfoModel.Attributes =
     DittoGeneralInfoModel.Attributes(gender, height, weight, birthYear, runningYear)
@@ -110,7 +112,7 @@ fun DittoGeneralInfo.TrainingPlan.toData(): DittoGeneralInfoModel.TrainingPlan =
     )
 
 fun DittoGeneralInfo.TrainingSession.toData(): DittoGeneralInfoModel.TrainingSession =
-    DittoGeneralInfoModel.TrainingSession(day.toString(), distance, times, rest, expectedTime)
+    DittoGeneralInfoModel.TrainingSession(day.toString(), distance, times, rest, expectedTime, meanHeartRate)
 
 fun DittoGeneralInfo.Suggestions.toData(): DittoGeneralInfoModel.Suggestions =
     DittoGeneralInfoModel.Suggestions(

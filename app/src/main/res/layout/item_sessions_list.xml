@@ -1,57 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/home_card_corner_radius"
     android:layout_marginBottom="@dimen/home_card_margin"
-    android:layout_marginHorizontal="@dimen/home_card_margin">
-
-    <TextView
-        android:id="@+id/tvEmptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/goal_card_empty_state"
-        android:textAlignment="center" />
+    android:layout_marginHorizontal="@dimen/default_horizontal_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:visibility="invisible">
+        android:paddingBottom="10dp">
 
         <TextView
-            android:id="@+id/tvGoalLabel"
+            android:id="@+id/tvNextSession"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="10dp"
             android:layout_marginStart="15dp"
-            android:text="@string/goal"
-            android:textStyle="bold"/>
-
-        <ImageView
-            android:id="@+id/ivTime"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/timer_svgrepo_com"
-            app:layout_constraintEnd_toStartOf="@+id/tvTime"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/tvGoalLabel" />
-
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3:35:00 h"
-            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/ivTime" />
+            android:textStyle="bold"
+            android:text="7th December 2024, 10:53"/>
 
         <ImageView
             android:id="@+id/ivDistance"
@@ -61,69 +32,111 @@
             android:src="@drawable/distance_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvDistance"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/ivTime" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
 
         <TextView
             android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="42195 m"
+            android:text="10 x 500 m"
             app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/ivDistance" />
 
         <ImageView
-            android:id="@+id/ivEstimation"
+            android:id="@+id/ivRest"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/calculator_svgrepo_com"
-            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/ivTime" />
+            android:layout_marginTop="10dp"
+            android:src="@drawable/letter_zz_svgrepo_com"
+            app:layout_constraintEnd_toStartOf="@+id/tvRest"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/ivDistance"
+            android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tvEstimation"
+            android:id="@+id/tvRest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4:22:12 h"
-            app:layout_constraintBottom_toBottomOf="@+id/ivEstimation"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toEndOf="@+id/ivEstimation"
-            app:layout_constraintTop_toTopOf="@+id/ivEstimation" />
+            android:text="1 min"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRest"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/ivRest"
+            android:visibility="gone"/>
 
         <ImageView
-            android:id="@+id/ivDate"
+            android:id="@+id/ivPace"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/baseline_calendar_today_24"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/ivDistance" />
+            android:layout_marginTop="10dp"
+            android:src="@drawable/speedometer_svgrepo_com"
+            app:layout_constraintEnd_toStartOf="@+id/tvPace"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/ivDistance"
+            android:visibility="visible"/>
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvPace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="19/04/2024"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDate"
+            android:text="5:40 min/km"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPace"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/ivPace"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/ivTime"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/timer_svgrepo_com"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2:00 min"
+            app:layout_constraintBottom_toBottomOf="@+id/ivTime"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toEndOf="@+id/ivDate"
-            app:layout_constraintTop_toTopOf="@+id/ivDate" />
+            app:layout_constraintStart_toEndOf="@+id/ivTime"
+            app:layout_constraintTop_toTopOf="@+id/ivTime" />
+
+        <ImageView
+            android:id="@+id/ivHeart"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baseline_favorite_border_24"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/ivTime" />
+
+        <TextView
+            android:id="@+id/tvHeart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="160 bpm"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHeart"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/ivHeart"
+            app:layout_constraintTop_toTopOf="@+id/ivHeart" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="164dp"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_begin="154dp"
+            app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.65" />
+            app:layout_constraintGuide_percent="0.6" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

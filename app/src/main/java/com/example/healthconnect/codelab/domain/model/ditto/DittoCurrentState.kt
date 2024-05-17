@@ -2,8 +2,10 @@ package com.example.healthconnect.codelab.domain.model.ditto
 
 import com.example.healthconnect.codelab.data.model.ditto.DittoCurrentStateModel
 import com.example.healthconnect.codelab.BuildConfig
+import java.io.Serializable
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 /**
@@ -14,13 +16,14 @@ class DittoCurrentState {
 
     data class Thing(
         var thingId: String,
-        val policyId: String,
+        val policyId: String? = null,
         val attributes: Attributes,
         val features: Features
-    )
+    ) : Serializable
 
     data class Attributes(
-        val googleId: String
+        val googleId: String,
+        val date: LocalDateTime
     )
 
     data class Features(
@@ -32,7 +35,8 @@ class DittoCurrentState {
         val zone1: TrainingSessionZone,
         val zone2: TrainingSessionZone,
         val zone3: TrainingSessionZone,
-        val rest: TrainingSessionZone
+        val rest: TrainingSessionZone,
+        val laps: List<TrainingLap>
     ) {
         fun combine(prop: TrainingSession) {
             this.zone1.combine(prop.zone1)
@@ -40,6 +44,10 @@ class DittoCurrentState {
             this.zone3.combine(prop.zone3)
             this.rest.combine(prop.rest)
         }
+
+        fun getTotalDistance(): Double = laps.sumOf { it.distance }
+
+        fun getTotalTime(): Double = laps.sumOf { it.time }
     }
 
     data class TrainingSessionZone(
@@ -58,6 +66,12 @@ class DittoCurrentState {
         }
     }
 
+    data class TrainingLap(
+        var startTime: LocalDateTime,
+        var distance: Double,
+        var time: Double
+    )
+
     data class SleepRating(
         var overall: Double
     )
@@ -73,19 +87,14 @@ class DittoCurrentState {
     }
 }
 
-fun DittoCurrentStateModel.QueryResponse.toDomain(): List<DittoCurrentState.Thing> {
-    val list = mutableListOf<DittoCurrentState.Thing>()
-    items.forEach {
-        list.add(it.toDomain())
-    }
-    return list
-}
+fun DittoCurrentStateModel.QueryResponse.toDomain(): List<DittoCurrentState.Thing> =
+    items.map { it.toDomain() }
 
 fun DittoCurrentStateModel.Thing.toDomain(): DittoCurrentState.Thing =
-    DittoCurrentState.Thing(thingId, policyId, attributes.toDomain(), features.toDomain())
+    DittoCurrentState.Thing(thingId!!, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoCurrentStateModel.Attributes.toDomain(): DittoCurrentState.Attributes =
-    DittoCurrentState.Attributes(googleId)
+    DittoCurrentState.Attributes(googleId, LocalDateTime.parse(date))
 
 fun DittoCurrentStateModel.Features.toDomain(): DittoCurrentState.Features =
     DittoCurrentState.Features(trainingSession.toDomain(), sleepRating.toDomain())
@@ -95,11 +104,15 @@ fun DittoCurrentStateModel.TrainingSession.toDomain(): DittoCurrentState.Trainin
         properties.zone1.toDomain(),
         properties.zone2.toDomain(),
         properties.zone3.toDomain(),
-        properties.rest.toDomain()
+        properties.rest.toDomain(),
+        properties.laps.map { it.toDomain() }
     )
 
 fun DittoCurrentStateModel.TrainingSessionZone.toDomain(): DittoCurrentState.TrainingSessionZone =
     DittoCurrentState.TrainingSessionZone(avgHr, time, distance)
+
+fun DittoCurrentStateModel.TrainingLap.toDomain(): DittoCurrentState.TrainingLap =
+    DittoCurrentState.TrainingLap(LocalDateTime.parse(startTime), distance, time)
 
 fun DittoCurrentStateModel.SleepRating.toDomain(): DittoCurrentState.SleepRating =
     DittoCurrentState.SleepRating(properties.overall)

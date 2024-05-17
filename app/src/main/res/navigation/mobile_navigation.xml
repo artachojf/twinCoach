@@ -18,7 +18,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.healthconnect.codelab.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_sessionsFragment"
+            app:destination="@id/sessionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_suggestedSessionInfoFragment"
+            app:destination="@id/suggestedSessionInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.healthconnect.codelab.ui.settings.SettingsFragment"
@@ -39,5 +46,35 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sessionsFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.SessionsFragment"
+        android:label="fragment_sessions"
+        tools:layout="@layout/fragment_sessions" >
+        <action
+            android:id="@+id/action_sessionsFragment_to_completedSessionInfoFragment"
+            app:destination="@id/completedSessionInfoFragment" />
+        <action
+            android:id="@+id/action_sessionsFragment_to_suggestedSessionInfoFragment"
+            app:destination="@id/suggestedSessionInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completedSessionInfoFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.info.completed.CompletedSessionInfoFragment"
+        android:label="fragment_completed_session_info"
+        tools:layout="@layout/fragment_completed_session_info" >
+        <argument
+            android:name="session"
+            app:argType="com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState$Thing" />
+    </fragment>
+    <fragment
+        android:id="@+id/suggestedSessionInfoFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.info.suggested.SuggestedSessionInfoFragment"
+        android:label="fragment_suggested_session_info"
+        tools:layout="@layout/fragment_suggested_session_info" >
+        <argument
+            android:name="session"
+            app:argType="com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo$TrainingSession" />
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package com.example.healthconnect.codelab.ui.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.healthconnect.codelab.data.model.failure.ResponseFailure
 import com.example.healthconnect.codelab.domain.model.ditto.DittoError
 import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
 import com.example.healthconnect.codelab.domain.usecase.ditto.get.generalInfo.GetGeneralInfoThing
@@ -46,12 +47,16 @@ class HomeViewModel @Inject constructor(
         _generalInfo.postValue(info)
     }
 
-    fun getGoogleId() {
+    private fun getGoogleId() {
         viewModelScope.launch {
             readGoogleId(Unit) {
-                it.fold({}, ::handleGoogleIdSuccess)
+                it.fold(::handleGoogleIdError, ::handleGoogleIdSuccess)
             }
         }
+    }
+
+    private fun handleGoogleIdError(unit: Unit) {
+        _error.postValue(DittoError(ResponseFailure.UnknownError))
     }
 
     private fun handleGoogleIdSuccess(googleId: Flow<String>) {

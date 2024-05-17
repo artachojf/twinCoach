@@ -1,5 +1,6 @@
 package com.example.healthconnect.codelab.data.datasource
 
+import android.util.Log
 import arrow.core.Either
 import com.example.healthconnect.codelab.data.model.ditto.DittoCurrentStateModel
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
@@ -46,6 +47,22 @@ class DittoDatasource @Inject constructor(
         }
     }
 
+    suspend fun retrieveSuggestedSessions(
+        googleId: String
+    ): Either<ResponseFailure, DittoGeneralInfoModel.TrainingPlanProperties?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.retrieveSuggestedSessions(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
     suspend fun queryCurrentStateThings(
         googleId: String,
         size: Int = 100
@@ -71,6 +88,7 @@ class DittoDatasource @Inject constructor(
                 val response = dittoService.putCurrentStateThing(googleId, thing)
                 ResponseParser.parseEmptyResponse(response)
             } catch (e: Exception) {
+                Log.e("putError", e.stackTraceToString())
                 ResponseParser.parseError(e)
             }
         }

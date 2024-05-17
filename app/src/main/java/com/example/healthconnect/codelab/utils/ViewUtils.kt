@@ -28,3 +28,25 @@ object ViewUtils {
         }
     }
 }
+
+fun Int.toTimeString(): String {
+    return if (this / 3600 > 0) {
+        "${String.format("%02d:%02d:%02d", this / 3600, (this % 3600) / 60, this % 60)} h"
+    } else if (this / 60 > 0) {
+        "${String.format("%02d:%02d", (this % 3600) / 60, this % 60)} min"
+    } else {
+        "${this % 60} sec"
+    }
+}
+
+fun Int.toDistanceString(): String {
+    return if (this >= 1000) (this.toDouble() / 1000.0).toString() + " km" else "$this m"
+}
+
+fun Int.toHeartRateString(): String {
+    return "$this bpm"
+}
+
+fun Double.toSpeedString(): String {
+    return "${String.format("%02d:%02d", this.toInt(), ((this - this.toInt()) * 60).toInt())} min/km"
+}
