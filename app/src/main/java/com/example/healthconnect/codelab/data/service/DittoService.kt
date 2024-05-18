@@ -26,6 +26,11 @@ interface DittoService {
         @Path("googleId") googleId: String
     ): Response<ResponseBody>
 
+    @GET("/api/2/things/{googleId}/features")
+    suspend fun retrieveGeneralInfoFeatures(
+        @Path("googleId") googleId: String
+    ): Response<ResponseBody>
+
     @GET("/api/2/things/{googleId}/features/trainingPlan/properties")
     suspend fun retrieveSuggestedSessions(
         @Path("googleId") googleId: String
@@ -49,6 +54,13 @@ interface DittoService {
     suspend fun putGeneralInfoThing(
         @Path("googleId") googleId: String,
         @Body thing: DittoGeneralInfoModel.Thing
+    ): Response<ResponseBody>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/api/2/things/{googleId}/features")
+    suspend fun putGeneralInfoFeatures(
+        @Path("googleId") googleId: String,
+        @Body features: DittoGeneralInfoModel.Features
     ): Response<ResponseBody>
 
     @DELETE("/api/2/things/{thingId}")

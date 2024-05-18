@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -52,10 +50,10 @@ class SettingsFragment : Fragment() {
         val settingsList =
             listOf(
                 SettingsViewEntity.RegularSetting(getString(R.string.logout)) {
-                    ViewUtils.showWarningDialog(requireContext(), R.string.logout_warning_dialog, ::onLogout, {})
+                    ViewUtils.showDialog(requireContext(), R.string.logout_warning_dialog, ::onLogout, {})
                 },
                 SettingsViewEntity.DangerousSetting(getString(R.string.delete_account)) {
-                    ViewUtils.showWarningDialog(requireContext(), R.string.delete_account_warning_dialog, ::onDeleteAccount, {})
+                    ViewUtils.showDialog(requireContext(), R.string.delete_account_warning_dialog, ::onDeleteAccount, {})
                 }
             )
 

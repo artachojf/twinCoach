@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/ivTime"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/timer_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvTime"
@@ -55,8 +55,8 @@
 
         <ImageView
             android:id="@+id/ivDistance"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/distance_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvDistance"
@@ -74,8 +74,8 @@
 
         <ImageView
             android:id="@+id/ivEstimation"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:src="@drawable/calculator_svgrepo_com"
             app:layout_constraintBottom_toBottomOf="@+id/ivTime"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -93,8 +93,8 @@
 
         <ImageView
             android:id="@+id/ivDate"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:src="@drawable/baseline_calendar_today_24"
             app:layout_constraintBottom_toBottomOf="@+id/ivDistance"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
