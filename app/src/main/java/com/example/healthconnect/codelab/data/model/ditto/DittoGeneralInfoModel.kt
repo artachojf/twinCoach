@@ -45,8 +45,15 @@ class DittoGeneralInfoModel {
     data class GoalProperties(
         var distance: Int,
         var seconds: Int,
-        var estimation: Int,
+        var estimations: List<Estimation>,
         var date: String
+    )
+
+    @Serializable
+    data class Estimation(
+        var date: String,
+        var seconds: Int,
+        var goalReachDate: String
     )
 
     @Serializable
@@ -76,7 +83,16 @@ class DittoGeneralInfoModel {
 
     @Serializable
     data class SuggestionsProperties(
-        val suggestions: List<GoalProperties>
+        val suggestions: List<Suggestion>
+    )
+
+    @Serializable
+    data class Suggestion(
+        val type: Int,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val distance: Int? = null,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val seconds: Int? = null,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val date: String? = null,
+        @EncodeDefault(EncodeDefault.Mode.NEVER) val trainingDays: List<Int>? = null
     )
 
     @Serializable
@@ -105,7 +121,10 @@ fun DittoGeneralInfo.Features.toData(): DittoGeneralInfoModel.Features =
     )
 
 fun DittoGeneralInfo.Goal.toData(): DittoGeneralInfoModel.GoalProperties =
-    DittoGeneralInfoModel.GoalProperties(distance, seconds, estimation, date.toString())
+    DittoGeneralInfoModel.GoalProperties(distance, seconds, estimations.map { it.toData() }, date.toString())
+
+fun DittoGeneralInfo.Estimation.toData() : DittoGeneralInfoModel.Estimation =
+    DittoGeneralInfoModel.Estimation(date.toString(), seconds, goalReachDate.toString())
 
 fun DittoGeneralInfo.TrainingPlan.toData(): DittoGeneralInfoModel.TrainingPlan =
     DittoGeneralInfoModel.TrainingPlan(
@@ -119,6 +138,42 @@ fun DittoGeneralInfo.Suggestions.toData(): DittoGeneralInfoModel.Suggestions =
     DittoGeneralInfoModel.Suggestions(
         DittoGeneralInfoModel.SuggestionsProperties(suggestions.map { it.toData() })
     )
+
+fun DittoGeneralInfo.Suggestion.toData(): DittoGeneralInfoModel.Suggestion {
+    return when (this) {
+        is DittoGeneralInfo.Suggestion.SmallerGoal -> {
+            DittoGeneralInfoModel.Suggestion(
+                type = type,
+                distance = distance,
+                seconds = seconds,
+                date = date.toString()
+            )
+        }
+
+        is DittoGeneralInfo.Suggestion.BiggerGoal -> {
+            DittoGeneralInfoModel.Suggestion(
+                type = type,
+                distance = distance,
+                seconds = seconds,
+                date = date.toString()
+            )
+        }
+
+        is DittoGeneralInfo.Suggestion.LessTrainingDays -> {
+            DittoGeneralInfoModel.Suggestion(
+                type = type,
+                trainingDays = trainingDays
+            )
+        }
+
+        is DittoGeneralInfo.Suggestion.MoreTrainingDays -> {
+            DittoGeneralInfoModel.Suggestion(
+                type = type,
+                trainingDays = trainingDays
+            )
+        }
+    }
+}
 
 fun DittoGeneralInfo.Preferences.toData(): DittoGeneralInfoModel.Preferences =
     DittoGeneralInfoModel.Preferences(

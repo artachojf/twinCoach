@@ -47,6 +47,22 @@ class DittoDatasource @Inject constructor(
         }
     }
 
+    suspend fun retrieveGeneralInfoFeatures(
+        googleId: String
+    ): Either<ResponseFailure, DittoGeneralInfoModel.Features?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.retrieveGeneralInfoFeatures(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
     suspend fun retrieveSuggestedSessions(
         googleId: String
     ): Either<ResponseFailure, DittoGeneralInfoModel.TrainingPlanProperties?> {

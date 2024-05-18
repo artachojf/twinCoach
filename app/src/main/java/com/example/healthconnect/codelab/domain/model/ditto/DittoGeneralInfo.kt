@@ -1,5 +1,6 @@
 package com.example.healthconnect.codelab.domain.model.ditto
 
+import android.util.Log
 import com.example.healthconnect.codelab.BuildConfig
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
 import java.io.Serializable
@@ -32,8 +33,14 @@ class DittoGeneralInfo {
     data class Goal(
         var distance: Int,
         var seconds: Int,
-        var estimation: Int,
+        var estimations: List<Estimation>,
         var date: LocalDate
+    )
+
+    data class Estimation(
+        var date: LocalDate,
+        var seconds: Int,
+        var goalReachDate: LocalDate
     )
 
     data class TrainingPlan(
@@ -50,8 +57,30 @@ class DittoGeneralInfo {
     ) : Serializable
 
     data class Suggestions(
-        val suggestions: List<Goal>
+        val suggestions: List<Suggestion>
     )
+
+    sealed class Suggestion(val type: Int) {
+        data class SmallerGoal(
+            val distance: Int,
+            val seconds: Int,
+            val date: LocalDate
+        ) : Suggestion(0)
+
+        data class BiggerGoal(
+            val distance: Int,
+            val seconds: Int,
+            val date: LocalDate
+        ) : Suggestion(1)
+
+        data class LessTrainingDays(
+            val trainingDays: List<Int>
+        ) : Suggestion(2)
+
+        data class MoreTrainingDays(
+            val trainingDays: List<Int>
+        ) : Suggestion(3)
+    }
 
     data class Preferences(
         var trainingDays: List<Int>
@@ -82,9 +111,12 @@ fun DittoGeneralInfoModel.GoalProperties.toDomain(): DittoGeneralInfo.Goal =
     DittoGeneralInfo.Goal(
         distance,
         seconds,
-        estimation,
+        estimations.map { it.toDomain() },
         LocalDate.parse(date)
     )
+
+fun DittoGeneralInfoModel.Estimation.toDomain(): DittoGeneralInfo.Estimation =
+    DittoGeneralInfo.Estimation(LocalDate.parse(date), seconds, LocalDate.parse(goalReachDate))
 
 fun DittoGeneralInfoModel.TrainingPlan.toDomain(): DittoGeneralInfo.TrainingPlan =
     DittoGeneralInfo.TrainingPlan(properties.sessions.map { it.toDomain() })
@@ -99,6 +131,36 @@ fun DittoGeneralInfoModel.TrainingSession.toDomain(): DittoGeneralInfo.TrainingS
 
 fun DittoGeneralInfoModel.Suggestions.toDomain(): DittoGeneralInfo.Suggestions =
     DittoGeneralInfo.Suggestions(properties.suggestions.map { it.toDomain() })
+
+fun DittoGeneralInfoModel.Suggestion.toDomain(): DittoGeneralInfo.Suggestion {
+    return when (type) {
+        0 -> {
+            DittoGeneralInfo.Suggestion.SmallerGoal(
+                distance!!, seconds!!, LocalDate.parse(date!!)
+            )
+        }
+
+        1 -> {
+            DittoGeneralInfo.Suggestion.BiggerGoal(
+                distance!!, seconds!!, LocalDate.parse(date!!)
+            )
+        }
+
+        2 -> {
+            DittoGeneralInfo.Suggestion.LessTrainingDays(trainingDays!!)
+        }
+
+        3 -> {
+            DittoGeneralInfo.Suggestion.LessTrainingDays(trainingDays!!)
+        }
+
+        else -> {
+            DittoGeneralInfo.Suggestion.SmallerGoal(
+                distance!!, seconds!!, LocalDate.parse(date!!)
+            )
+        }
+    }
+}
 
 fun DittoGeneralInfoModel.Preferences.toDomain(): DittoGeneralInfo.Preferences =
     DittoGeneralInfo.Preferences(properties.trainingDays)

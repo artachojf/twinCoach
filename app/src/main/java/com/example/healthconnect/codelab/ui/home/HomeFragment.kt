@@ -134,8 +134,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToProgression() {
-        //val action = HomeFragmentDirections
-        //findNavController().navigate(action)
+        val action = HomeFragmentDirections.actionHomeFragmentToProgressionFragment()
+        findNavController().navigate(action)
     }
 
     private fun moveToNextSession() {

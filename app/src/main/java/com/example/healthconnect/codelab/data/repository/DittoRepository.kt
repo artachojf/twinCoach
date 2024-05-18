@@ -33,12 +33,25 @@ class DittoRepository @Inject constructor(
         googleId: String
     ): Either<DittoError, DittoGeneralInfo.Thing?> {
         val response = dittoDatasource.retrieveGeneralInfoThing(googleId)
-        return response.fold(::handleError, ::handleGeneralInfo)
+        return response.fold(::handleError, ::handleGeneralInfoThing)
     }
 
-    private fun handleGeneralInfo(
+    private fun handleGeneralInfoThing(
         thing: DittoGeneralInfoModel.Thing?
     ): Either.Right<DittoGeneralInfo.Thing?> {
+        return Either.Right(thing?.toDomain())
+    }
+
+    suspend fun getGeneralInfoFeatures(
+        googleId: String
+    ): Either<DittoError, DittoGeneralInfo.Features?> {
+        val response = dittoDatasource.retrieveGeneralInfoFeatures(googleId)
+        return response.fold(::handleError, ::handleGeneralInfoFeatures)
+    }
+
+    private fun handleGeneralInfoFeatures(
+        thing: DittoGeneralInfoModel.Features?
+    ): Either.Right<DittoGeneralInfo.Features?> {
         return Either.Right(thing?.toDomain())
     }
 

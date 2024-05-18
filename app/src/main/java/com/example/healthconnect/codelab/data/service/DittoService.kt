@@ -26,6 +26,11 @@ interface DittoService {
         @Path("googleId") googleId: String
     ): Response<ResponseBody>
 
+    @GET("/api/2/things/{googleId}/features")
+    suspend fun retrieveGeneralInfoFeatures(
+        @Path("googleId") googleId: String
+    ): Response<ResponseBody>
+
     @GET("/api/2/things/{googleId}/features/trainingPlan/properties")
     suspend fun retrieveSuggestedSessions(
         @Path("googleId") googleId: String

@@ -10,4 +10,6 @@
 
     <dimen name="settings_card_corner_radius">10dp</dimen>
     <dimen name="settings_card_margin">5dp</dimen>
+
+    <dimen name="chart_height">300dp</dimen>
 </resources>
