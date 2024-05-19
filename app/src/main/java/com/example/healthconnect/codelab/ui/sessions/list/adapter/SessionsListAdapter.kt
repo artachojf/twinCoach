@@ -9,6 +9,7 @@ import com.example.healthconnect.codelab.databinding.ItemListLabelBinding
 import com.example.healthconnect.codelab.databinding.ItemSessionsListBinding
 import com.example.healthconnect.codelab.ui.sessions.list.SessionsListViewEntity
 import com.example.healthconnect.codelab.utils.toDistanceString
+import com.example.healthconnect.codelab.utils.toFormatString
 import com.example.healthconnect.codelab.utils.toHeartRateString
 import com.example.healthconnect.codelab.utils.toSpeedString
 import com.example.healthconnect.codelab.utils.toTimeString
@@ -75,7 +76,7 @@ class SessionsListAdapter(
                 val distance = item.session.features.trainingSession.getTotalDistance()
                 val time = item.session.features.trainingSession.getTotalTime()
 
-                tvNextSession.text = item.session.attributes.date.toString()
+                tvNextSession.text = item.session.attributes.date.toFormatString()
                 tvDistance.text = distance.toInt().toDistanceString()
                 tvTime.text = time.toInt().toTimeString()
                 tvHeart.text
