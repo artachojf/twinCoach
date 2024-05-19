@@ -134,8 +134,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToProgression() {
-        //val action = HomeFragmentDirections
-        //findNavController().navigate(action)
+        val action = HomeFragmentDirections.actionHomeFragmentToProgressionFragment()
+        findNavController().navigate(action)
     }
 
     private fun moveToNextSession() {
@@ -163,7 +163,7 @@ class HomeFragment : Fragment() {
                     registerForActivityResult(hcManager.requestPermissionActivityContract()) {
                         if (it.containsAll(hcManager.permissions)) launchService()
                         else {
-                            ViewUtils.showWarningDialog(
+                            ViewUtils.showDialog(
                                 requireContext(),
                                 R.string.permissions_alert_dialog,
                                 {},

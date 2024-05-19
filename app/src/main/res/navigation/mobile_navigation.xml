@@ -25,6 +25,11 @@
         <action
             android:id="@+id/action_homeFragment_to_suggestedSessionInfoFragment"
             app:destination="@id/suggestedSessionInfoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_progressionFragment"
+            app:destination="@id/progressionFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -77,4 +82,9 @@
             android:name="session"
             app:argType="com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo$TrainingSession" />
     </fragment>
+    <fragment
+        android:id="@+id/progressionFragment"
+        android:name="com.example.healthconnect.codelab.ui.progression.ProgressionFragment"
+        android:label="fragment_progression"
+        tools:layout="@layout/fragment_progression" />
 </navigation>

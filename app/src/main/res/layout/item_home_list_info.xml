@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/ivHeight"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/height_line_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvHeight"
@@ -44,8 +44,8 @@
 
         <ImageView
             android:id="@+id/ivWeight"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/weight_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvWeight"
@@ -63,8 +63,8 @@
 
         <ImageView
             android:id="@+id/ivBirthdate"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_calendar_today_24"
             app:layout_constraintStart_toEndOf="@+id/ivRunning"
@@ -82,8 +82,8 @@
 
         <ImageView
             android:id="@+id/ivRunning"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:src="@drawable/run_svgrepo_com"
             app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -91,8 +91,8 @@
 
         <ImageView
             android:id="@+id/ivRunningDate"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_calendar_today_24"
             app:layout_constraintStart_toEndOf="@+id/ivRunning"

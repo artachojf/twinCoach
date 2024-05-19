@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/ivDistance"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/distance_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvDistance"
@@ -45,8 +45,8 @@
 
         <ImageView
             android:id="@+id/ivRest"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/letter_zz_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvRest"
@@ -66,8 +66,8 @@
 
         <ImageView
             android:id="@+id/ivPace"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/speedometer_svgrepo_com"
             app:layout_constraintEnd_toStartOf="@+id/tvPace"
@@ -87,8 +87,8 @@
 
         <ImageView
             android:id="@+id/ivTime"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/timer_svgrepo_com"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -106,8 +106,8 @@
 
         <ImageView
             android:id="@+id/ivHeart"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_favorite_border_24"
             app:layout_constraintStart_toStartOf="@+id/guideline2"

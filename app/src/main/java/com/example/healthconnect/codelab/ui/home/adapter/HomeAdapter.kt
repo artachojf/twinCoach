@@ -71,7 +71,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
                     tvTime.text = goal.seconds.toTimeString()
                     tvDistance.text = goal.distance.toDistanceString()
-                    tvEstimation.text = goal.estimation.toTimeString()
+                    tvEstimation.text = goal.estimations.lastOrNull()?.seconds?.toTimeString() ?: "-"
                     tvDate.text = goal.date.toString()
 
                     constraint.visibility = View.VISIBLE

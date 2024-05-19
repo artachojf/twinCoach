@@ -1,15 +1,20 @@
 package com.example.healthconnect.codelab.utils
 
 import android.content.Context
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.data.model.failure.ResponseFailure
 
 object ViewUtils {
 
-    fun showWarningDialog(context: Context, resId: Int, successCallback: () -> Unit, cancelCallback: () -> Unit) {
+    fun showDialog(context: Context, resId: Int, successCallback: () -> Unit, cancelCallback: () -> Unit) {
+        showDialog(context, context.getString(resId), successCallback, cancelCallback)
+    }
+
+    fun showDialog(context: Context, message: String, successCallback: () -> Unit, cancelCallback: () -> Unit) {
         val builder = AlertDialog.Builder(context)
-        builder.setMessage(resId)
+        builder.setMessage(message)
         builder.setPositiveButton(R.string.ok) { dialog, id ->
             successCallback.invoke()
         }
@@ -17,6 +22,14 @@ object ViewUtils {
             cancelCallback.invoke()
         }
         builder.show()
+    }
+
+    fun showToast(context: Context, resId: Int) {
+        showToast(context, context.getString(resId))
+    }
+
+    fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     fun getErrorStringId(r: ResponseFailure): Int {
