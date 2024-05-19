@@ -7,7 +7,7 @@
     app:cardCornerRadius="@dimen/settings_card_corner_radius"
     android:layout_marginBottom="@dimen/settings_card_margin"
     android:layout_marginHorizontal="@dimen/settings_card_margin"
-    app:strokeColor="@color/red"
+    app:strokeColor="@color/soft_red"
     app:strokeWidth="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +19,7 @@
             android:id="@+id/ivSettingOption"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="@dimen/default_horizontal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
