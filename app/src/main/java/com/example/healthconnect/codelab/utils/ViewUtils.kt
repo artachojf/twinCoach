@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.data.model.failure.ResponseFailure
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object ViewUtils {
 
@@ -70,4 +72,8 @@ fun Int.toHeightString(): String {
 
 fun Double.toWeigthString(): String {
     return "$this kg"
+}
+
+fun LocalDateTime.toFormatString(): String {
+    return this.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
 }

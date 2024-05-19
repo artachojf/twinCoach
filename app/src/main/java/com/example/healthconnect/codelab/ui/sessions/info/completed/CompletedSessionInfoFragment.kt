@@ -13,6 +13,7 @@ import com.example.healthconnect.codelab.databinding.ItemHrZoneComponentBinding
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
 import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.utils.toDistanceString
+import com.example.healthconnect.codelab.utils.toFormatString
 import com.example.healthconnect.codelab.utils.toSpeedString
 import com.example.healthconnect.codelab.utils.toTimeString
 
@@ -43,7 +44,7 @@ class CompletedSessionInfoFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.tvSessionTitle.text = args.session.attributes.date.toString()
+        binding.tvSessionTitle.text = args.session.attributes.date.toFormatString()
         bindCompletedCard(args.session.features.trainingSession)
         initRecycler()
         bindZones(args.session.features.trainingSession)
