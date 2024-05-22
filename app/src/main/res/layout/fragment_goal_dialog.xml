@@ -6,13 +6,23 @@
     android:layout_height="wrap_content"
     tools:context=".ui.goal.GoalDialogFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible">
+
         <TextView
-            style="@style/TitleText"
             android:id="@+id/tvTitle"
+            style="@style/TitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/goal_information"
             android:layout_margin="@dimen/activity_vertical_margin"
+            android:text="@string/goal_information"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,11 +30,11 @@
             android:id="@+id/ivTime"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            android:src="@drawable/timer_svgrepo_com"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginStart="50dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/timer_svgrepo_com"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <LinearLayout
             android:id="@+id/llTime"
@@ -40,13 +50,13 @@
                 android:id="@+id/etHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
                 android:ems="2"
                 android:hint="@string/hours_symbol"
                 android:inputType="numberSigned"
+                android:textColorHint="@color/soft_grey"
                 app:layout_constraintStart_toEndOf="@+id/ivTime"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                android:backgroundTint="@color/grey"
-                android:textColorHint="@color/soft_grey" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,13 +67,13 @@
                 android:id="@+id/etMinutes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
                 android:ems="2"
                 android:hint="@string/minutes_symbol"
                 android:inputType="numberSigned"
+                android:textColorHint="@color/soft_grey"
                 app:layout_constraintStart_toEndOf="@+id/ivTime"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                android:backgroundTint="@color/grey"
-                android:textColorHint="@color/soft_grey" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,13 +84,13 @@
                 android:id="@+id/etSeconds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
                 android:ems="2"
                 android:hint="@string/seconds_symbol"
                 android:inputType="numberSigned"
+                android:textColorHint="@color/soft_grey"
                 app:layout_constraintStart_toEndOf="@+id/ivTime"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                android:backgroundTint="@color/grey"
-                android:textColorHint="@color/soft_grey" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         </LinearLayout>
 
@@ -88,10 +98,10 @@
             android:id="@+id/ivLength"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            android:src="@drawable/distance_svgrepo_com"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/distance_svgrepo_com"
             app:layout_constraintStart_toStartOf="@+id/ivTime"
-            app:layout_constraintTop_toBottomOf="@+id/llTime"/>
+            app:layout_constraintTop_toBottomOf="@+id/llTime" />
 
         <LinearLayout
             android:id="@+id/llLength"
@@ -107,13 +117,13 @@
                 android:id="@+id/etLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
                 android:ems="5"
                 android:hint="@string/distance_hint"
                 android:inputType="numberSigned"
+                android:textColorHint="@color/soft_grey"
                 app:layout_constraintStart_toEndOf="@+id/ivTime"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                android:backgroundTint="@color/grey"
-                android:textColorHint="@color/soft_grey" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,45 +136,54 @@
             android:id="@+id/ivDate"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            android:src="@drawable/baseline_calendar_today_24"
             android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/baseline_calendar_today_24"
             app:layout_constraintStart_toStartOf="@+id/ivLength"
-            app:layout_constraintTop_toBottomOf="@+id/llLength"/>
+            app:layout_constraintTop_toBottomOf="@+id/llLength" />
 
         <Button
             android:id="@+id/btnDate"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/date_button_text"
             android:layout_marginHorizontal="50dp"
-            android:textColor="@color/white"
+            android:text="@string/date_button_text"
             app:layout_constraintBottom_toBottomOf="@+id/ivDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivDate"
             app:layout_constraintTop_toTopOf="@+id/ivDate" />
 
-        <!-- TODO: Change buttons for textViews -->
-
         <Button
             android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:text="@string/cancel"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnSave" />
 
         <Button
             android:id="@+id/btnSave"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            android:layout_marginEnd="20dp"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnDate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

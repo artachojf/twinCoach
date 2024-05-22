@@ -79,7 +79,7 @@ class PersonalInformationDialogFragment : DialogFragment() {
                 requireContext(),
                 {_,year,month,day ->
                     viewModel.runningDate = LocalDate.of(year, month+1, day)
-                    btnBirthdate.text = viewModel.runningDate.toString()
+                    btnRunningDate.text = viewModel.runningDate.toString()
                 },
                 date.year,
                 date.monthValue-1,
@@ -149,6 +149,7 @@ class PersonalInformationDialogFragment : DialogFragment() {
 
                 autoCompleteTextView.setText(it.gender, false)
             }
+            dismissLoader()
         }
 
         updateSuccess.observe(viewLifecycleOwner) {
@@ -161,9 +162,15 @@ class PersonalInformationDialogFragment : DialogFragment() {
 
         error.observe(viewLifecycleOwner) {
             ViewUtils.showToast(requireContext(), ViewUtils.getErrorStringId(it))
+            dismissLoader()
         }
 
         init()
+    }
+
+    private fun dismissLoader() = binding.apply {
+        clPersonalInformation.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 
     private inner class IntegerMinMaxFilter(

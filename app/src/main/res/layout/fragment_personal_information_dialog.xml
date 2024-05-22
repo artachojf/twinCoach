@@ -7,184 +7,203 @@
     tools:context=".ui.personalInformation.PersonalInformationDialogFragment"
     app:cardCornerRadius="@dimen/default_card_corner_radius">
 
-    <TextView
-        style="@style/TitleText"
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPersonalInformation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/personal_information"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivHeight"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/height_line_svgrepo_com"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginStart="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
-
-    <LinearLayout
-        android:id="@+id/llHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivHeight"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivHeight"
-        app:layout_constraintTop_toTopOf="@+id/ivHeight">
-
-        <EditText
-            android:id="@+id/etHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:hint="@string/height"
-            android:inputType="numberSigned"
-            android:backgroundTint="@color/grey"
-            android:textColorHint="@color/soft_grey" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/centimeters_symbol" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/ivWeight"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/weight_svgrepo_com"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintStart_toStartOf="@+id/ivHeight"
-        app:layout_constraintTop_toBottomOf="@+id/llHeight"/>
-
-    <LinearLayout
-        android:id="@+id/llWeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivWeight"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivWeight"
-        app:layout_constraintTop_toTopOf="@+id/ivWeight">
-
-        <EditText
-            android:id="@+id/etWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="4"
-            android:hint="@string/weight"
-            android:inputType="numberDecimal|numberSigned"
-            app:layout_constraintStart_toEndOf="@+id/ivTime"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            android:backgroundTint="@color/grey"
-            android:textColorHint="@color/soft_grey" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kilogram_symbol" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/ivBirthdate"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/baseline_calendar_today_24"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintStart_toStartOf="@+id/ivWeight"
-        app:layout_constraintTop_toBottomOf="@+id/llWeight"/>
-
-    <Button
-        android:id="@+id/btnBirthdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/birthdate"
-        android:layout_marginHorizontal="50dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/ivBirthdate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivBirthdate"
-        app:layout_constraintTop_toTopOf="@+id/ivBirthdate" />
-
-    <ImageView
-        android:id="@+id/ivRunning"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/run_svgrepo_com"
-        app:layout_constraintEnd_toStartOf="@+id/ivRunningDate"
-        app:layout_constraintTop_toTopOf="@+id/btnRunningDate"
-        app:layout_constraintBottom_toBottomOf="@+id/btnRunningDate"/>
-
-    <ImageView
-        android:id="@+id/ivRunningDate"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/baseline_calendar_today_24"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:layout_constraintStart_toStartOf="@+id/ivBirthdate"
-        app:layout_constraintTop_toBottomOf="@+id/btnBirthdate"/>
-
-    <Button
-        android:id="@+id/btnRunningDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/running_date"
-        android:layout_marginHorizontal="50dp"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivRunningDate"
-        app:layout_constraintTop_toTopOf="@+id/ivRunningDate" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dropdownGender"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="80dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:hint="@string/gender"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRunningDate">
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:inputType="none" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- TODO: Change buttons for textViews -->
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:text="@string/cancel"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSave" />
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dropdownGender" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:text="@string/personal_information"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivHeight"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/height_line_svgrepo_com"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <LinearLayout
+            android:id="@+id/llHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHeight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivHeight"
+            app:layout_constraintTop_toTopOf="@+id/ivHeight">
+
+            <EditText
+                android:id="@+id/etHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:ems="3"
+                android:hint="@string/height"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/soft_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/centimeters_symbol" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivWeight"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/weight_svgrepo_com"
+            app:layout_constraintStart_toStartOf="@+id/ivHeight"
+            app:layout_constraintTop_toBottomOf="@+id/llHeight" />
+
+        <LinearLayout
+            android:id="@+id/llWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivWeight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivWeight"
+            app:layout_constraintTop_toTopOf="@+id/ivWeight">
+
+            <EditText
+                android:id="@+id/etWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/grey"
+                android:ems="4"
+                android:hint="@string/weight"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColorHint="@color/soft_grey"
+                app:layout_constraintStart_toEndOf="@+id/ivTime"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kilogram_symbol" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivBirthdate"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/baseline_calendar_today_24"
+            app:layout_constraintStart_toStartOf="@+id/ivWeight"
+            app:layout_constraintTop_toBottomOf="@+id/llWeight" />
+
+        <Button
+            android:id="@+id/btnBirthdate"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:text="@string/birthdate"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBirthdate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBirthdate"
+            app:layout_constraintTop_toTopOf="@+id/ivBirthdate" />
+
+        <ImageView
+            android:id="@+id/ivRunning"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/run_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="@+id/btnRunningDate"
+            app:layout_constraintEnd_toStartOf="@+id/ivRunningDate"
+            app:layout_constraintTop_toTopOf="@+id/btnRunningDate" />
+
+        <ImageView
+            android:id="@+id/ivRunningDate"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/baseline_calendar_today_24"
+            app:layout_constraintStart_toStartOf="@+id/ivBirthdate"
+            app:layout_constraintTop_toBottomOf="@+id/btnBirthdate" />
+
+        <Button
+            android:id="@+id/btnRunningDate"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:text="@string/running_date"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivRunningDate"
+            app:layout_constraintTop_toTopOf="@+id/ivRunningDate" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dropdownGender"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:hint="@string/gender"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRunningDate">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnSave" />
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="20dp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dropdownGender" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

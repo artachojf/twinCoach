@@ -80,7 +80,7 @@ class UserPreferencesViewModel @Inject constructor(
             putPreferences(
                 PutPreferencesParams(googleId, preferences)
             ) {
-                it.fold(::handleUserPreferencesFailure, ::handleUpdateSuccess)
+                it.fold(::handleUpdateFailure, ::handleUpdateSuccess)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.healthconnect.codelab.ui.userPreferences
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,7 @@ class UserPreferencesDialogFragment : DialogFragment() {
                 val checkboxes = listOf(dayMonday, dayTuesday, dayWednesday, dayThursday, dayFriday, daySaturday, daySunday)
                 preferences.trainingDays.forEach { checkboxes[it].isChecked = true }
             }
+            dismissLoader()
         }
 
         updateSuccess.observe(viewLifecycleOwner) {
@@ -79,8 +81,14 @@ class UserPreferencesDialogFragment : DialogFragment() {
 
         error.observe(viewLifecycleOwner) {
             ViewUtils.showToast(requireContext(), ViewUtils.getErrorStringId(it))
+            dismissLoader()
         }
 
         init()
+    }
+
+    private fun dismissLoader() = binding.apply {
+        clPreferences.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 }

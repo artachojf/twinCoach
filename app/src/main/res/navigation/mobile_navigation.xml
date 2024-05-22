@@ -111,9 +111,9 @@
         android:id="@+id/personalInformationDialogFragment"
         android:name="com.example.healthconnect.codelab.ui.personaInformation.PersonalInformationDialogFragment"
         android:label="PersonalInformationDialogFragment" />
-    <fragment
+    <dialog
         android:id="@+id/userPreferencesDialogFragment"
         android:name="com.example.healthconnect.codelab.ui.userPreferences.UserPreferencesDialogFragment"
-        android:label="fragment_user_preferences"
+        android:label="fragment_user_preferences_dialog"
         tools:layout="@layout/fragment_user_preferences_dialog" />
 </navigation>

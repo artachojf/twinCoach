@@ -50,7 +50,6 @@ class GoalDialogFragment : DialogFragment() {
         val height = ViewGroup.LayoutParams.WRAP_CONTENT
         requireDialog().window?.setLayout(width.toInt(), height)
 
-        //TODO: Posibilidad de incluir un loader
         etMinutes.filters = arrayOf(MinMaxFilter(0, 99))
         etMinutes.filters = arrayOf(MinMaxFilter(0, 59))
         etSeconds.filters = arrayOf(MinMaxFilter(0, 59))
@@ -126,6 +125,7 @@ class GoalDialogFragment : DialogFragment() {
                 viewModel.date = it.date
                 btnDate.text = viewModel.date.toString()
             }
+            dismissLoader()
         }
 
         updateGoalSuccess.observe(viewLifecycleOwner) {
@@ -137,10 +137,16 @@ class GoalDialogFragment : DialogFragment() {
         }
 
         error.observe(viewLifecycleOwner) {
+            dismissLoader()
             ViewUtils.showToast(requireContext(), ViewUtils.getErrorStringId(it))
         }
 
         init()
+    }
+
+    private fun dismissLoader() = binding.apply {
+        progressBar.visibility = View.GONE
+        clGoal.visibility = View.VISIBLE
     }
 
     private inner class MinMaxFilter(

@@ -143,5 +143,4 @@
     <string name="sunday">Sunday</string>
     <string name="put_preferences_success">Preferences have been updated successfully!</string>
     <string name="no_training_days_selected_error">Please select at least one training day please</string>
-
 </resources>
