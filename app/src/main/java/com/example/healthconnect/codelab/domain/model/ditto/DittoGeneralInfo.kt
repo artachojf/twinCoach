@@ -1,6 +1,5 @@
 package com.example.healthconnect.codelab.domain.model.ditto
 
-import android.util.Log
 import com.example.healthconnect.codelab.BuildConfig
 import com.example.healthconnect.codelab.data.model.ditto.DittoGeneralInfoModel
 import java.io.Serializable
@@ -16,11 +15,11 @@ class DittoGeneralInfo {
     )
 
     data class Attributes(
-        var gender: Int,
+        var gender: String,
         var height: Int,
         var weight: Double,
-        var birthYear: Int,
-        var runningYear: Int
+        var birthdate: LocalDate,
+        var runningDate: LocalDate
     )
 
     data class Features(
@@ -101,7 +100,13 @@ fun DittoGeneralInfoModel.Thing.toDomain(): DittoGeneralInfo.Thing =
     DittoGeneralInfo.Thing(thingId!!, policyId, attributes.toDomain(), features.toDomain())
 
 fun DittoGeneralInfoModel.Attributes.toDomain(): DittoGeneralInfo.Attributes =
-    DittoGeneralInfo.Attributes(gender, height, weight, birthYear, runningYear)
+    DittoGeneralInfo.Attributes(
+        gender,
+        height,
+        weight,
+        LocalDate.parse(birthdate),
+        LocalDate.parse(runningDate)
+    )
 
 fun DittoGeneralInfoModel.Features.toDomain(): DittoGeneralInfo.Features =
     DittoGeneralInfo.Features(

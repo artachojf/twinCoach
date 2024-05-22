@@ -5,4 +5,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="Widget.ToggleCircular.Mixed" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:background">@drawable/toggle_circular_bg2</item>
+        <item name="android:textColor">@color/mtrl_choice_chip_text_color</item>
+        <item name="android:button">@null</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

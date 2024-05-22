@@ -1,6 +1,8 @@
 package com.example.healthconnect.codelab.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.healthconnect.codelab.R
@@ -76,4 +78,14 @@ fun Double.toWeigthString(): String {
 
 fun LocalDateTime.toFormatString(): String {
     return this.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+}
+
+fun EditText.resetColors() {
+    setHintTextColor(context.getColor(R.color.soft_grey))
+    backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.grey))
+}
+
+fun EditText.onError() {
+    setHintTextColor(context.getColor(R.color.soft_red))
+    backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.red))
 }

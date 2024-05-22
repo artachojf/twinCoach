@@ -30,6 +30,12 @@
             app:destination="@id/progressionFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_goalDialogFragment"
+            app:destination="@id/goalDialogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_personalInformationDialogFragment"
+            app:destination="@id/personalInformationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -39,6 +45,15 @@
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_goalDialogFragment"
+            app:destination="@id/goalDialogFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_personalInformationDialogFragment"
+            app:destination="@id/personalInformationDialogFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_userPreferencesDialogFragment"
+            app:destination="@id/userPreferencesDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -87,4 +102,18 @@
         android:name="com.example.healthconnect.codelab.ui.progression.ProgressionFragment"
         android:label="fragment_progression"
         tools:layout="@layout/fragment_progression" />
+    <dialog
+        android:id="@+id/goalDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.goal.GoalDialogFragment"
+        android:label="fragment_goal_dialog"
+        tools:layout="@layout/fragment_goal_dialog" />
+    <dialog
+        android:id="@+id/personalInformationDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.personaInformation.PersonalInformationDialogFragment"
+        android:label="PersonalInformationDialogFragment" />
+    <dialog
+        android:id="@+id/userPreferencesDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.userPreferences.UserPreferencesDialogFragment"
+        android:label="fragment_user_preferences_dialog"
+        tools:layout="@layout/fragment_user_preferences_dialog" />
 </navigation>

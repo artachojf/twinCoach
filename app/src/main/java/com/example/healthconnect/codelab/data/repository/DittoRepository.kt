@@ -68,6 +68,45 @@ class DittoRepository @Inject constructor(
         return Either.Right(plan?.toDomain())
     }
 
+    suspend fun getGoalInformation(
+        googleId: String
+    ): Either<DittoError, DittoGeneralInfo.Goal?> {
+        val response = dittoDatasource.getGoalInformation(googleId)
+        return response.fold(::handleError, ::handleGoalInformation)
+    }
+
+    private fun handleGoalInformation(
+        goal: DittoGeneralInfoModel.GoalProperties?
+    ): Either.Right<DittoGeneralInfo.Goal?> {
+        return Either.Right(goal?.toDomain())
+    }
+
+    suspend fun getAttributes(
+        googleId: String
+    ): Either<DittoError, DittoGeneralInfo.Attributes?> {
+        val response = dittoDatasource.getAttributes(googleId)
+        return response.fold(::handleError, ::handleAttributes)
+    }
+
+    private fun handleAttributes(
+        attributes: DittoGeneralInfoModel.Attributes?
+    ): Either.Right<DittoGeneralInfo.Attributes?> {
+        return Either.Right(attributes?.toDomain())
+    }
+
+    suspend fun getPreferences(
+        googleId: String
+    ): Either<DittoError, DittoGeneralInfo.Preferences?> {
+        val response = dittoDatasource.getGeneralInfoPreferences(googleId)
+        return response.fold(::handleError, ::handlePreferences)
+    }
+
+    private fun handlePreferences(
+        preferences: DittoGeneralInfoModel.PreferencesProperties?
+    ): Either.Right<DittoGeneralInfo.Preferences?> {
+        return Either.Right(preferences?.let { DittoGeneralInfoModel.Preferences(it).toDomain() })
+    }
+
     suspend fun getAllCurrentStateThings(
         googleId: String
     ): Either<DittoError, List<DittoCurrentState.Thing>> {
@@ -100,6 +139,30 @@ class DittoRepository @Inject constructor(
         features: DittoGeneralInfo.Features
     ): Either<DittoError, Unit> {
         val response = dittoDatasource.putGeneralInfoFeatures(thingId, features.toData())
+        return response.fold(::handleError, ::handleEmptySuccess)
+    }
+
+    suspend fun putGeneralInfoGoal(
+        thingId: String,
+        goal: DittoGeneralInfo.Goal
+    ): Either<DittoError, Unit> {
+        val response = dittoDatasource.putGeneralInfoGoal(thingId, goal.toData())
+        return response.fold(::handleError, ::handleEmptySuccess)
+    }
+
+    suspend fun putGeneralInfoAttributes(
+        thingId: String,
+        attributes: DittoGeneralInfo.Attributes
+    ): Either<DittoError, Unit> {
+        val response = dittoDatasource.putGeneralInfoAttributes(thingId, attributes.toData())
+        return response.fold(::handleError, ::handleEmptySuccess)
+    }
+
+    suspend fun putGeneralInfoPreferences(
+        thingId: String,
+        preferences: DittoGeneralInfo.Preferences
+    ): Either<DittoError, Unit> {
+        val response = dittoDatasource.putGeneralInfoPreferences(thingId, preferences.toData().properties)
         return response.fold(::handleError, ::handleEmptySuccess)
     }
 

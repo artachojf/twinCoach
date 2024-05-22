@@ -6,6 +6,7 @@
     <string name="error_message">Something went wrong. Please try again</string>
     <string name="goal">Goal</string>
     <string name="next_training_session">Next training session</string>
+    <string name="save">Save</string>
 
     <!-- ERROR -->
     <string name="server_error">Server error. Wait a minute and please try again</string>
@@ -67,6 +68,9 @@
     <string name="logout">Logout</string>
     <string name="logout_warning_dialog">Are you sure you want to logout?</string>
     <string name="delete_account_warning_dialog">Are you sure you want to delete your account? This action will be definitive and will delete all the information</string>
+    <string name="change_goal">Change goal</string>
+    <string name="change_personal_information">Change personal information</string>
+    <string name="user_preferences">User preferences</string>
 
     <!-- FATIGUE -->
     <string name="extreme_fatigue">You look extremely tired!\nRest is recommended</string>
@@ -87,4 +91,56 @@
     <string name="more_training_days_1">You are not expected to reach the goal before the raceday. Would you like to increase the number of training days per week to</string>
     <string name="more_training_days_2">days?</string>
     <string name="put_features_success">User information have been updated successfully!</string>
+
+    <!-- GOAL DIALOG FRAGMENT -->
+    <string name="goal_information">Goal Information</string>
+    <string name="goal_time">Time</string>
+    <string name="goal_length">Length</string>
+    <string name="goal_date">Date</string>
+    <string name="hours_symbol">h</string>
+    <string name="minutes_symbol">min</string>
+    <string name="seconds_symbol">sec</string>
+    <string name="time_separator">:</string>
+    <string name="meters_symbol">m</string>
+    <string name="distance_hint">Distance</string>
+    <string name="date_button_text">Select a date</string>
+    <string name="put_goal_success">Goal have been updated successfully!</string>
+    <string name="form_not_completed">The form is not fully completed. Please completed the fields in red and try again</string>
+    <string name="select_date">Please select a date</string>
+
+    <!-- PERSONAL INFORMATION DIALOG FRAGMENT -->
+    <string name="personal_information">Personal Information</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="running_date">Running Date</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender_fluid">Gender Fluid</string>
+    <string name="non_binary">Non binary</string>
+    <string name="dont_know">NR/DK</string>
+    <string name="centimeters_symbol">cm</string>
+    <string name="kilogram_symbol">kg</string>
+    <string name="put_personal_information_success">Personal information have been updated successfully!</string>
+
+    <!-- USER PREFERENCES DIALOG FRAGMENT -->
+    <string name="user_preferences_title">User Preferences</string>
+    <string name="training_days">Preferred weekly training days</string>
+    <string name="monday_initial">M</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday_initial">T</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday_initial">W</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday_initial">T</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday_initial">F</string>
+    <string name="friday">Friday</string>
+    <string name="saturday_initial">S</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday_initial">S</string>
+    <string name="sunday">Sunday</string>
+    <string name="put_preferences_success">Preferences have been updated successfully!</string>
+    <string name="no_training_days_selected_error">Please select at least one training day please</string>
 </resources>

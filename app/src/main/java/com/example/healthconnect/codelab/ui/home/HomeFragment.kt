@@ -129,8 +129,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToGoal() {
-        //val action = HomeFragmentDirections
-        //findNavController().navigate(action)
+        val action = HomeFragmentDirections.actionHomeFragmentToGoalDialogFragment()
+        findNavController().navigate(action)
     }
 
     private fun moveToProgression() {
@@ -146,8 +146,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToGeneralInfo() {
-        //val action = HomeFragmentDirections
-        //findNavController().navigate(action)
+        val action = HomeFragmentDirections.actionHomeFragmentToPersonalInformationDialogFragment()
+        findNavController().navigate(action)
     }
 
     private fun moveToFirstSteps() {

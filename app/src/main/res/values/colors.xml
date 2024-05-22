@@ -10,4 +10,7 @@
 
     <color name="red">#FF0F0F</color>
     <color name="soft_red">#FF4545</color>
+
+    <color name="grey">#595959</color>
+    <color name="soft_grey">#909090</color>
 </resources>
