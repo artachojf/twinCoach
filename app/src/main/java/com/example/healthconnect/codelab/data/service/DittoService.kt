@@ -36,6 +36,21 @@ interface DittoService {
         @Path("googleId") googleId: String
     ): Response<ResponseBody>
 
+    @GET("/api/2/things/{googleId}/features/goal/properties")
+    suspend fun getGoalInformation(
+        @Path("googleId") googleId: String
+    ): Response<ResponseBody>
+
+    @GET("/api/2/things/{googleId}/attributes")
+    suspend fun getAttributes(
+        @Path("googleId") googleId: String
+    ): Response<ResponseBody>
+
+    @GET("/api/2/things/{googleId}/features/preferences/properties")
+    suspend fun getGeneralInfoPreferences(
+        @Path("googleId") googleId: String
+    ): Response<ResponseBody>
+
     @GET("/api/2/search/things")
     suspend fun queryCurrentStateThings(
         @Query("filter") filter: String,
@@ -61,6 +76,27 @@ interface DittoService {
     suspend fun putGeneralInfoFeatures(
         @Path("googleId") googleId: String,
         @Body features: DittoGeneralInfoModel.Features
+    ): Response<ResponseBody>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/api/2/things/{googleId}/features/goal/properties")
+    suspend fun putGeneralInfoGoal(
+        @Path("googleId") googleId: String,
+        @Body goal: DittoGeneralInfoModel.GoalProperties
+    ): Response<ResponseBody>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/api/2/things/{thingId}/attributes")
+    suspend fun putGeneralInfoAttributes(
+        @Path("thingId") thingId: String,
+        @Body attributes: DittoGeneralInfoModel.Attributes
+    ): Response<ResponseBody>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/api/2/things/{thingId}/features/preferences/properties")
+    suspend fun putGeneralInfoPreferences(
+        @Path("thingId") thingId: String,
+        @Body attributes: DittoGeneralInfoModel.PreferencesProperties
     ): Response<ResponseBody>
 
     @DELETE("/api/2/things/{thingId}")

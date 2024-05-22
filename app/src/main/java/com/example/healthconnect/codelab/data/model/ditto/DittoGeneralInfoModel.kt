@@ -21,11 +21,11 @@ class DittoGeneralInfoModel {
 
     @Serializable
     data class Attributes(
-        var gender: Int,
+        var gender: String,
         var height: Int,
         var weight: Double,
-        var birthYear: Int,
-        var runningYear: Int
+        var birthdate: String,
+        var runningDate: String
     )
 
     @Serializable
@@ -111,7 +111,13 @@ fun DittoGeneralInfo.Thing.toData(): DittoGeneralInfoModel.Thing =
     DittoGeneralInfoModel.Thing(attributes = attributes.toData(), features = features.toData())
 
 fun DittoGeneralInfo.Attributes.toData(): DittoGeneralInfoModel.Attributes =
-    DittoGeneralInfoModel.Attributes(gender, height, weight, birthYear, runningYear)
+    DittoGeneralInfoModel.Attributes(
+        gender,
+        height,
+        weight,
+        birthdate.toString(),
+        runningDate.toString()
+    )
 
 fun DittoGeneralInfo.Features.toData(): DittoGeneralInfoModel.Features =
     DittoGeneralInfoModel.Features(

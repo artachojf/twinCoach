@@ -137,8 +137,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
                     tvHeight.text = info.height.toHeightString()
                     tvWeight.text = info.weight.toWeigthString()
-                    tvBirthdate.text = info.birthYear.toString()
-                    tvRunningDate.text = info.runningYear.toString()
+                    tvBirthdate.text = info.birthdate.toString()
+                    tvRunningDate.text = info.runningDate.toString()
 
                     constraint.visibility = View.VISIBLE
                 }

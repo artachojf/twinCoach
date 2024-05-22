@@ -79,6 +79,54 @@ class DittoDatasource @Inject constructor(
         }
     }
 
+    suspend fun getGoalInformation(
+        googleId: String
+    ): Either<ResponseFailure, DittoGeneralInfoModel.GoalProperties?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.getGoalInformation(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun getAttributes(
+        googleId: String
+    ): Either<ResponseFailure, DittoGeneralInfoModel.Attributes?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.getAttributes(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun getGeneralInfoPreferences(
+        googleId: String
+    ): Either<ResponseFailure, DittoGeneralInfoModel.PreferencesProperties?> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.getGeneralInfoPreferences(googleId)
+                if (response.code() == 404)
+                    Either.Right(null)
+                else
+                    ResponseParser.parseResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
     suspend fun queryCurrentStateThings(
         googleId: String,
         size: Int = 100
@@ -131,6 +179,48 @@ class DittoDatasource @Inject constructor(
         return withContext(Dispatchers.IO) {
             try {
                 val response = dittoService.putGeneralInfoFeatures(thingId, features)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun putGeneralInfoGoal(
+        thingId: String,
+        goal: DittoGeneralInfoModel.GoalProperties
+    ): Either<ResponseFailure, Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.putGeneralInfoGoal(thingId, goal)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun putGeneralInfoAttributes(
+        thingId: String,
+        attributes: DittoGeneralInfoModel.Attributes
+    ): Either<ResponseFailure, Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.putGeneralInfoAttributes(thingId, attributes)
+                ResponseParser.parseEmptyResponse(response)
+            } catch (e: Exception) {
+                ResponseParser.parseError(e)
+            }
+        }
+    }
+
+    suspend fun putGeneralInfoPreferences(
+        thingId: String,
+        preferences: DittoGeneralInfoModel.PreferencesProperties
+    ): Either<ResponseFailure, Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = dittoService.putGeneralInfoPreferences(thingId, preferences)
                 ResponseParser.parseEmptyResponse(response)
             } catch (e: Exception) {
                 ResponseParser.parseError(e)

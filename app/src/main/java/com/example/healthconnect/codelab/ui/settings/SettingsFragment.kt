@@ -49,6 +49,9 @@ class SettingsFragment : Fragment() {
 
         val settingsList =
             listOf(
+                SettingsViewEntity.RegularSetting(getString(R.string.change_goal), ::onGoal),
+                SettingsViewEntity.RegularSetting(getString(R.string.change_personal_information), ::onPersonalInformation),
+                SettingsViewEntity.RegularSetting(getString(R.string.user_preferences), ::onUserPreferences),
                 SettingsViewEntity.RegularSetting(getString(R.string.logout)) {
                     ViewUtils.showDialog(requireContext(), R.string.logout_warning_dialog, ::onLogout, {})
                 },
@@ -73,6 +76,21 @@ class SettingsFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
+    }
+
+    private fun onGoal() {
+        val action = SettingsFragmentDirections.actionSettingsFragmentToGoalDialogFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun onPersonalInformation() {
+        val action = SettingsFragmentDirections.actionSettingsFragmentToPersonalInformationDialogFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun onUserPreferences() {
+        val action = SettingsFragmentDirections.actionSettingsFragmentToUserPreferencesDialogFragment()
+        findNavController().navigate(action)
     }
 
     private fun onLogout() {
