@@ -51,7 +51,7 @@ class SessionsListAdapter(
             binding.apply {
                 tvNextSession.text = item.session.day.toString()
                 tvDistance.text =
-                    if (item.session.times == 1) "${item.session.times} X ${item.session.distance.toDistanceString()}"
+                    if (item.session.times > 1) "${item.session.times} x ${item.session.distance.toDistanceString()}"
                     else item.session.distance.toDistanceString()
                 tvTime.text = item.session.expectedTime.toTimeString()
                 tvHeart.text = item.session.meanHeartRate.toHeartRateString()
