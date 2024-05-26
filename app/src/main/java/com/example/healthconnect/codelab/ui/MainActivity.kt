@@ -30,13 +30,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
-
-        onBackPressedDispatcher.addCallback(this) {
-            val list = listOf(R.id.homeFragment, R.id.loginFragment, R.id.splashFragment)
-            if ((navController.currentDestination?.id ?: "") in list) finish()
-            else navController.popBackStack()
-        }
+        navView.setupWithNavController(navController, )
 
         viewModel.readUserInformation()
 
