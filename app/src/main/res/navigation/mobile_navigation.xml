@@ -36,6 +36,11 @@
         <action
             android:id="@+id/action_homeFragment_to_personalInformationDialogFragment"
             app:destination="@id/personalInformationDialogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_firstStepFragment"
+            app:destination="@id/firstStepFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -116,4 +121,33 @@
         android:name="com.example.healthconnect.codelab.ui.userPreferences.UserPreferencesDialogFragment"
         android:label="fragment_user_preferences_dialog"
         tools:layout="@layout/fragment_user_preferences_dialog" />
+    <fragment
+        android:id="@+id/firstStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.first.FirstStepFragment"
+        android:label="fragment_first_step"
+        tools:layout="@layout/fragment_first_step" >
+        <action
+            android:id="@+id/action_firstStepFragment_to_secondStepFragment"
+            app:destination="@id/secondStepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.second.SecondStepFragment"
+        android:label="fragment_second_step"
+        tools:layout="@layout/fragment_second_step" >
+        <action
+            android:id="@+id/action_secondStepFragment_to_thirdStepFragment"
+            app:destination="@id/thirdStepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/thirdStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.third.ThirdStepFragment"
+        android:label="fragment_third_step"
+        tools:layout="@layout/fragment_third_step" >
+        <action
+            android:id="@+id/action_thirdStepFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/firstStepFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

@@ -45,6 +45,16 @@ class HealthConnectManager @Inject constructor(
         HealthPermission.getReadPermission(SleepSessionRecord::class)
     )
 
+    companion object {
+        fun isSupported(context: Context): Boolean {
+            return HealthConnectClient.getSdkStatus(context) != HealthConnectClient.SDK_UNAVAILABLE
+        }
+
+        fun isInstalled(context: Context): Boolean {
+            return HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE
+        }
+    }
+
     /**
      * This function checks if the application has been granted all the permissions requested
      */
