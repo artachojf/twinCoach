@@ -13,6 +13,7 @@ import com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo
 import com.example.healthconnect.codelab.ui.sessions.SessionsFragmentDirections
 import com.example.healthconnect.codelab.ui.sessions.SessionsViewModel
 import com.example.healthconnect.codelab.utils.toDistanceString
+import com.example.healthconnect.codelab.utils.toFormatString
 import com.example.healthconnect.codelab.utils.toHeartRateString
 import com.example.healthconnect.codelab.utils.toSpeedString
 import com.example.healthconnect.codelab.utils.toTimeString
@@ -94,7 +95,7 @@ class SessionsCalendarFragment : Fragment() {
         val distance = session.features.trainingSession.getTotalDistance()
         val time = session.features.trainingSession.getTotalTime()
 
-        tvNextSession.text = session.attributes.date.toString()
+        tvNextSession.text = session.attributes.date.toFormatString()
         tvDistance.text = distance.toInt().toDistanceString()
         tvTime.text = time.toInt().toTimeString()
         tvHeart.text
