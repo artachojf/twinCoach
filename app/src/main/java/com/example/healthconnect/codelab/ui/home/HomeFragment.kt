@@ -74,7 +74,6 @@ class HomeFragment : Fragment() {
 
     private fun initViewModel() = viewModel.apply {
         generalInfo.observe(viewLifecycleOwner) {
-            if (it == null) moveToFirstSteps()
             adapter.submitList(getHomeOptions())
 
             binding.apply {
@@ -82,6 +81,10 @@ class HomeFragment : Fragment() {
                 tvHomeEmptyState.visibility = View.GONE
             }
             dismissLoader()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (it == null) moveToFirstSteps()
+            }, 1000)
         }
 
         error.observe(viewLifecycleOwner) {
@@ -109,21 +112,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun getHomeOptions(): List<HomeViewEntity> {
-        val list = mutableListOf(
-            HomeViewEntity.GoalViewEntity(viewModel.generalInfo.value?.features?.goal) { moveToGoal() },
-            HomeViewEntity.NextSessionEntity(
-                viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)
-            ) { moveToNextSession() },
-            HomeViewEntity.GeneralInformationEntity(viewModel.generalInfo.value?.attributes) { moveToGeneralInfo() },
-            HomeViewEntity.FatigueViewEntity(3) {}
-        )
+        val list = mutableListOf<HomeViewEntity>()
 
+        list.add(HomeViewEntity.GoalViewEntity(viewModel.generalInfo.value?.features?.goal) { moveToGoal() })
         if (viewModel.generalInfo.value?.features?.suggestions != null
-            && viewModel.generalInfo.value?.features?.suggestions!!.suggestions.size > 0
+            && viewModel.generalInfo.value?.features?.suggestions!!.suggestions.isNotEmpty()
         )
-            list.add(
-                1,
-                HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
+            list.add(HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
+        if (viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.isNotEmpty() == true)
+            HomeViewEntity.NextSessionEntity(viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)) { moveToNextSession() }
+        list.add(HomeViewEntity.GeneralInformationEntity(viewModel.generalInfo.value?.attributes) { moveToGeneralInfo() })
+        list.add(HomeViewEntity.FatigueViewEntity(3) {})
 
         return list
     }
@@ -151,7 +150,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveToFirstSteps() {
-
+        val action = HomeFragmentDirections.actionHomeFragmentToFirstStepFragment()
+        findNavController().navigate(action)
     }
 
     //Periodic Service

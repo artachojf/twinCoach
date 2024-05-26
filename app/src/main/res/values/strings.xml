@@ -143,4 +143,24 @@
     <string name="sunday">Sunday</string>
     <string name="put_preferences_success">Preferences have been updated successfully!</string>
     <string name="no_training_days_selected_error">Please select at least one training day please</string>
+
+    <!-- FIRST STEP -->
+    <string name="welcome">Welcome to TwinCoach!</string>
+    <string name="first_step_description">First of all, we need you to configure a few things.\nTo use this application we need to be able to read your training sessions from Healt Connect. Please check if you have Health Connect installed in your device.\nOnce you are sure you have installed Health Connect you can continue.</string>
+    <string name="play_store">Play Store</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
+    <string name="sdk_not_supported">Health Connect is not available on your device. We are sorry</string>
+    <string name="health_connect_installed">Health Connect is already installed in your device!</string>
+
+    <!-- SECOND STEP -->
+    <string name="permissions">Permissions</string>
+    <string name="second_step_description">Now that you have installed Health Connect please make sure you are syncronizing your training sessions with it.\nClick on the following button to grant permission to the application you usually use (e.g. Samsung Health, COROS…) to write data into Health Connect.\nAlso you have to grant read permission to TwinCoach, in order to take your data from Health Connect.</string>
+    <string name="grant_permission">You need to grant permission to TwinCoach to be able to read your data. Thank you!</string>
+
+    <!-- THIRD STEP -->
+    <string name="third_step_description">We are almost done now!\nJust please complete the following information. We need this information to create a customized training plan for each one of our athletes.</string>
+    <string name="training_goal">Training Goal</string>
+    <string name="introduce_data">Please introduce the requested data. It is necessary to build a customized training plan</string>
 </resources>
