@@ -1,6 +1,8 @@
 package com.example.healthconnect.codelab.ui.settings
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +67,10 @@ class SettingsFragment : Fragment() {
             rvSettingOptions.adapter = SettingsListAdapter(settingsList)
         }
 
+        initViewModel()
+    }
+
+    private fun initViewModel() {
         mainViewModel.userInformation.observe(viewLifecycleOwner) {
             if (it.googleId.isEmpty()) {
                 (activity as MainActivity).apply {
@@ -75,6 +81,28 @@ class SettingsFragment : Fragment() {
                 val action = SettingsFragmentDirections.actionSettingsFragmentToLoginFragment()
                 findNavController().navigate(action)
             }
+        }
+
+        viewModel.currentStates.observe(viewLifecycleOwner) {
+            binding.apply {
+                rlTransparent.visibility = View.VISIBLE
+                deleteProgressBar.visibility = View.VISIBLE
+
+                deleteProgressBar.apply {
+                    min = 0
+                    max = it.size
+                }
+            }
+        }
+
+        viewModel.deletedThings.observe(viewLifecycleOwner) {
+            binding.deleteProgressBar.setProgress(it, true)
+        }
+
+        viewModel.deletedAccount.observe(viewLifecycleOwner) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                onLogout()
+            }, 500)
         }
     }
 
@@ -99,6 +127,6 @@ class SettingsFragment : Fragment() {
     }
 
     private fun onDeleteAccount() {
-
+        viewModel.initDelete()
     }
 }
