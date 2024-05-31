@@ -12,6 +12,7 @@ import com.example.healthconnect.codelab.databinding.FragmentCompletedSessionInf
 import com.example.healthconnect.codelab.databinding.ItemHrZoneComponentBinding
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
 import com.example.healthconnect.codelab.ui.MainActivity
+import com.example.healthconnect.codelab.utils.round
 import com.example.healthconnect.codelab.utils.toDistanceString
 import com.example.healthconnect.codelab.utils.toFormatString
 import com.example.healthconnect.codelab.utils.toSpeedString
@@ -84,7 +85,7 @@ class CompletedSessionInfoFragment : Fragment() {
         binding.apply {
             tvZone.text = name
             progressBar.progress = progress.toInt()
-            tvProgress.text = "$progress %"
+            tvProgress.text = "${progress.round(2)} %"
         }
 
     private fun lapsList(session: DittoCurrentState.TrainingSession): List<LapsViewEntity> {

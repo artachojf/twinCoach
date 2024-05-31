@@ -58,7 +58,7 @@ fun Int.toTimeString(): String {
 }
 
 fun Int.toDistanceString(): String {
-    return if (this >= 1000) (this.toDouble() / 1000.0).toString() + " km" else "$this m"
+    return if (this >= 1000) "${(this.toDouble() / 1000.0).round(2)} km" else "$this m"
 }
 
 fun Int.toHeartRateString(): String {
@@ -89,4 +89,10 @@ fun EditText.resetColors() {
 fun EditText.onError() {
     setHintTextColor(context.getColor(R.color.soft_red))
     backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.red))
+}
+
+fun Double.round(decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
 }
