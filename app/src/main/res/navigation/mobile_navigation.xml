@@ -50,7 +50,7 @@
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/settingsFragment"
+            app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_settingsFragment_to_goalDialogFragment"
