@@ -10,6 +10,7 @@ import com.example.healthconnect.codelab.domain.usecase.userInformation.WriteUse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,6 +60,6 @@ class MainViewModel @Inject constructor(
     }
 
     private companion object {
-        val EMPTY_USER = UserInformation("", "", "", null)
+        val EMPTY_USER = UserInformation("", "", "", null, LocalDate.now())
     }
 }

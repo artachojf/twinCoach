@@ -31,7 +31,8 @@ class DittoCurrentStateModel {
     @Serializable
     data class Features(
         val trainingSession: TrainingSession,
-        val sleepRating: SleepRating
+        val sleepSession: SleepSession,
+        val stepsRecord: StepsRecord
     )
 
     @Serializable
@@ -63,13 +64,26 @@ class DittoCurrentStateModel {
     )
 
     @Serializable
-    data class SleepRating(
-        val properties: SleepRatingProperties
+    data class SleepSession(
+        val properties: SleepSessionProperties
     )
 
     @Serializable
-    data class SleepRatingProperties(
-        var overall: Double
+    data class SleepSessionProperties(
+        var awake: Int,
+        var light: Int,
+        var deep: Int,
+        var rem: Int
+    )
+
+    @Serializable
+    data class StepsRecord(
+        val properties: StepsRecordProperties
+    )
+
+    @Serializable
+    data class StepsRecordProperties(
+        var count: Int
     )
 }
 
@@ -80,7 +94,7 @@ fun DittoCurrentState.Attributes.toData(): DittoCurrentStateModel.Attributes =
     DittoCurrentStateModel.Attributes(googleId, date.toString())
 
 fun DittoCurrentState.Features.toData(): DittoCurrentStateModel.Features =
-    DittoCurrentStateModel.Features(trainingSession.toData(), sleepRating.toData())
+    DittoCurrentStateModel.Features(trainingSession.toData(), sleepSession.toData(), stepsRecord.toData())
 
 fun DittoCurrentState.TrainingSession.toData(): DittoCurrentStateModel.TrainingSession =
     DittoCurrentStateModel.TrainingSession(
@@ -95,7 +109,14 @@ fun DittoCurrentState.TrainingSessionZone.toData(): DittoCurrentStateModel.Train
 fun DittoCurrentState.TrainingLap.toData(): DittoCurrentStateModel.TrainingLap =
     DittoCurrentStateModel.TrainingLap(startTime.toString(), distance, time)
 
-fun DittoCurrentState.SleepRating.toData(): DittoCurrentStateModel.SleepRating =
-    DittoCurrentStateModel.SleepRating(
-        DittoCurrentStateModel.SleepRatingProperties(overall)
+fun DittoCurrentState.SleepSession.toData(): DittoCurrentStateModel.SleepSession =
+    DittoCurrentStateModel.SleepSession(
+        DittoCurrentStateModel.SleepSessionProperties(
+            awake, light, deep, rem
+        )
+    )
+
+fun DittoCurrentState.StepsRecord.toData(): DittoCurrentStateModel.StepsRecord =
+    DittoCurrentStateModel.StepsRecord(
+        DittoCurrentStateModel.StepsRecordProperties(count)
     )

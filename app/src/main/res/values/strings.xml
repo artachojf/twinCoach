@@ -21,6 +21,8 @@
     <string name="training_card_empty_state">There are not any suggested training sessions</string>
     <string name="info_card_empty_state">There is no information about you. Please tap here to complete your profile</string>
     <string name="fatigue_card_empty_state">There is no information about fatigue</string>
+    <string name="health_connect_error">An error occurred while updating our data with Health Connect</string>
+    <string name="health_connect_sync_finished">Data has been synchronized successfully! Changes may take a while to appear</string>
 
     <!-- LOGIN FRAGMENT -->
     <string name="login_button">Login with Google</string>

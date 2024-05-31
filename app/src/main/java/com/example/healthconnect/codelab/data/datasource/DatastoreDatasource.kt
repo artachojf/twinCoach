@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import arrow.core.Either
+import com.example.healthconnect.codelab.data.model.token.TokenModel
 import com.example.healthconnect.codelab.data.model.userInformation.UserInformationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -46,7 +47,8 @@ class DatastoreDatasource @Inject constructor(
                     googleId = it[stringPreferencesKey("googleId")].orEmpty(),
                     name = it[stringPreferencesKey("name")].orEmpty(),
                     email = it[stringPreferencesKey("email")].orEmpty(),
-                    profilePicture = it[stringPreferencesKey("profilePicture")].orEmpty()
+                    profilePicture = it[stringPreferencesKey("profilePicture")].orEmpty(),
+                    birthdate = it[stringPreferencesKey("birthdate")]
                 )
             })
         } catch (_: Exception) {
@@ -62,6 +64,38 @@ class DatastoreDatasource @Inject constructor(
                     it[stringPreferencesKey("email")] = user.email
                     it[stringPreferencesKey("name")] = user.name
                     it[stringPreferencesKey("profilePicture")] = user.profilePicture
+                    user.birthdate?.let { date ->
+                        it[stringPreferencesKey("birthdate")] = date
+                    }
+                }
+                Either.Right(Unit)
+            } catch (_: Exception) {
+                Either.Left(Unit)
+            }
+        }
+    }
+
+    fun readToken(): Either<Unit, Flow<TokenModel>> {
+        return try {
+            Either.Right(datastore.data.map {
+                TokenModel(
+                    it[stringPreferencesKey("exerciseToken")].orEmpty(),
+                    it[stringPreferencesKey("sleepToken")].orEmpty(),
+                    it[stringPreferencesKey("stepsToken")].orEmpty()
+                )
+            })
+        } catch (_: Exception) {
+            Either.Left(Unit)
+        }
+    }
+
+    suspend fun writeToken(token: TokenModel): Either<Unit, Unit> {
+        return withContext(Dispatchers.IO) {
+            try {
+                datastore.edit {
+                    it[stringPreferencesKey("exerciseToken")] = token.exerciseSessionToken
+                    it[stringPreferencesKey("sleepToken")] = token.sleepToken
+                    it[stringPreferencesKey("stepsToken")] = token.stepsToken
                 }
                 Either.Right(Unit)
             } catch (_: Exception) {

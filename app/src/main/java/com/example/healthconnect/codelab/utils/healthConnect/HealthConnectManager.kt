@@ -17,10 +17,14 @@ import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState
+import com.example.healthconnect.codelab.domain.model.userInformation.UserInformation
 import java.io.IOException
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlin.reflect.KClass
 
 /**
@@ -32,11 +36,11 @@ class HealthConnectManager @Inject constructor(
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
 
-    private val MONTH_LENGTH_SECONDS: Long = 30 * 24 * 60 * 60
-    private val THRESHOLD_WALKING_PACE_MS = 1.25
-    private val ZONE1 = 50
-    private val ZONE2 = 75
-    private val ZONE3 = 82
+    private val THRESHOLD_WALKING_PACE_MS = 2.0
+    private val MIN_SPEED_DROP = 1.0
+    private val ZONE1 = 0.50
+    private val ZONE2 = 0.75
+    private val ZONE3 = 0.82
     val permissions = setOf(
         HealthPermission.getReadPermission(ExerciseSessionRecord::class),
         HealthPermission.getReadPermission(HeartRateRecord::class),
@@ -94,11 +98,18 @@ class HealthConnectManager @Inject constructor(
     /**
      * Retrieves all the exercise sessions existing
      */
-    suspend fun readExerciseSessionRecords(): List<ExerciseSessionRecord> {
-        return readExerciseSessionRecords(
-            Instant.now().minusSeconds(MONTH_LENGTH_SECONDS),
-            Instant.now()
-        )
+    suspend fun readAllExerciseSessionRecords(): List<ExerciseSessionRecord> {
+        try {
+            val request = ReadRecordsRequest(
+                recordType = ExerciseSessionRecord::class,
+                timeRangeFilter = TimeRangeFilter.before(Instant.now())
+            )
+            val response = healthConnectClient.readRecords(request)
+            return response.records
+        } catch (e: Exception) {
+            Log.e("readExerciseSessionRecord", e.stackTraceToString())
+            return emptyList()
+        }
     }
 
     /**
@@ -120,13 +131,6 @@ class HealthConnectManager @Inject constructor(
             Log.e("readExerciseSessionRecord", e.stackTraceToString())
             return emptyList()
         }
-    }
-
-    /**
-     * Retrieves all the heart rate records existing
-     */
-    suspend fun readHeartRateRecords(): List<HeartRateRecord> {
-        return readHeartRateRecords(Instant.now().minusSeconds(MONTH_LENGTH_SECONDS), Instant.now())
     }
 
     /**
@@ -159,13 +163,6 @@ class HealthConnectManager @Inject constructor(
     }
 
     /**
-     * Retrieve all the speed records of the previous 30 days
-     */
-    suspend fun readSpeedRecords(): List<SpeedRecord> {
-        return readSpeedRecords(Instant.now().minusSeconds(MONTH_LENGTH_SECONDS), Instant.now())
-    }
-
-    /**
      * Retrieve all the speed records during an exercise session
      * @param session
      */
@@ -174,6 +171,20 @@ class HealthConnectManager @Inject constructor(
             session.startTime.minusSeconds(120),
             session.endTime.plusSeconds(120)
         )
+    }
+
+    suspend fun readAllSleepRecords(): List<SleepSessionRecord> {
+        return try {
+            val request = ReadRecordsRequest(
+                recordType = SleepSessionRecord::class,
+                timeRangeFilter = TimeRangeFilter.before(Instant.now())
+            )
+            val response = healthConnectClient.readRecords(request)
+            response.records
+        } catch (e: Exception) {
+            Log.e("readSleepSessionRecord", e.stackTraceToString())
+            emptyList()
+        }
     }
 
     /**
@@ -251,45 +262,109 @@ class HealthConnectManager @Inject constructor(
         val z2 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val z3 = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
         val rest = DittoCurrentState.TrainingSessionZone(0.0, 0.0, 0.0)
+        val laps = mutableListOf<DittoCurrentState.TrainingLap>()
 
         for (i in speeds.indices) {
+            if (i+1 == speeds.size) continue
+
             val s = speeds[i]
-            val offset = (speeds[i + 1].time.epochSecond - s.time.epochSecond) * 100.0
-            val h = heartRates.findLast {
-                it.time <= s.time
-            } ?: continue
+            val nextS = speeds[i+1]
+            val offset = (nextS.time.epochSecond - s.time.epochSecond).toDouble()
+            val h = heartRates.findLast { it.time <= s.time } ?: continue
+            val distance = s.speed.inMetersPerSecond * offset
 
-            if (s.speed.inMetersPerSecond > THRESHOLD_WALKING_PACE_MS) {
-                val maxHrPercentage = h.beatsPerMinute.toDouble() / maxHeartRate.toLong()
+            updateHeartRateZones(s, offset, h, distance, maxHeartRate, z1, z2, z3, rest)
+            updateLaps(s, nextS, laps)
+        }
 
-                if (maxHrPercentage >= ZONE1 && maxHrPercentage < ZONE2) {
-                    z1.combine(
-                        h.beatsPerMinute.toDouble(),
-                        offset,
-                        s.speed.inMetersPerSecond * offset
-                    )
-                } else if (maxHrPercentage >= ZONE2 && maxHrPercentage < ZONE3) {
-                    z2.combine(
-                        h.beatsPerMinute.toDouble(),
-                        offset,
-                        s.speed.inMetersPerSecond * offset
-                    )
-                } else if (maxHrPercentage >= ZONE3) {
-                    z3.combine(
-                        h.beatsPerMinute.toDouble(),
-                        offset,
-                        s.speed.inMetersPerSecond * offset
-                    )
-                }
-            } else {
-                rest.combine(
+        return DittoCurrentState.TrainingSession(z1, z2, z3, rest, laps)
+    }
+
+    private fun updateHeartRateZones(
+        s: SpeedRecord.Sample,
+        offset: Double,
+        h: HeartRateRecord.Sample,
+        distance: Double,
+        maxHeartRate: Int,
+        z1: DittoCurrentState.TrainingSessionZone,
+        z2: DittoCurrentState.TrainingSessionZone,
+        z3: DittoCurrentState.TrainingSessionZone,
+        rest: DittoCurrentState.TrainingSessionZone,
+    ) {
+        if (s.speed.inMetersPerSecond > THRESHOLD_WALKING_PACE_MS) {
+            val maxHrPercentage = h.beatsPerMinute.toDouble() / maxHeartRate.toLong()
+
+            if (maxHrPercentage >= ZONE1 && maxHrPercentage < ZONE2) {
+                z1.combine(
                     h.beatsPerMinute.toDouble(),
                     offset,
-                    s.speed.inMetersPerSecond * offset
+                    distance
                 )
+            } else if (maxHrPercentage >= ZONE2 && maxHrPercentage < ZONE3) {
+                z2.combine(
+                    h.beatsPerMinute.toDouble(),
+                    offset,
+                    distance
+                )
+            } else if (maxHrPercentage >= ZONE3) {
+                z3.combine(
+                    h.beatsPerMinute.toDouble(),
+                    offset,
+                    distance
+                )
+            }
+        } else {
+            rest.combine(
+                h.beatsPerMinute.toDouble(),
+                offset,
+                distance
+            )
+        }
+    }
+
+    private fun updateLaps(
+        currentSpeed: SpeedRecord.Sample,
+        nextSpeed: SpeedRecord.Sample,
+        laps: MutableList<DittoCurrentState.TrainingLap>
+    ) {
+        if (laps.isEmpty() ||
+            abs(currentSpeed.speed.inMetersPerSecond - nextSpeed.speed.inMetersPerSecond) >= MIN_SPEED_DROP)
+            laps.add(
+                DittoCurrentState.TrainingLap(
+                    LocalDateTime.ofInstant(currentSpeed.time, ZoneId.systemDefault()),
+                    0.0,
+                    0.0
+                )
+            )
+
+        val currentLap = laps[laps.size-1]
+        val timeOffset = (nextSpeed.time.epochSecond - currentSpeed.time.epochSecond).toDouble()
+        val distanceOffset = currentSpeed.speed.inMetersPerSecond * timeOffset
+        currentLap.time += timeOffset
+        currentLap.distance += distanceOffset
+    }
+
+    fun rateStepsRecord(record: StepsRecord): DittoCurrentState.StepsRecord {
+        return DittoCurrentState.StepsRecord(record.count.toInt())
+    }
+
+    fun rateSleepSession(record: SleepSessionRecord): DittoCurrentState.SleepSession {
+        val session = DittoCurrentState.SleepSession(0,0,0,0)
+
+        record.stages.forEach {
+            val offset = it.endTime.epochSecond - it.startTime.epochSecond
+            when (it.stage) {
+                SleepSessionRecord.STAGE_TYPE_AWAKE -> session.awake += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_AWAKE_IN_BED -> session.awake += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_OUT_OF_BED -> session.awake += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_LIGHT -> session.light += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_SLEEPING -> session.light += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_DEEP -> session.deep += offset.toInt()
+                SleepSessionRecord.STAGE_TYPE_REM -> session.rem += offset.toInt()
+                else -> session.awake += offset.toInt()
             }
         }
 
-        return DittoCurrentState.TrainingSession(z1, z2, z3, rest, emptyList())
+        return session
     }
 }

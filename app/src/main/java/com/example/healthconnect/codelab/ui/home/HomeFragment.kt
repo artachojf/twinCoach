@@ -1,30 +1,25 @@
 package com.example.healthconnect.codelab.ui.home
 
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.health.connect.client.HealthConnectClient
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.healthconnect.codelab.BuildConfig
 import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.databinding.FragmentHomeBinding
-import com.example.healthconnect.codelab.services.PeriodicDittoService
 import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.ui.home.adapter.HomeAdapter
 import com.example.healthconnect.codelab.utils.ViewUtils
-import com.example.healthconnect.codelab.utils.healthConnect.HealthConnectManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -35,9 +30,6 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private val adapter: HomeAdapter = HomeAdapter()
-
-    @Inject
-    lateinit var hcManager: HealthConnectManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +49,6 @@ class HomeFragment : Fragment() {
 
         initViews()
         initViewModel()
-        //requestPermission()
     }
 
     private fun initViews() = binding.apply {
@@ -84,6 +75,7 @@ class HomeFragment : Fragment() {
 
             Handler(Looper.getMainLooper()).postDelayed({
                 if (it == null) moveToFirstSteps()
+                else viewModel.healthConnectPermissions()
             }, 1000)
         }
 
@@ -95,6 +87,28 @@ class HomeFragment : Fragment() {
                 tvHomeEmptyState.visibility = View.VISIBLE
             }
             dismissLoader()
+        }
+
+        healthConnectPermission.observe(viewLifecycleOwner) {
+            if (!it) {
+                ViewUtils.showDialog(
+                    requireContext(),
+                    R.string.permissions_alert_dialog,
+                    { openHealthConnectPermissions() },
+                    { activity?.finish() })
+
+            } else
+                viewModel.updateHealthConnectData()
+        }
+
+        healthConnectError.observe(viewLifecycleOwner) {
+            if (it)
+                ViewUtils.showToast(requireContext(), R.string.health_connect_error)
+        }
+
+        updateFinished.observe(viewLifecycleOwner) {
+            if (it)
+                ViewUtils.showToast(requireContext(), R.string.health_connect_sync_finished)
         }
 
         init()
@@ -154,35 +168,13 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    //Periodic Service
-
-    private fun requestPermission() {
-        lifecycleScope.launch {
-            if (!hcManager.hasAllPermissions()) {
-                val requestPermissions =
-                    registerForActivityResult(hcManager.requestPermissionActivityContract()) {
-                        if (it.containsAll(hcManager.permissions)) launchService()
-                        else {
-                            ViewUtils.showDialog(
-                                requireContext(),
-                                R.string.permissions_alert_dialog,
-                                {},
-                                { activity?.finish() })
-                        }
-                    }
-                requestPermissions.launch(hcManager.permissions)
-            } else {
-                launchService()
-            }
-        }
-    }
-
-    private fun launchService() {
-        val jobScheduler =
-            requireContext().getSystemService(AppCompatActivity.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val jobBuilder =
-            JobInfo.Builder(1, ComponentName(requireContext(), PeriodicDittoService::class.java))
-                .setPeriodic(1000 * 60 * 60).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-        jobScheduler.schedule(jobBuilder.build())
+    private fun openHealthConnectPermissions() {
+        val intent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                Intent(android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS)
+                    .putExtra(Intent.EXTRA_PACKAGE_NAME, BuildConfig.APPLICATION_ID)
+            else
+                Intent(HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS)
+        startActivity(intent)
     }
 }

@@ -19,7 +19,13 @@ class DittoCurrentState {
         val policyId: String? = null,
         val attributes: Attributes,
         val features: Features
-    ) : Serializable
+    ) : Serializable {
+        fun combine(thing: Thing) {
+            features.trainingSession.combine(thing.features.trainingSession)
+            features.stepsRecord.combine(thing.features.stepsRecord)
+            features.sleepSession.combine(thing.features.sleepSession)
+        }
+    }
 
     data class Attributes(
         val googleId: String,
@@ -28,7 +34,8 @@ class DittoCurrentState {
 
     data class Features(
         val trainingSession: TrainingSession,
-        val sleepRating: SleepRating
+        val sleepSession: SleepSession,
+        val stepsRecord: StepsRecord
     )
 
     data class TrainingSession(
@@ -36,13 +43,14 @@ class DittoCurrentState {
         val zone2: TrainingSessionZone,
         val zone3: TrainingSessionZone,
         val rest: TrainingSessionZone,
-        val laps: List<TrainingLap>
+        val laps: MutableList<TrainingLap>
     ) {
         fun combine(prop: TrainingSession) {
             this.zone1.combine(prop.zone1)
             this.zone2.combine(prop.zone2)
             this.zone3.combine(prop.zone3)
             this.rest.combine(prop.rest)
+            this.laps.addAll(prop.laps)
         }
 
         fun getTotalDistance(): Double = laps.sumOf { it.distance }
@@ -72,9 +80,27 @@ class DittoCurrentState {
         var time: Double
     )
 
-    data class SleepRating(
-        var overall: Double
-    )
+    data class SleepSession(
+        var awake: Int,
+        var light: Int,
+        var deep: Int,
+        var rem: Int
+    ) {
+        fun combine(props: SleepSession) {
+            this.awake += props.awake
+            this.light += props.light
+            this.deep += props.deep
+            this.rem += props.rem
+        }
+    }
+
+    data class StepsRecord(
+        var count: Int
+    ) {
+        fun combine(props: StepsRecord) {
+            this.count += props.count
+        }
+    }
 
     companion object {
         fun thingId(googleId: String, date: LocalDate): String =
@@ -97,7 +123,7 @@ fun DittoCurrentStateModel.Attributes.toDomain(): DittoCurrentState.Attributes =
     DittoCurrentState.Attributes(googleId, LocalDateTime.parse(date))
 
 fun DittoCurrentStateModel.Features.toDomain(): DittoCurrentState.Features =
-    DittoCurrentState.Features(trainingSession.toDomain(), sleepRating.toDomain())
+    DittoCurrentState.Features(trainingSession.toDomain(), sleepSession.toDomain(), stepsRecord.toDomain())
 
 fun DittoCurrentStateModel.TrainingSession.toDomain(): DittoCurrentState.TrainingSession =
     DittoCurrentState.TrainingSession(
@@ -105,7 +131,7 @@ fun DittoCurrentStateModel.TrainingSession.toDomain(): DittoCurrentState.Trainin
         properties.zone2.toDomain(),
         properties.zone3.toDomain(),
         properties.rest.toDomain(),
-        properties.laps.map { it.toDomain() }
+        properties.laps.map { it.toDomain() }.toMutableList()
     )
 
 fun DittoCurrentStateModel.TrainingSessionZone.toDomain(): DittoCurrentState.TrainingSessionZone =
@@ -114,5 +140,15 @@ fun DittoCurrentStateModel.TrainingSessionZone.toDomain(): DittoCurrentState.Tra
 fun DittoCurrentStateModel.TrainingLap.toDomain(): DittoCurrentState.TrainingLap =
     DittoCurrentState.TrainingLap(LocalDateTime.parse(startTime), distance, time)
 
-fun DittoCurrentStateModel.SleepRating.toDomain(): DittoCurrentState.SleepRating =
-    DittoCurrentState.SleepRating(properties.overall)
+fun DittoCurrentStateModel.SleepSession.toDomain(): DittoCurrentState.SleepSession =
+    DittoCurrentState.SleepSession(
+        properties.awake,
+        properties.light,
+        properties.deep,
+        properties.rem
+    )
+
+fun DittoCurrentStateModel.StepsRecord.toDomain(): DittoCurrentState.StepsRecord =
+    DittoCurrentState.StepsRecord(
+        properties.count
+    )

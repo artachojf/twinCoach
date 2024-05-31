@@ -8,6 +8,7 @@ import com.example.healthconnect.codelab.domain.usecase.userInformation.WriteUse
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +24,8 @@ class LoginViewModel @Inject constructor(
             account.id.orEmpty(),
             account.displayName.orEmpty(),
             account.email.orEmpty(),
-            account.photoUrl
+            account.photoUrl,
+            LocalDate.now()
         )
         viewModelScope.launch {
             writeUserInformation(user) {}
