@@ -6,7 +6,8 @@ data class UserInformationModel(
     val googleId: String,
     val name: String,
     val email: String,
-    val profilePicture: String
+    val profilePicture: String,
+    val birthdate: String?
 )
 
 fun UserInformation.toData(): UserInformationModel =
@@ -14,5 +15,6 @@ fun UserInformation.toData(): UserInformationModel =
         googleId,
         name,
         email,
-        profilePicture.toString()
+        profilePicture.toString(),
+        birthdate.toString()
     )

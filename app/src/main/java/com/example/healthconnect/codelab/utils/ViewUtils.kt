@@ -9,6 +9,7 @@ import com.example.healthconnect.codelab.R
 import com.example.healthconnect.codelab.data.model.failure.ResponseFailure
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.round
 
 object ViewUtils {
 

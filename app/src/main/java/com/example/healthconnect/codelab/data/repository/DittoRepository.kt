@@ -123,6 +123,10 @@ class DittoRepository @Inject constructor(
     suspend fun putCurrentStateThing(
         thing: DittoCurrentState.Thing
     ): Either<DittoError, Unit> {
+        if (thing.features.trainingSession.zone1.avgHr.isNaN()) thing.features.trainingSession.zone1.avgHr = 0.0
+        if (thing.features.trainingSession.zone2.avgHr.isNaN()) thing.features.trainingSession.zone2.avgHr = 0.0
+        if (thing.features.trainingSession.zone3.avgHr.isNaN()) thing.features.trainingSession.zone3.avgHr = 0.0
+        if (thing.features.trainingSession.rest.avgHr.isNaN()) thing.features.trainingSession.rest.avgHr = 0.0
         val response = dittoDatasource.putCurrentStateThing(thing.thingId, thing.toData())
         return response.fold(::handleError, ::handleEmptySuccess)
     }
