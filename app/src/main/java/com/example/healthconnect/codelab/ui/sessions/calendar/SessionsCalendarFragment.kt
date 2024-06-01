@@ -98,7 +98,7 @@ class SessionsCalendarFragment : Fragment() {
         tvNextSession.text = session.attributes.date.toFormatString()
         tvDistance.text = distance.toInt().toDistanceString()
         tvTime.text = time.toInt().toTimeString()
-        tvHeart.text
+        tvHeart.text = session.features.trainingSession.meanHeartRate().toHeartRateString()
         tvPace.text = ((time/60) / (distance / 1000)).toSpeedString()
 
         ivPace.visibility = View.VISIBLE

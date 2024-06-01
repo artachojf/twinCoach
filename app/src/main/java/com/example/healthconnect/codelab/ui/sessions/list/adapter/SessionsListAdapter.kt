@@ -79,7 +79,7 @@ class SessionsListAdapter(
                 tvNextSession.text = item.session.attributes.date.toFormatString()
                 tvDistance.text = distance.toInt().toDistanceString()
                 tvTime.text = time.toInt().toTimeString()
-                tvHeart.text
+                tvHeart.text = item.session.features.trainingSession.meanHeartRate().toHeartRateString()
                 tvPace.text = ((time/60) / (distance / 1000)).toSpeedString()
 
                 ivPace.visibility = View.VISIBLE
