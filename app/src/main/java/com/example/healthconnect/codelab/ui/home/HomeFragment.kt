@@ -134,7 +134,7 @@ class HomeFragment : Fragment() {
         )
             list.add(HomeViewEntity.SuggestionsViewEntity(viewModel.generalInfo.value?.features?.suggestions) { moveToProgression() })
         if (viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.isNotEmpty() == true)
-            HomeViewEntity.NextSessionEntity(viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)) { moveToNextSession() }
+            list.add(HomeViewEntity.NextSessionEntity(viewModel.generalInfo.value?.features?.trainingPlan?.sessions?.get(0)) { moveToNextSession() })
         list.add(HomeViewEntity.GeneralInformationEntity(viewModel.generalInfo.value?.attributes) { moveToGeneralInfo() })
         list.add(HomeViewEntity.FatigueViewEntity(3) {})
 
