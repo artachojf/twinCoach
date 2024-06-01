@@ -15,6 +15,7 @@ import com.example.healthconnect.codelab.ui.MainActivity
 import com.example.healthconnect.codelab.utils.round
 import com.example.healthconnect.codelab.utils.toDistanceString
 import com.example.healthconnect.codelab.utils.toFormatString
+import com.example.healthconnect.codelab.utils.toHeartRateString
 import com.example.healthconnect.codelab.utils.toSpeedString
 import com.example.healthconnect.codelab.utils.toTimeString
 
@@ -57,7 +58,7 @@ class CompletedSessionInfoFragment : Fragment() {
 
         tvDistance.text = distance.toInt().toDistanceString()
         tvTime.text = time.toInt().toTimeString()
-        tvHeart.text
+        tvHeart.text = session.meanHeartRate().toHeartRateString()
         tvPace.text = ((time/60) / (distance / 1000)).toSpeedString()
 
         tvNextSession.visibility = View.GONE

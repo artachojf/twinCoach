@@ -7,6 +7,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import kotlin.math.roundToInt
 
 /**
  * This class contains a Kotlin object representation of Ditto Things that contain the daily
@@ -56,6 +57,16 @@ class DittoCurrentState {
         fun getTotalDistance(): Double = laps.sumOf { it.distance }
 
         fun getTotalTime(): Double = laps.sumOf { it.time }
+
+        fun meanHeartRate(): Int {
+            return try {
+                val total =
+                    (zone1.avgHr * zone1.time) + (zone2.avgHr * zone2.time) + (zone3.avgHr * zone3.time)
+                (total / (zone1.time + zone2.time + zone3.time)).roundToInt()
+            } catch (_: Exception) {
+                0
+            }
+        }
     }
 
     data class TrainingSessionZone(
