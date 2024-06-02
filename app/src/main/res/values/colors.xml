@@ -13,4 +13,11 @@
 
     <color name="grey">#595959</color>
     <color name="soft_grey">#909090</color>
+
+    <color name="deep_deep_blue">#1B2D48</color>
+    <color name="deep_blue">#2C456B</color>
+    <color name="grey_blue">#3c649f</color>
+    <color name="blue">#4779C4</color>
+    <color name="light_blue">#83AFF0</color>
+    <color name="light_light_blue">#AABFDD</color>
 </resources>

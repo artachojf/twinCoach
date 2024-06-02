@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:text="@string/goal_information"
+            android:textColor="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +34,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/timer_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -100,6 +102,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/distance_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/ivTime"
             app:layout_constraintTop_toBottomOf="@+id/llTime" />
 
@@ -138,6 +141,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/ivLength"
             app:layout_constraintTop_toBottomOf="@+id/llLength" />
 

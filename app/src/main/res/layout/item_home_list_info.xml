@@ -29,6 +29,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/height_line_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintEnd_toStartOf="@+id/tvHeight"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +49,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/weight_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintEnd_toStartOf="@+id/tvWeight"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/ivHeight" />
@@ -67,6 +69,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toEndOf="@+id/ivRunning"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,6 +88,7 @@
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:src="@drawable/run_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/ivRunningDate" />
@@ -95,6 +99,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toEndOf="@+id/ivRunning"
             app:layout_constraintTop_toBottomOf="@+id/ivBirthdate" />
 

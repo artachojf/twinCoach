@@ -14,17 +14,17 @@
             android:id="@+id/tvSessionTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:maxLines="2"
             android:text="3rd December 2024"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginHorizontal="60dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             layout="@layout/item_sessions_list"

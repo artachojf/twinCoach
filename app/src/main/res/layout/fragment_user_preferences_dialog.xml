@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:text="@string/user_preferences_title"
+            android:textColor="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
