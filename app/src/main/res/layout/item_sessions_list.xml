@@ -30,6 +30,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/distance_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintEnd_toStartOf="@+id/tvDistance"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
@@ -49,6 +50,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/letter_zz_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintEnd_toStartOf="@+id/tvRest"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/ivDistance"
@@ -70,6 +72,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/speedometer_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintEnd_toStartOf="@+id/tvPace"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/ivDistance"
@@ -91,6 +94,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/timer_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/tvNextSession" />
 
@@ -110,6 +114,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="10dp"
             android:src="@drawable/baseline_favorite_border_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/ivTime" />
 

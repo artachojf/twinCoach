@@ -11,6 +11,7 @@
         android:id="@+id/clPersonalInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tint="?attr/colorOnSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:text="@string/personal_information"
+            android:textColor="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,6 +36,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/height_line_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -70,6 +73,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/weight_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/ivHeight"
             app:layout_constraintTop_toBottomOf="@+id/llHeight" />
 
@@ -108,6 +112,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/ivWeight"
             app:layout_constraintTop_toBottomOf="@+id/llWeight" />
 
@@ -128,6 +133,7 @@
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:src="@drawable/run_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintBottom_toBottomOf="@+id/btnRunningDate"
             app:layout_constraintEnd_toStartOf="@+id/ivRunningDate"
             app:layout_constraintTop_toTopOf="@+id/btnRunningDate" />
@@ -138,6 +144,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
             app:layout_constraintStart_toStartOf="@+id/ivBirthdate"
             app:layout_constraintTop_toBottomOf="@+id/btnBirthdate" />
 

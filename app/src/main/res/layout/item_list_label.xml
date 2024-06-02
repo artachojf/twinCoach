@@ -7,11 +7,12 @@
 
     <TextView
         android:id="@+id/tvLabel"
+        style="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:text="Notifications"
-        style="@style/TitleText"/>
+        android:textColor="?attr/colorOnSecondary" />
 
 </LinearLayout>
