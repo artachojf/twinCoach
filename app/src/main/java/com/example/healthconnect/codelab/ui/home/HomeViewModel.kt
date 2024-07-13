@@ -1,5 +1,6 @@
 package com.example.healthconnect.codelab.ui.home
 
+import androidx.health.connect.client.changes.Change
 import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.SleepSessionRecord
@@ -196,82 +197,94 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun processChanges(token: Token, info: UserInformation) {
+        token.toList().forEach {
+            when (val result = healthConnectManager.getChanges(it)) {
+                is HealthConnectManager.GetChangesResult.Success -> {
+                    processChangesSuccess(result.changes, info)
+                }
+
+                is HealthConnectManager.GetChangesResult.Error -> {
+                    readAllRecords(token, info)
+                }
+            }
+        }
+        renewTokens(token)
+    }
+
+    private suspend fun processChangesSuccess(changes: List<Change>, info: UserInformation) {
         viewModelScope.launch {
-            token.toList().forEach {
-                    healthConnectManager.getChanges(it).forEach { change ->
-                        async {
-                            when (change) {
-                                is UpsertionChange -> {
-                                    when (change.record) {
-                                        is ExerciseSessionRecord -> {
-                                            processSession(
-                                                change.record as ExerciseSessionRecord,
-                                                info
-                                            )
-                                            newExerciseSession = true
-                                        }
+            changes.forEach { change ->
+                async {
+                    when (change) {
+                        is UpsertionChange -> {
+                            when (change.record) {
+                                is ExerciseSessionRecord -> {
+                                    processSession(
+                                        change.record as ExerciseSessionRecord,
+                                        info
+                                    )
+                                    newExerciseSession = true
+                                }
 
-                                        is StepsRecord -> {
-                                            processSteps(
-                                                change.record as StepsRecord,
-                                                info
-                                            )
-                                            newStepsRecord = true
-                                        }
+                                is StepsRecord -> {
+                                    processSteps(
+                                        change.record as StepsRecord,
+                                        info
+                                    )
+                                    newStepsRecord = true
+                                }
 
-                                        is SleepSessionRecord -> {
-                                            processSleep(
-                                                change.record as SleepSessionRecord,
-                                                info
-                                            )
-                                            newSleepsSession = true
-                                        }
-
-                                        else -> {}
-                                    }
+                                is SleepSessionRecord -> {
+                                    processSleep(
+                                        change.record as SleepSessionRecord,
+                                        info
+                                    )
+                                    newSleepsSession = true
                                 }
 
                                 else -> {}
                             }
-                        }.await()
+                        }
+
+                        else -> {}
                     }
+                }.await()
             }
-            renewTokens(token)
         }
     }
 
     private suspend fun uploadThing(
         thing: DittoCurrentState.Thing
     ) {
-            getCurrentStateThing(
-                GetCurrentStateInput(
-                    thing.attributes.googleId,
-                    thing.attributes.date.toLocalDate()
+        getCurrentStateThing(
+            GetCurrentStateInput(
+                thing.attributes.googleId,
+                thing.attributes.date.toLocalDate()
+            )
+        ) { result ->
+            result.fold(
+                ::handleCurrentStateFailure
+            ) {
+                handleGetCurrentStateSuccess(
+                    it,
+                    thing
                 )
-            ) { result ->
-                result.fold(
-                    ::handleCurrentStateFailure
-                ) {
-                    handleGetCurrentStateSuccess(
-                        it,
-                        thing
-                    )
-                }
             }
+        }
     }
 
     private suspend fun processSession(
         record: ExerciseSessionRecord,
         info: UserInformation
     ) {
-            healthConnectManager.rateTrainingSession(
-                record,
-                generalInfo.value!!.attributes.birthdate
-            ).let { session ->
-                if (session != null) {
-                    uploadThing(newThing(session, info.googleId, record.startTime))
-                }
+        healthConnectManager.rateTrainingSession(
+            record,
+            generalInfo.value!!.attributes.birthdate
+        ).let { session ->
+            if (session != null) {
+                uploadThing(newThing(session, info.googleId, record.startTime))
             }
+        }
     }
 
     private suspend fun processSteps(
@@ -302,7 +315,7 @@ class HomeViewModel @Inject constructor(
 
         val features = DittoCurrentState.Features(
             session,
-            DittoCurrentState.SleepSession(0,0,0,0),
+            DittoCurrentState.SleepSession(0, 0, 0, 0),
             DittoCurrentState.StepsRecord(0)
         )
 
@@ -333,7 +346,7 @@ class HomeViewModel @Inject constructor(
 
         val features = DittoCurrentState.Features(
             session,
-            DittoCurrentState.SleepSession(0,0,0,0),
+            DittoCurrentState.SleepSession(0, 0, 0, 0),
             record
         )
 

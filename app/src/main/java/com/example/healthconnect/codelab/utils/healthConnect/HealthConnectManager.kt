@@ -198,22 +198,28 @@ class HealthConnectManager @Inject constructor(
         )
     }
 
+    sealed class GetChangesResult {
+        data class Success(val changes: List<Change>): GetChangesResult()
+        data class Error(val message: String): GetChangesResult()
+    }
+
     /**
      * Retrieve changes from a Changes token
      */
-    suspend fun getChanges(token: String): List<Change> {
+    suspend fun getChanges(token: String): GetChangesResult {
         var nextChangesToken = token
-        var changesList = ArrayList<Change>()
+        val changesList = ArrayList<Change>()
         do {
             val response = healthConnectClient.getChanges(nextChangesToken)
             if (response.changesTokenExpired) {
-                throw IOException("Changes token has expired")
+                //throw IOException("Changes token has expired")
+                return GetChangesResult.Error("Changes token has expired")
             }
             changesList.addAll(response.changes)
             nextChangesToken = response.nextChangesToken
         } while (response.hasMore)
 
-        return changesList
+        return GetChangesResult.Success(changesList)
     }
 
     /**
