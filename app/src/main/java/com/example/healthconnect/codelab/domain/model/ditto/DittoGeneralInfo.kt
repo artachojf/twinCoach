@@ -120,7 +120,7 @@ fun DittoGeneralInfoModel.GoalProperties.toDomain(): DittoGeneralInfo.Goal =
     DittoGeneralInfo.Goal(
         distance,
         seconds,
-        estimations.map { it.toDomain() },
+        estimations.map { it.toDomain() }.sortedBy { it.date },
         LocalDate.parse(date)
     )
 
@@ -128,10 +128,10 @@ fun DittoGeneralInfoModel.Estimation.toDomain(): DittoGeneralInfo.Estimation =
     DittoGeneralInfo.Estimation(LocalDate.parse(date), seconds, LocalDate.parse(goalReachDate))
 
 fun DittoGeneralInfoModel.TrainingPlan.toDomain(): DittoGeneralInfo.TrainingPlan =
-    DittoGeneralInfo.TrainingPlan(properties.sessions.map { it.toDomain() })
+    DittoGeneralInfo.TrainingPlan(properties.sessions.map { it.toDomain() }.sortedBy { it.day })
 
 fun DittoGeneralInfoModel.TrainingPlanProperties.toDomain(): DittoGeneralInfo.TrainingPlan =
-    DittoGeneralInfo.TrainingPlan(sessions.map { it.toDomain() })
+    DittoGeneralInfo.TrainingPlan(sessions.map { it.toDomain() }.sortedBy { it.day })
 
 fun DittoGeneralInfoModel.TrainingSession.toDomain(): DittoGeneralInfo.TrainingSession =
     DittoGeneralInfo.TrainingSession(
