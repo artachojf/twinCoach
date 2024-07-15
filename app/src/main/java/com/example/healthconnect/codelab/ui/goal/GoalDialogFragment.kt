@@ -98,6 +98,7 @@ class GoalDialogFragment : DialogFragment() {
                         it.seconds = seconds
                         it.distance = distance
                         it.date = this.date!!
+                        it.estimations = emptyList()
                         it
                     }
                     updateGoal(googleId.value!!, goal)
