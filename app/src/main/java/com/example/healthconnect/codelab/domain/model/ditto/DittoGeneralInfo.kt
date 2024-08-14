@@ -145,27 +145,27 @@ fun DittoGeneralInfoModel.Suggestion.toDomain(): DittoGeneralInfo.Suggestion {
     return when (type) {
         0 -> {
             DittoGeneralInfo.Suggestion.SmallerGoal(
-                id, distance!!, seconds!!, LocalDate.parse(date!!)
+                id, distance, seconds, LocalDate.parse(date)
             )
         }
 
         1 -> {
             DittoGeneralInfo.Suggestion.BiggerGoal(
-                id, distance!!, seconds!!, LocalDate.parse(date!!)
+                id, distance, seconds, LocalDate.parse(date)
             )
         }
 
         2 -> {
-            DittoGeneralInfo.Suggestion.LessTrainingDays(id, trainingDays!!)
+            DittoGeneralInfo.Suggestion.LessTrainingDays(id, trainingDays)
         }
 
         3 -> {
-            DittoGeneralInfo.Suggestion.LessTrainingDays(id, trainingDays!!)
+            DittoGeneralInfo.Suggestion.LessTrainingDays(id, trainingDays)
         }
 
         else -> {
             DittoGeneralInfo.Suggestion.SmallerGoal(
-                id, distance!!, seconds!!, LocalDate.parse(date!!)
+                id, distance, seconds, LocalDate.parse(date)
             )
         }
     }

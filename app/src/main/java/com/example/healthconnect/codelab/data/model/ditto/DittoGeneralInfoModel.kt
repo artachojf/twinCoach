@@ -90,10 +90,10 @@ class DittoGeneralInfoModel {
     data class Suggestion(
         val id: Int,
         val type: Int,
-        @EncodeDefault(EncodeDefault.Mode.NEVER) val distance: Int? = null,
-        @EncodeDefault(EncodeDefault.Mode.NEVER) val seconds: Int? = null,
-        @EncodeDefault(EncodeDefault.Mode.NEVER) val date: String? = null,
-        @EncodeDefault(EncodeDefault.Mode.NEVER) val trainingDays: List<Int>? = null
+        val distance: Int = 0,
+        val seconds: Int = 0,
+        val date: String = "",
+        val trainingDays: List<Int> = emptyList()
     )
 
     @Serializable
