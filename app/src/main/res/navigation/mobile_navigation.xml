@@ -2,24 +2,158 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    android:id="@+id/mobile_navigation.xml"
+    app:startDestination="@id/splashFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/loginFragment"
+        android:name="com.example.healthconnect.codelab.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
         android:name="com.example.healthconnect.codelab.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_sessionsFragment"
+            app:destination="@id/sessionsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_suggestedSessionInfoFragment"
+            app:destination="@id/suggestedSessionInfoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_progressionFragment"
+            app:destination="@id/progressionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_goalDialogFragment"
+            app:destination="@id/goalDialogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_personalInformationDialogFragment"
+            app:destination="@id/personalInformationDialogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_firstStepFragment"
+            app:destination="@id/firstStepFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.healthconnect.codelab.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:id="@+id/settingsFragment"
+        android:name="com.example.healthconnect.codelab.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_settingsFragment_to_goalDialogFragment"
+            app:destination="@id/goalDialogFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_personalInformationDialogFragment"
+            app:destination="@id/personalInformationDialogFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_userPreferencesDialogFragment"
+            app:destination="@id/userPreferencesDialogFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.healthconnect.codelab.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/splashFragment"
+        android:name="com.example.healthconnect.codelab.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/splashFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/splashFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sessionsFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.SessionsFragment"
+        android:label="fragment_sessions"
+        tools:layout="@layout/fragment_sessions" >
+        <action
+            android:id="@+id/action_sessionsFragment_to_completedSessionInfoFragment"
+            app:destination="@id/completedSessionInfoFragment" />
+        <action
+            android:id="@+id/action_sessionsFragment_to_suggestedSessionInfoFragment"
+            app:destination="@id/suggestedSessionInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completedSessionInfoFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.info.completed.CompletedSessionInfoFragment"
+        android:label="fragment_completed_session_info"
+        tools:layout="@layout/fragment_completed_session_info" >
+        <argument
+            android:name="session"
+            app:argType="com.example.healthconnect.codelab.domain.model.ditto.DittoCurrentState$Thing" />
+    </fragment>
+    <fragment
+        android:id="@+id/suggestedSessionInfoFragment"
+        android:name="com.example.healthconnect.codelab.ui.sessions.info.suggested.SuggestedSessionInfoFragment"
+        android:label="fragment_suggested_session_info"
+        tools:layout="@layout/fragment_suggested_session_info" >
+        <argument
+            android:name="session"
+            app:argType="com.example.healthconnect.codelab.domain.model.ditto.DittoGeneralInfo$TrainingSession" />
+    </fragment>
+    <fragment
+        android:id="@+id/progressionFragment"
+        android:name="com.example.healthconnect.codelab.ui.progression.ProgressionFragment"
+        android:label="fragment_progression"
+        tools:layout="@layout/fragment_progression" />
+    <dialog
+        android:id="@+id/goalDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.goal.GoalDialogFragment"
+        android:label="fragment_goal_dialog"
+        tools:layout="@layout/fragment_goal_dialog" />
+    <dialog
+        android:id="@+id/personalInformationDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.personaInformation.PersonalInformationDialogFragment"
+        android:label="PersonalInformationDialogFragment" />
+    <dialog
+        android:id="@+id/userPreferencesDialogFragment"
+        android:name="com.example.healthconnect.codelab.ui.userPreferences.UserPreferencesDialogFragment"
+        android:label="fragment_user_preferences_dialog"
+        tools:layout="@layout/fragment_user_preferences_dialog" />
+    <fragment
+        android:id="@+id/firstStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.first.FirstStepFragment"
+        android:label="fragment_first_step"
+        tools:layout="@layout/fragment_first_step" >
+        <action
+            android:id="@+id/action_firstStepFragment_to_secondStepFragment"
+            app:destination="@id/secondStepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.second.SecondStepFragment"
+        android:label="fragment_second_step"
+        tools:layout="@layout/fragment_second_step" >
+        <action
+            android:id="@+id/action_secondStepFragment_to_thirdStepFragment"
+            app:destination="@id/thirdStepFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/thirdStepFragment"
+        android:name="com.example.healthconnect.codelab.ui.firstSteps.third.ThirdStepFragment"
+        android:label="fragment_third_step"
+        tools:layout="@layout/fragment_third_step" >
+        <action
+            android:id="@+id/action_thirdStepFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/firstStepFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

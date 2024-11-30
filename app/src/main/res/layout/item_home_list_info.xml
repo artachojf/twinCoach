@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/home_card_corner_radius"
+    android:layout_marginBottom="@dimen/home_card_margin"
+    android:layout_marginHorizontal="@dimen/home_card_margin">
+
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_card_empty_state"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/ivHeight"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/height_line_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
+            app:layout_constraintEnd_toStartOf="@+id/tvHeight"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="170 cm"
+            app:layout_constraintBottom_toBottomOf="@+id/ivHeight"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/ivHeight" />
+
+        <ImageView
+            android:id="@+id/ivWeight"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/weight_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
+            app:layout_constraintEnd_toStartOf="@+id/tvWeight"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/ivHeight" />
+
+        <TextView
+            android:id="@+id/tvWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="70 kg"
+            app:layout_constraintBottom_toBottomOf="@+id/ivWeight"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/ivWeight" />
+
+        <ImageView
+            android:id="@+id/ivBirthdate"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
+            app:layout_constraintStart_toEndOf="@+id/ivRunning"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvBirthdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/01/1999"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBirthdate"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/ivBirthdate"
+            app:layout_constraintTop_toTopOf="@+id/ivBirthdate" />
+
+        <ImageView
+            android:id="@+id/ivRunning"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/run_svgrepo_com"
+            app:tint="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/ivRunningDate" />
+
+        <ImageView
+            android:id="@+id/ivRunningDate"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/baseline_calendar_today_24"
+            app:tint="?attr/colorOnSecondary"
+            app:layout_constraintStart_toEndOf="@+id/ivRunning"
+            app:layout_constraintTop_toBottomOf="@+id/ivBirthdate" />
+
+        <TextView
+            android:id="@+id/tvRunningDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/01/2010"
+            app:layout_constraintBottom_toBottomOf="@+id/ivRunningDate"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/ivRunningDate"
+            app:layout_constraintTop_toTopOf="@+id/ivRunningDate" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="164dp"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.57" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.07" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.93" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
